@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Poker</title>
+</head>
+<body>
+    <!--Navbar -->
+
+    <!--Contenu -->
+     <!-----------------------                              Titre           ----------------------------->
+     <div classe="titrejeu">
+        <h1 class="">Planning Pocker</h1>
+     </div>
+
+    <!-----------------------          Formulaire pour la partie          ----------------------------->
+    
+    <div>
+        <form action="#" method="post">
+
+            <!-- Champ de texte pour le nom -->
+            <div>
+            <input type="text" id="nom" name="nom" placeholder="Entrez le pseudo" required></div>
+
+            <!-- Liste déroulante pour le nombre de joueurs -->
+            <select id="nombreJoueurs" name="nombreJoueurs" required>
+                <option value="1">1 joueur</option>
+                <option value="2">2 joueurs</option>
+                <option value="3">3 joueurs</option>
+                <option value="4">4 joueurs</option>
+                <option value="5">5 joueurs</option>
+                <option value="6">6 joueurs</option>
+                <option value="7">7 joueurs</option>
+                <option value="8">8 joueurs</option>
+                <option value="9">9 joueurs</option>
+                <option value="10">10 joueurs</option>
+                <!-- Ajoutez autant d'options que nécessaire -->
+
+            </select>
+
+            <!-- Champ de texte pour le nom du projet -->
+            <div>
+            <input type="text" id="nomProjet" name="nomProjet" placeholder="Nom pour votre projet..."></div>
+
+            <!-- Boutons pour les règles avec champs de description Ondoit gerer cette partie avec un du js qui affichera un petit pop up a chaque fois qu'on va cliquer sur une regle  -->
+            <div><button type="button" onclick="afficherDescription('regle1')">Règle 1</button>
+            <div id="regle1Description" style="display: none;">
+                <label for="descriptionRegle1">Description:</label>
+                <input type="text" id="descriptionRegle1" name="descriptionRegle1">
+            </div>
+            
+
+            <button type="button" onclick="afficherDescription('regle2')">Règle 2</button>
+            <div id="regle2Description" style="display: none;">
+                <label for="descriptionRegle2">Description:</label>
+                <input type="text" id="descriptionRegle2" name="descriptionRegle2">
+            </div>
+            <button type="button" onclick="afficherDescription('regle3')">Règle 3 </button>
+            <div id="regle3Description" style="display: none;">
+                <label for="descriptionRegle3">Description:</label>
+                <input type="text" id="descriptionRegle3" name="descriptionRegle3">
+            </div>
+            </div>
+
+            <!-- Bouton Valider -->
+            <button type="submit">Valider</button>
+
+        </form>
+    </div>
+    
+    <!--Footer -->
+    
+</body>
+</html>
