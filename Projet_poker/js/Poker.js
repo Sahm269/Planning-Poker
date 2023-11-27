@@ -23,6 +23,7 @@ function initialisation(){
     //initialisé le plateau
     //initialisé un tableau de tache vide
 }
+module.export = initialisation
 
 function plateau(){ // jeu de carte
 
