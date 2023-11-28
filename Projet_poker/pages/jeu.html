@@ -3,30 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-ezBsCp8sV2eqZzU5P2ZLKZkRDFZSltj6X3zmfRqKSw9tAJ51uqUU9gfo5K7FvF4e" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/jeu.css">
     <title>Document</title>
 </head>
 <body>
-    <!--Nom du projet ceci doit etre une variable qui doit afficher ce qui a été saisi dans le menu -->
-    <div>
-
-    
-        <h2> Nom du projet </h2>
-    </div>
+   
 
     <!--    Première taches a faire doit s'afficher ici donc ceci est une variable encore une fois -->
-    <div class="">
+    <div class="jeu">
+         <!--Nom du projet ceci doit etre une variable qui doit afficher ce qui a été saisi dans le menu -->
+    <div>
+        <h2> Nom du projet </h2>
+    </div>
         <div>
             <h3>Taches à debattre </h3>
         </div>
         <div classe="cartes">
-            
-            
+           
+            <div id="carte0" class="carte">0</div>  <!-- 1ère carte de la 1ère ligne (en haut à gauche) -->
+            <div id="carte1" class="carte">1/2</div>  <!-- 2e carte de la 1ère ligne -->
+            <div id="carte2" class="carte">1</div>  <!-- 3e carte de la 1ère ligne -->
+            <div id="carte3" class="carte">2</div>  <!-- 4e carte de la 1ère ligne -->
+            <div id="carte4" class="carte">3</div>  <!-- 1ère carte de la 2e ligne -->
+            <div id="carte5" class="carte">5</div>  <!-- ... -->
+            <div id="carte6" class="carte">8</div>
+            <div id="carte7" class="carte">13</div>
+            <div id="carte8" class="carte">20</div>
+            <div id="carte9" class="carte">40</div>
+            <div id="carte10" class="carte">100</div>
+            <div id="carte11" class="carte">?</div>
+            <div id="carte12" class="carte"><i class="fas fa-coffee"></i></div>
+                  
+               
         </div>
-    </div>
+ 
 
 
     <!--         Section de tout les joueur sous format de liste avec la carte cachée jusqu'à ce que tout les joueurs jouent -->
-    <div class = "">
+    <div class = "cartesjouees">
         <div> chronometre </div> <!-- Chronomètre à gerer -->
         <div>
             <div> <p>profile</p> <p>cartes joués</p></div> <!-- Nom du profile celui qui utilise la machine avec la carte qu'il va joué-->
@@ -52,6 +67,8 @@
         </div>
 
     </div>
+
+</div>
 
 
     
