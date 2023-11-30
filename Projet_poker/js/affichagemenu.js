@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
             playerInput.type = 'text';
             playerInput.placeholder = 'Joueur ' + i;
             playerInput.name = 'player' + i;
+            playerInput.id = 'nom_du_joueur' + 1;
             playersContainer.appendChild(playerInput);
         }
     });
@@ -29,7 +30,39 @@ function showPart(part) {
 
 
 function startGame() {
-   alert("ok")
+   
+   //processBacklog();
+   var formulaire = document.getElementById('setupForm');
+   var formData = new FormData(formulaire);
+   var pseudo_hote = formData.get('pseudoHote')
+   var nom_projet = formData.get('nomProjet')
+   var nombre_joueur = formData.get('nombreJoueur')
+   var i = 0;
+   var tab_nom_joueur = [];
+   while(i<=nombre_joueur){
+        tab_nom_joueur[i]=formData.get('player'+i)
+        i++;
+   }
+   var tab_backlog = [];
+   var backlog = formData.get('backlog');
+   /*
+   var lignes = backlog.split('\n');
+   var nb_ligne = lignes.length;
+   var j = 0;
+   while(j<=nb_ligne){
+    tab_backlog[j]=lignes.j;
+    j++;
+   }
+   var affichage_backlog="";
+   */
+   alert("pseudo " + pseudo_hote + "nb joueur " + nombre_joueur + "liste joueur " + tab_nom_joueur + "baclog " + backlog)
+
+
+   //recuperer_donnees();
+}
+
+function recuperer_donnees(){
+    
 }
 
 function processBacklog() {
