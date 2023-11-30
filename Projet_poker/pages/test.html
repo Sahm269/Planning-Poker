@@ -1,35 +1,25 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planning Poker</title>
-    <script src="../js/affichagemenu.js"></script>
+    <title>Multi-Step Form</title>
     <style>
         .partie2, .partie3 {
             display: none;
         }
     </style>
+   
 </head>
 <body>
-    <!--Navbar -->
 
-    <!--Contenu -->
-     <!-----------------------                              Titre           ----------------------------->
-     <div classe="titrejeu">
-        <h1 class="">Planning Pocker</h1>
-     </div>
-
-    <!-----------------------          Formulaire pour la partie          ----------------------------->
-    
-    
-       
-<form action="jeu.html" method="post" id="setupForm">
+<form action="#" method="post" id="multiStepForm">
 
     <!-- Partie 1 -->
     <div class="partie1">
         <!-- ... Your existing Partie 1 HTML ... -->
-        <div><input type="text" id="pseudoHote" name="pseudoHote" placeholder="Entre ton pseudo" required></div>
+        <p>1</p>
+        <div><input type="text" id="nom" name="nom" placeholder="Entre ton pseudo" required></div>
 
         <!-- Champ de texte pour le nom du projet -->
         <div><input type="text" id="nomProjet" name="nomProjet" placeholder="Nom pour votre projet..."></div>
@@ -39,17 +29,18 @@
 
          <!-- Boutons pour les règles avec champs de description Ondoit gerer cette partie avec un du js qui affichera un petit pop up a chaque fois qu'on va cliquer sur une regle  -->
          <div>
-            <button type="button" onclick="afficherDescription('regle1')">Mediane</button>
+            <button type="button" onclick="afficherDescription('regle1')">Règle 1</button>
             <div id="regle1Description" style="display: none;">
                 <label for="descriptionRegle1">Description:</label>
                 <input type="text" id="descriptionRegle1" name="descriptionRegle1">
             </div>
-            <button type="button" onclick="afficherDescription('regle2')">Moyenne</button>
+
+            <button type="button" onclick="afficherDescription('regle2')">Règle 2</button>
             <div id="regle2Description" style="display: none;">
                 <label for="descriptionRegle2">Description:</label>
                 <input type="text" id="descriptionRegle2" name="descriptionRegle2">
             </div>
-            <button type="button" onclick="afficherDescription('regle3')">majorité absolue </button>
+            <button type="button" onclick="afficherDescription('regle3')">Règle 3 </button>
             <div id="regle3Description" style="display: none;">
                 <label for="descriptionRegle3">Description:</label>
                 <input type="text" id="descriptionRegle3" name="descriptionRegle3">
@@ -64,6 +55,7 @@
     <!-- Partie 2 -->
     <div class="partie2">
         <!-- ... Your existing Partie 2 HTML ... -->
+        <p>2</p>
         <div id="nomJoueur">
             <!-- champs pour nom des joueurs gerer dynamiquement -->
             <h2>Noms des joueurs</h2>
@@ -76,6 +68,7 @@
     <!-- Partie 3 -->
     <div class="partie3">
         <!-- ... Your existing Partie 3 HTML ... -->
+        <p>3</p>
         <p>Saisissez les taches. !!!!!Attention une ligne correspond à une tache  </p>
         <!-- Ajoutez une zone de texte pour la liste de tâches -->
        <div>
@@ -84,16 +77,12 @@
             <button type="button" onclick="processBacklog()">Valider le backlog</button>
         </div>
         <button type="button" class="bouton-retour" onclick="showPart('partie2')">Retour</button>
-        <button type="submit" name="valider" onclick="startGame()" >Commencer la partie</button>
+        <button type="button" onclick="startGame()">Commencer la partie</button>
     </div>
 
 </form>
 
 <script src="../js/affichagemenu.js"></script>
 
-    
-    
-    <!--Footer -->
-    
 </body>
 </html>

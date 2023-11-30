@@ -1,25 +1,161 @@
-body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+
+.jeu {
+    width: 80%;
+    height: 1000px;
+    padding: 25px;
+    margin: auto;
+    background-color: rgb(180, 236, 215);
+    cursor: default;
+  
+}
+
+/*Les trois zones de notre interface jeu */ 
+.groupe1, .groupe2, .groupe3 {
+    box-sizing: border-box;
+    float: left;
+    box-shadow: 0px 3px 3px #444444;
+    border-radius: 2%;
+}
+
+/*Le groupe 1 qui contient les cartes*/
+.groupe1{
+    width: 60%;
+    height: 500px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    
+
 }
 
 .cartes {
-    display: flex;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    padding-right: 21px;
+    
+    
 }
 
+
+
+
 .carte {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 5px;
+    
+    float: left;
+    width: 70px;
+    height: 85px;
+    margin: 21px 0 0 21px;
+    background-color: #ececec;
+
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 79px;
+    vertical-align: middle;
+    display: inline-block;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+
+    box-shadow: 0px 6px 6px #444444;
+
 }
 
 .carte:hover {
-    background-color: #f0f0f0;
+    background-color: #fad5d5;
+}
+
+/*Le groupe 2 qui contient les joueurs , chronomotre , bouton, les cartes jouées */
+.groupe2{
+    height: 500px;
+    width: 35%;
+    margin-left: 5%;
+    background-color: rgb(255, 255, 255);
+    
+}
+
+.groupe2 > div {
+    margin-bottom: 20px;
+}
+
+.chronometre {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.liste-joueurs {
+    list-style: none;
+    padding: 0;
+}
+
+.liste-joueurs > li {
+    margin-bottom: 10px;
+}
+.joueur{
+    display: flex;
+}
+
+
+.nom-joueur::first-letter {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.profil-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.button-container {
+    text-align: center;
+}
+
+.button-container button {
+    margin: 0 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+/************************ groupe 3Backlog*/
+.groupe3{
+    
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    margin-top: 50px;
+    min-height: 400px;
+    
+    
+    
+}
+
+.backlog {
+    margin-left:20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+
+.crud-button {
+    padding: 10px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.backlog-list {
+    list-style: none;
+    padding: 0;
+}
+
+.backlog-list li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
 }

@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-ezBsCp8sV2eqZzU5P2ZLKZkRDFZSltj6X3zmfRqKSw9tAJ51uqUU9gfo5K7FvF4e" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/jeu.css">
+    <link rel="stylesheet" href="../css/jeu.css">
     <title>Document</title>
 </head>
+
 <body>
    
 
     <!--    Première taches a faire doit s'afficher ici donc ceci est une variable encore une fois -->
     <div class="jeu">
          <!--Nom du projet ceci doit etre une variable qui doit afficher ce qui a été saisi dans le menu -->
+    <div class="groupe1"> 
     <div>
-        <h2> Nom du projet </h2>
+        <h2 id="nomProjetAffiche"></h2> <!-- ici on doit mettre le nom projet saisi dans le menu-->
     </div>
-        <div>
-            <h3>Taches à debattre </h3>
+        <div> 
+            <h3>Tâches à débattre :</h3>
+            <p id="premiereTacheBacklogAffiche"></p> <!-- ici on doit mettre la première liste du backlog saisi dans le menu-->
         </div>
         <div classe="cartes">
            
@@ -38,17 +41,30 @@
                
         </div>
  
-
+    </div>
 
     <!--         Section de tout les joueur sous format de liste avec la carte cachée jusqu'à ce que tout les joueurs jouent -->
-    <div class = "cartesjouees">
-        <div> chronometre </div> <!-- Chronomètre à gerer -->
+    <div class = "groupe2">
+        <div class="chronometre"> chronometre </div> <!-- Chronomètre à gerer --> 
         <div>
-            <div> <p>profile</p> <p>cartes joués</p></div> <!-- Nom du profile celui qui utilise la machine avec la carte qu'il va joué-->
-            <div> joueur 1</div> <!-- le reste des joueur nommé ainsi possibilité de changé le nom à voir si on le fait avant de commencer la partie ou après -->
-            <div> joueur 2...</div>
+            <ul class="liste-joueurs"> <!--LEs noms des joueurs doivent etre chargé automatiquement se lon ce quon a mis sur le menu-->
+                <li>
+                    <div id="joueur0" class="joueur">
+                        <div class="profil-icon"></div>
+                        <span class="nom-joueur">Nom du joueur</span> 
+                        <span class="carte-jouee">Carte jouée</span>
+                    </div>
+                </li>
+                <li>
+                    <div id="joueur0" class="joueur">
+                        <div class="profil-icon"></div>
+                        <span class="nom-joueur">Nom du joueur</span>
+                        <span class="carte-jouee">Carte jouée</span>
+                    </div>
+                </li>
+                <!-- Ajoutez d'autres joueurs selon vos besoins -->
+            </ul>
         </div>
-
         <div>
             <button> Recommencer le vote </button> <!-- si tout le monde n'est pas d'accord  -->
             <button> Taches suivante </button><!--  Si tout le monde est d'accord -->
@@ -56,21 +72,25 @@
     </div>
 
     <!-- Liste de toute les taches à faire on doit pouvoir le modifier ou ajouter quelque chose ...-->
-    <div class = "backlog"> 
-        <div class="">
-            <button>Modifier</button>
-            <button>Ajouter</button>
-            <button>Supprimer</button>
-
-
-             
+    <div class="groupe3">
+        <div class="backlog">
+            <button class="crud-button" data-action="modifier">Modifier</button>
+            <button class="crud-button" data-action="ajouter">Ajouter</button>
+            <button class="crud-button" data-action="supprimer">Supprimer</button>
+    
+            <ul class="backlog-list"> <!-- ici on doit pouvoir afficher le backlog saisi numeroé aleatoirement avec l'estimation de la tache dont au chargement du jeu doit etre vide -->
+                <li>Tâche 1</li>
+                <li>Tâche 2</li>
+                <li>Tâche 3</li>
+                <!-- Ajoutez d'autres tâches selon vos besoins -->
+            </ul>
         </div>
-
     </div>
+    
 
 </div>
 
-
+<script src="../js/affichagemenu.js"></script>
     
 </body>
 </html>
