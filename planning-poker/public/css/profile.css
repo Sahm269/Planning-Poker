@@ -1,0 +1,64 @@
+:root {
+    --color-degrade: linear-gradient(to right, var(--color-first), var(--color-five));
+    --color-first: #5680E9;
+    --color-second: #84CEEB;
+    --color-third: #5AB9EA;
+    --color-foor: #dab0d7b0;
+    --color-hover: #906bd3;
+    --color-five: #b8a6da;
+    --color-white: #fff;
+    --color-success: #2ecc71;
+    --color-error: #e74c3c;
+    --police-h1: 'Roboto', sans-serif;
+    --police-h2: 'Montserrat', sans-serif;
+    --police-p: 'Arial', sans-serif;
+    --color-background: url('../asset/background.jpg');
+}
+.pContainer {
+    box-sizing: border-box;
+    box-shadow: 0px 3px 3px #444444;
+    border-radius: 2%;
+    width: 80%;
+    padding: 25px;
+    background: var(--color-degrade);
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Pour centrer verticalement sur toute la hauteur de la page */
+    margin: 50px auto; /* Pour centrer horizontalement */
+}
+
+.mainContent{
+   width: 100%;
+}
+
+.profileName {
+    align-self: flex-start; /* Alignement à gauche */
+}
+
+.newPart {
+    margin-top: 20px;
+    text-align: center; /* Alignement au centre */
+}
+
+
+.partTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.partTable th, .partTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.partTable th {
+    background-color: #f2f2f2;
+}
+
+.downloadBtn {
+    margin-left: 10px;
+}

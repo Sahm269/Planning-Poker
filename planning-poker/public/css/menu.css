@@ -1,0 +1,225 @@
+
+@font-face {
+  font-family: 'little_boy_2';
+  src: url('../fonts/little_boy_2.otf') format('otf'),
+       url('../fonts/font.ttf') format('ttf');
+  /* Ajoutez des formats supplémentaires si nécessaire */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+*{
+    box-sizing: border-box;
+}
+
+:root{
+    --color-background:linear-gradient(to right, var(--color-first), var(--color-five));
+    --color-first:#5680E9;
+    --color-second:#84CEEB;
+    --color-third:#5AB9EA;
+    --color-foor:#C1C8E4;
+    --color-hover:#906bd3;
+    --color-five:#b8a6da;
+    
+    --color-white:#fff;
+    --color-success:#2ecc71;
+    --color-error:#e74c3c;
+
+
+
+    --police-h1: 'Roboto', sans-serif; /* Exemple de police populaire */
+    --police-h2: 'Montserrat', sans-serif; /* Exemple de police populaire */
+    --police-p: 'Arial', sans-serif; /* Exemple de police générique */
+      
+      
+}
+
+body{
+    position: relative;
+    background: var(--color-background);
+    font-family: var( --police-h2);
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: auto;
+}
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-white);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.5);
+    width: 70%;
+    max-width: 100%;
+}
+.header{
+    background: var(--color-five);
+    border-radius: 10px;
+    color:var(--color-white);
+    border-bottom: 1px solid var(--color-second);
+    padding: 20px 40px;
+}
+.header h2{
+    margin: 0;
+    text-align: center;
+   
+}
+.form{
+    padding: 30px 40px;
+}
+.form-control{
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+.form-control label{
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.form-control input{
+    border:  2px solid var(--color-second);
+    border-radius: 4px;
+    display: block;
+    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
+    height: 40px;
+    padding-left: 10px;
+    transition: border-color 0.3s; /* Ajout de transition pour une animation fluide */
+}
+
+.form-control input:focus {
+    border-color: var(--color-first); /* Changement de la couleur de la bordure au focus */
+}
+
+.form-control i{
+    position: absolute;
+    top: 33px;
+    right: 10px;
+    visibility: hidden;
+}
+.form-control small{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+}
+.form button{
+    background: var(--color-first);
+    border: none;
+    color: var(--color-white);
+    display: block;
+    font-family: inherit;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+    width: 20%;
+    cursor: pointer;
+}
+.form button:hover{
+    background-color:var(--color-hover)
+}
+
+
+
+.form .bouton-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.form-control.success input{
+    border-color: var(--color-success);
+}
+.form-control.error input{
+    border-color: var(--color-error);
+}
+.form-control.success i.fa-check-circle{
+    color: var(--color-success);
+    visibility: visible;
+}
+.form-control.error i.fa-exclamation{
+    color: var(--color-error);
+    visibility: visible;
+}
+.form-control.error small{
+    color: var(--color-error);
+    visibility: visible;
+}
+
+
+
+.form-control #regle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  #regle input[type="radio"] {
+    display: none; /* Masquer les boutons radio par défaut */
+  }
+  
+  #regle label {
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: var(--color-second);
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  #regle label:hover{
+    background-color: var(--color-hover);
+  }
+  
+  #regle input[type="radio"]:checked + label {
+    background-color:var(--color-five); /* Couleur différente lorsque sélectionné */
+  }
+  
+  /* Style pour le message d'erreur */
+  #regle small {
+    display: block;
+    margin-top: 10px;
+    color: #e74c3c;
+  }
+  
+  #popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+
+  #overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .form-control textarea{
+    border:  2px solid var(--color-second);
+    border-radius: 4px;
+    display: block;
+    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
+    height: 100px;
+    padding-left: 10px;
+    transition: border-color 0.3s;
+
+  }
