@@ -20,7 +20,7 @@ jobs:
       run : npm install -g jsdoc
 
     - name: Generate Documentation
-      run: affichagemenu.js
+      run: jsdoc *.js
 
     - name: Deploy Documentation
     
