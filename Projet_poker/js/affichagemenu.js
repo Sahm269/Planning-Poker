@@ -1,3 +1,6 @@
+var tachesTexte;
+var test="test";
+
 document.addEventListener('DOMContentLoaded', function () {
     // Add player input fields dynamically based on the number of players
     document.getElementById('nombreJoueur').addEventListener('input', function () {
@@ -30,11 +33,14 @@ function showPart(part) {
 
 
 function startGame() {
-   
-   
-
-   //alert("pseudo " + pseudo_hote + "nb joueur " + nombre_joueur + "liste joueur " + tab_nom_joueur + "baclog " + backlog)
    recuperer_donnees();
+   alert("Après récupération des données. tachesTexte: " + tachesTexte);
+   jouer();
+}
+
+function jouer(){
+    // Redirection vers la page HTML planning poker
+    window.location.href = "jeu.html";
 }
 
 function recuperer_donnees(){
@@ -51,9 +57,9 @@ function recuperer_donnees(){
          i++;
     }
     var backlog = formData.get('backlog');
- var lignes = backlog.split('\n');
- var nb_ligne = lignes.length;
- var backlogJson = [];
+    var lignes = backlog.split('\n');
+    var nb_ligne = lignes.length;
+    var backlogJson = [];
  
  for (var i = 0; i < nb_ligne; i++) {
      // Initialiser chaque ligne avec une chaîne vide
@@ -61,14 +67,21 @@ function recuperer_donnees(){
      // Ajouter l'objet à l'array backlogJson
      backlogJson.push(tacheEstimation);
  }
- 
- console.log(backlogJson);
+ //alert(backlog+nb_ligne)
+ //alert(backlogJson);
  
  // Convertir l'array backlogJson en une chaîne JSON
  var backlogJsonString = JSON.stringify(backlogJson);
- console.log(backlogJsonString);
- 
-    
+//alert(backlogJsonString);
+
+// Construire une chaîne de texte avec les tâches
+tachesTexte = backlogJson.map(function(item, index) {
+    return 'Tâche ' + (index + 1) + ': ' + item.tache;
+}).join('\n');
+
+// Afficher la chaîne de texte dans une alerte
+//alert(tachesTexte);
+
 }
 
 function afficherDonner(){
