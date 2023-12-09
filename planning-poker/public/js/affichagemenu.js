@@ -5,6 +5,8 @@ var nom_projet = document.querySelector('#nomProjet');
 var nombre_joueur = document.querySelector('#nombreJoueur');
 var tab_nom_joueur = [];
 var backlog = document.querySelector('#backlog');
+//var regleValue = document.querySelector('input[name="regle"]:checked');
+
 
 //evenements
 
@@ -27,11 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-form.addEventListener('submit',e=>{
-    e.preventDefault();
-
-    form_verify();
-})
 
 
 // Fonctions 
@@ -47,49 +44,90 @@ function showPart(part) {
     document.querySelector('.' + part).style.display = 'block';
 }
 
+// ...
 
-// Fonstions
-function form_verify() {
+/*document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('boutonSuivantPartie1').addEventListener('click', function () {
+        form_verify();
+    });
+
+    document.getElementById('boutonSuivantPartie2').addEventListener('click', function () {
+        form_verify();
+       
+    });
+
+    document.getElementById('setupForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        form_verify();
+        startGame();
+    });
+    
+});
+
+
+
+
+
+
+
+
+/*function form_verify() {
     // Obtenir toutes les valeurs des inputs
-    const pseudo_hoteValue = pseudo_hote.value();
-    const nom_projetValue = nom_projet.value();
-    const nombre_joueurValue = nombre_joueur.value();
-    const backlogValue = backlog.value();
+    const pseudo_hoteValue = pseudo_hote.value;
+    const nom_projetValue = nom_projet.value;
+    const nombre_joueurValue = nombre_joueur.value;
+    const backlogValue = backlog.value;
+    
     
     // Username verify
     if (pseudo_hoteValue === "") {
         let message ="l'hote ne peut pas être vide";
         setError(pseudo_hote,message);
-    }else if(!userValue.match(/^[a-zA-Z]/)){
+    }else if(!pseudo_hoteValue.match(/^[a-zA-Z]/)){
         let message ="l'hote doit commencer par une lettre";
         setError(pseudo_hote,message)
-    }else{
-        let letterNum = pseudo_hoteValue.length;
-        if (letterNum < 3) {
-            let message ="l'hote doit avoir au moins 3 caractères";
-            setError(pseudo_hote,message)
-        } else {
-            setSuccess(pseudo_hote);
-        }
+    } else{
+        let message ="ok";
+        setSuccess(pseudo_hote);
     }
 
     // nom projet  verify
     if (nom_projetValue === "") {
         let message = "Le nom du projet ne peut pas être vide";
         setError(nom_projet,message);
+    } else{
+        let message ="ok";
+        setSuccess(nom_projet);
     }
     
     // Nombre_joueurValue verify
     if (nombre_joueurValue ==="") {
         let message ="Le nombre de joueur ne peut pas être vide";
         setError(nombre_joueur,message)
+    } else{
+        let message ="ok";
+        setSuccess(nombre_joueur);
     }
     // backlog verify
     if (backlogValue  ==="") {
         let message ="Le backlog ne peut pas être vide";
         setError(backlog,message)
+    } else{
+        let message ="ok";
+        setSuccess(backlog);
     }
+
+    /* Règles verify
+        if (!regleValue) {
+            let message = "Veuillez sélectionner une règle";
+            setError(document.getElementById('regle'), message);
+        }else{
+            let message ="ok";
+            setSuccess(regleValue);
+        }
 }
+
+
 
 function setError(elem,message) {
     const formControl = elem.parentElement;
@@ -102,7 +140,19 @@ function setError(elem,message) {
     formControl.className = "form-control error";
 }
 
+function setSuccess(elem) {
+    const formControl = elem.parentElement;
+    const small = formControl.querySelector('small');
 
+    // Supprimer le message d'erreur
+    small.innerText = "";
+
+    // Supprimer la classe d'erreur et ajouter la classe de succès
+    formControl.classList.remove("error");
+    formControl.classList.add("success");
+}
+
+*/
 
 // gestion de la regle choisie 
 function afficherDescription(regle) {

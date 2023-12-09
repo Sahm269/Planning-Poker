@@ -170,7 +170,7 @@ body{
     background-color: var(--color-second);
     color: #fff;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 50px;
   }
 
   #regle label:hover{
@@ -181,13 +181,7 @@ body{
     background-color:var(--color-five); /* Couleur différente lorsque sélectionné */
   }
   
-  /* Style pour le message d'erreur */
-  #regle small {
-    display: block;
-    margin-top: 10px;
-    color: #e74c3c;
-  }
-  
+ 
   #popup {
     display: none;
     position: fixed;
@@ -196,8 +190,18 @@ body{
     transform: translate(-50%, -50%);
     background-color: #fff;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
+    width:500px;
+    height: auto;
+    border-radius: 15px;
+   
+
+  }
+
+  #popup p{
+    color: #000;
+    width: auto;
   }
 
   #overlay {

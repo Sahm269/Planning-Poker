@@ -60,11 +60,11 @@
             <div id="popup">
             <p id="descriptionText"></p>
             <button onclick="fermerPopup()">OK</button>
-        </div>
+           </div>
 
         <div class="bouton-container">            
         <button type="button" class="bouton-quitter" onclick="">Quitter</button>
-        <button type="button" class="bouton-suivant" onclick="showPart('partie2')">Suivant</button>
+        <button type="button" id="boutonSuivantPartie1" class="bouton-suivant" onclick="showPart('partie2')">Suivant</button>
         </div>
     </div>
 
@@ -80,7 +80,7 @@
         </div>
         <div class="bouton-container">
             <button type="button" class="bouton-retour" onclick="showPart('partie1')">Retour</button>
-            <button type="button" class="bouton-suivant" onclick="showPart('partie3')">Suivant</button>
+            <button type="button" id="boutonSuivantPartie2" class="bouton-suivant" onclick="showPart('partie3')">Suivant</button>
         </div>
     </div>
 

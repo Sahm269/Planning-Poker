@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Planning Poker')</title>
-    <!-- Inclure vos styles CSS ici -->
+    <!-- Inclure  styles CSS ici -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" />
     <link rel="stylesheet" href="{{asset('css/menu.css')}}">
     <link rel="stylesheet" href="{{asset('css/profile.css')}}">
@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{asset('css/layout.css')}}">
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
 
-     <!-- Inclure vos scripts JavaScript ici -->
-     <script src="{{asset('js/affichagemenu.js')}}"></script>
+     <!-- Inclure  scripts JavaScript ici -->
+    
      
     <style>
         .partie2, .partie3 {
@@ -43,6 +43,7 @@
     <footer class="footer bg-light">
         <!-- Contenu du footer -->
     </footer>
+    <script src="{{asset('js/affichagemenu.js')}}"></script>
 
    
 </body>
