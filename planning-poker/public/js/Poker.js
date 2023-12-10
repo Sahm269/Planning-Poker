@@ -1,26 +1,32 @@
 
-partieData.backlog = JSON.parse(partieData.backlog );
-partieData.nomJoueur = JSON.parse(partieData.nomJoueur);
+partieData.backlog = JSON.parse(partieData.backlog );//conversion du backlog en object
+partieData.nomJoueur = JSON.parse(partieData.nomJoueur);// conversion du nom joueur en objet 
 
 var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
-
-//var taille = parseInt(partieData.nbjoueur) + 1; // Récupère l'ordre des joueurs
+var premierTache = Object.keys(partieData.backlog)[0];
+var estimation = '';
+var index =1;
 var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
-mettreAJourAffichage();
-var statutVotes = {}; // Statut des votes
-// Désactiver les boutons au début de la partie
+var etat = partieData.etatpartie;
+
 document.getElementById('boutonRevoter').disabled = true;
 document.getElementById('boutonNextTache').disabled = true;
 
-
-
 console.log(ordreJoueurs)
 console.log (partieData.nomJoueur)
+
+
+
+// Initialisation du jeu 
+mettreAJourAffichage();
 onload=initialisation
 function initialisation(){
-    mettreAJourTacheDebattre()
+  
+    mettreAJourTacheDebattre();
     ecouteur();
 }
+
+//-------------------------------------fonction qui gere les tour du joueur ici on a utilisé lordrre de lobjet nomJoueur qui stocke les nom des joueurs et la carte jouée
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
     // Vérifier si c'est le tour du joueur actuel
@@ -29,20 +35,15 @@ function tourJoueur(nomJoueur, valeurCarte) {
       
         // Passer au joueur suivant
         indexJoueurActuel = (indexJoueurActuel + 1) % ordreJoueurs.length; 
-        var arret =  
+        
         console.log(ordreJoueurs.length);
         console.log(indexJoueurActuel);
-        
-        // Mettre à jour l'affichage, changer la couleur, etc.
         mettreAJourAffichage();
-          // Vérifier si tous les joueurs ont joué
+   // Vérifier si tous les joueurs ont joué
     if (indexJoueurActuel === 0) {
         vote();
         return; 
     }
-
-      
-    
     } else {
         // C'est le tour d'un autre joueur, gérer le cas d'erreur ou afficher un message
         console.log("Ce n'est pas votre tour !");
@@ -50,18 +51,14 @@ function tourJoueur(nomJoueur, valeurCarte) {
 
 }
 
+// -----------------------------------fonction qui met à jpur l'affichage du joueur qui va joueur en lui ajoutant une couleur à la classe active
 function mettreAJourAffichage() {
-    // Récupérez tous les éléments avec la classe nom-joueur
     var nomsJoueurs = document.querySelectorAll('.nom-joueur');
 
-    // Parcourez tous les noms de joueurs
     nomsJoueurs.forEach(function(nomJoueur, index) {
-        // Vérifiez si c'est le joueur actuel
         if (index === indexJoueurActuel) {
-            // Ajoutez la classe active pour la couleur violette
             nomJoueur.classList.add('active');
         } else {
-            // Supprimez la classe active s'il s'agit d'un autre joueur
             nomJoueur.classList.remove('active');
         }
     });
@@ -80,7 +77,9 @@ function ecouteur() {
         });
     });
 }
-var index = 1;
+
+
+
 function vote(){
 // Fonction pour afficher toutes les cartes jouées
 console.log("Votes terminés. Affichage des cartes jouées :");
@@ -96,11 +95,14 @@ console.log("Votes terminés. Affichage des cartes jouées :");
         console.log(carteJoueeElement)
     
         // Mettre à jour le contenu de la balise span
-        carteJoueeElement.textContent = carteJouee;
+        mettreAJourCartesJouees();
+
 }
 afficheMinMax();
 
 }
+
+// --------------------------------------------------------------------------------function qui affiche le min et le max et traite le vote
 function afficheMinMax() {
     var votes = partieData.nomJoueur;
     console.log(votes)
@@ -128,21 +130,36 @@ for (var joueur in votes) {
             console.log("nomMaw");
         }
     }
-
-    
 }
 
 // Vérifier si tous les joueurs ont voté la même carte
 var votesUniques = new Set(Object.values(partieData.nomJoueur));
 var tousLesVotesSontIdentiques = votesUniques.size === 1;
 
-// Sélectionner les boutons
-var boutonNextTache = document.querySelector('#boutonNextTache');
-var boutonRevoter = document.querySelector('#boutonRevoter');
+// Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
+if (tousLesVotesSontIdentiques) {
+    var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
+    if (valeurVote === '?' || valeurVote === 'cafe') {
+         estimation = valeurVote;
+        
+        // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+        console.log('Estimation attribuée:', estimation);
+    }
+    else{
+        estimation = valeurVote;
+        
+        // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+        console.log('Estimation attribuée:', estimation);
+    }
+}
 
-// Activer ou désactiver les boutons en fonction du consensus des votes
-boutonNextTache.disabled = !tousLesVotesSontIdentiques;
-boutonRevoter.disabled = tousLesVotesSontIdentiques;
+        // Sélectionner les boutons
+        var boutonNextTache = document.querySelector('#boutonNextTache');
+        var boutonRevoter = document.querySelector('#boutonRevoter');
+
+        // Activer ou désactiver les boutons en fonction du consensus des votes
+        boutonNextTache.disabled = !tousLesVotesSontIdentiques;
+        boutonRevoter.disabled = tousLesVotesSontIdentiques;
 
     // Afficher les résultats dans un popup
        alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
@@ -153,68 +170,162 @@ boutonRevoter.disabled = tousLesVotesSontIdentiques;
 
 
 
-// Fonction pour mettre à jour l'affichage de la tâche à débattre
-function mettreAJourTacheDebattre() {
-    var tacheDebattreElement = document.getElementById('tacheDebattre'); 
-    var premierTache = Object.keys(partieData.backlog)[0];
-    console.log(premierTache);
-    // Afficher la tâche à débattre dans l'interface
-    tacheDebattreElement.textContent = premierTache;
-}
 
-
+// ----------------------------------------------------------------------------------Fonction Tache suivante 
 
 function nexttache(){
+    tachevalidee();
+    mettreAJourTacheDebattre()
+    index=0;
 
-if (document.getElementById('boutonNextTache').disabled === false){
-    console.log('boutonactivé')
+    for (var joueur in partieData.nomJoueur) {
+        if (partieData.nomJoueur.hasOwnProperty(joueur)) {
+            partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
+            carteJouee = partieData.nomJoueur[joueur];
+            console.log('joueur ', joueur ,' carte',carteJouee);
+            mettreAJourCartesJouees();
+            // Augmenter l'index pour le prochain joueur
+            index++;}
+        
+  
 }
-    
+
+ // Désactiver les boutons 
+ document.getElementById('boutonRevoter').disabled = true;
+ document.getElementById('boutonNextTache').disabled = true;
+ 
 }
+
+//-------------------------------------------------------------------------------------- Fonction pour mettre à jour l'affichage de la tâche à débattre
+function mettreAJourTacheDebattre() {
+    var tacheDebattreElement = document.getElementById('tacheDebattre');
+
+    // Trouver la première tâche non encore débattue
+    var tachesNonDebattues = Object.keys(partieData.backlog);
+    var premierTache = tachesNonDebattues.length > 0 ? tachesNonDebattues[0] : null;
+
+    console.log(premierTache);
+
+    // Afficher la tâche à débattre dans l'interface
+    tacheDebattreElement.textContent = premierTache !== null ? premierTache : "Aucune tâche restante";
+}
+
+
+
+//(------------------------------------------------------------------------------------------ fonction qui valide une tache 
+function tachevalidee() {
+    var tacheDebattreElement = document.getElementById('tacheDebattre');
+    var tacheValideeListe = document.getElementById('backlogListvalide');
+    var tacheRestanteListe = document.getElementById('backlogList');
+
+    var tacheActuelle = tacheDebattreElement.textContent;
+    partieData.backlog[tacheActuelle]=estimation;
+    estimation = partieData.backlog[tacheActuelle];
+
+    // Supprimer la tâche actuelle de l'objet partieData.backlog
+    delete partieData.backlog[tacheActuelle];
+
+    // Ajouter la tâche validée à la liste des tâches validées
+    var nouvelleTacheValidee = document.createElement('li');
+    nouvelleTacheValidee.textContent = `${tacheActuelle} : ${estimation}`;
+    tacheValideeListe.appendChild(nouvelleTacheValidee);
+
+    // Supprimer la tâche actuelle de la liste des tâches restantes
+    var tacheActuelleElement = Array.from(tacheRestanteListe.children).find(element => element.textContent.includes(tacheActuelle));
+    if (tacheActuelleElement) {
+        tacheRestanteListe.removeChild(tacheActuelleElement);
+    }
+
+    // Mettre à jour la tâche à débattre pour la prochaine tâche restante
+    var prochaineTacheRestante = tacheRestanteListe.firstChild;
+    if (prochaineTacheRestante) {
+        tacheDebattreElement.textContent = prochaineTacheRestante.textContent.split(':')[0].trim();
+    } else {
+        tacheDebattreElement.textContent = "Aucune tâche restante";
+        partieData.etatpartie = "finie";
+        etat = partieData.etatpartie;
+        console.log('ekhtkghkyhrkth',etat);
+
+    }
+}
+
+
+
+// ---------------------------------------------------------------------------------------fonction revoter 
 
 function revoter(){
     if (document.getElementById('boutonRevoter').disabled === false){
         console.log('boutonactivé')
     }
-     var indexJoueurActuel = 0;  
+    var indexJoueurActuel = 0;  
     var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
+    index = 0;
 
-    // Réinitialiser les votes de chaque joueur
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
             partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
             carteJouee = partieData.nomJoueur[joueur];
-
-              
-       // Récupérer l'élément span correspondant à la carte jouée du joueur
-        var carteJoueeElement = document.getElementById('carteJouee'+index);
-        index = index+1;
-        console.log(carteJoueeElement)
-    
-        // Mettre à jour le contenu de la balise span
-        carteJoueeElement.textContent = carteJouee;
+            console.log('joueur ', joueur ,' carte',carteJouee);
+            mettreAJourCartesJouees();
+            index++;
         }
     }
+}
+
+//-----------------------------------------------------------------------------------------------Fonction Mise à jour le contenu des cartes jouées
+function mettreAJourCartesJouees() {
+    var carteJoueeElements = document.querySelectorAll('.carte-jouee-element');
+
+    for (var i = 0; i < carteJoueeElements.length; i++) {
+        var joueur = ordreJoueurs[i];
+        var carteJoueeElement = carteJoueeElements[i];
+
+        // Mise à jour le contenu de la carte jouée
+        carteJoueeElement.textContent = partieData.nomJoueur[joueur];
+    }
+}
 
 
 
+// fonction qui va quitter la partie et enregistrer et renvoyer l'utilisateur dans à la page menu 
+function quitter(){
+    enregistrer();
 
-    // Mettre à jour l'affichage ou effectuer d'autres actions si nécessaire
-    mettreAJourAffichage(); // Vous devez implémenter cette fonction pour mettre à jour l'affichage
+}
+// function qui va mettre une pause de la partie et enregistre quand meme 
+function pausecafe(){
+    enregistrer();
     
 }
-function tachevalidee(){
+function enregistrer() {
+    var donneesAEnregistrer = {
+        nomJoueur: partieData.nomJoueur,
+        backlog: partieData.backlog,
+        backlogRestantes: obtenirBacklog('backlogList'),
+        backlogValidees: obtenirBacklog('backlogListvalide'),
+        etatpartie:partieData.etatpartie,
+        // Ajoutez d'autres propriétés au besoin
+    };
+
+    console.log(donneesAEnregistrer);
 
 }
-function quitter(){
 
-}
-function enregistrer(){
+// Fonction pour obtenir les backlogs des tâches restantes ou validées
+function obtenirBacklog(idListe) {
+    var backlogListe = document.getElementById(idListe);
+    var backlog = {};
 
-}
-function ecouesouris(){
+    Array.from(backlogListe.children).forEach(function (element) {
+        var [tache, estimation] = element.textContent.split(':').map(item => item.trim());
+        backlog[tache] = estimation;
+    });
 
+    return backlog;
 }
+
+
+// chronometre a definir au debut une partie ;
 function chronometre(){
 
 }

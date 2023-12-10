@@ -49,10 +49,11 @@
                             <div id="joueur{{ $loop->index + 1 }}" class="joueur">
                                 <div class="profil-icon"></div>
                                 <span class="nom-joueur">{{ $nomJoueur }}</span>
-                                <span id="carteJouee{{ $loop->index + 1 }}" class="carte-jouee">{{ $carteJouee }}</span>
+                                <span class="carte-jouee carte-jouee-element"> </span>
+
                             </div>
                         </li>
-                    @endforeach
+                    @endforeach                     
 
                     </ul>
 
@@ -64,7 +65,7 @@
             </div>
 
             <div>
-                <button>Quitter</button>
+                <button onclick="quitter()">Quitter</button>
             </div>
             </div>
     </div>
@@ -84,7 +85,7 @@
 
 
             <ul class="backlog-list" id="backlogListvalide">
-                <li>Aucune taches validée</li>
+                <li>Aucune taches validée                    </li>
                 
             </ul>
 </div>
