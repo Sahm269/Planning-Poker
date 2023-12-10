@@ -51,7 +51,7 @@ function tourJoueur(nomJoueur, valeurCarte) {
         
         // Mettre à jour l'affichage, changer la couleur, etc.
         mettreAJourAffichage();
-          // Vérifier si tous les joueurs ont joué
+        // Vérifier si tous les joueurs ont joué
     if (indexJoueurActuel === 0) {
         vote();
         return; 
@@ -184,7 +184,7 @@ function revoter(){
     if (document.getElementById('boutonRevoter').disabled === false){
         console.log('boutonactivé')
     }
-     var indexJoueurActuel = 0;  
+    var indexJoueurActuel = 0;  
     var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
 
     // Réinitialiser les votes de chaque joueur
