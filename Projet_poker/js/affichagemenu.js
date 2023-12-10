@@ -82,6 +82,8 @@ tachesTexte = backlogJson.map(function(item, index) {
 //alert(tachesTexte);
 // Stocker la valeur dans le stockage local
 localStorage.setItem('tachesTexte', tachesTexte);
+
+
 }
 
 function afficherDonner(){

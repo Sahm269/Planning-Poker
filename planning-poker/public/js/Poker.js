@@ -21,12 +21,28 @@ function initialisation(){
     mettreAJourTacheDebattre()
     ecouteur();
 }
+
+
+// Initialisation du nombre de joueur qui vont choisir la carte café
+var nbJouerPauseCafe=0;
+
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
     // Vérifier si c'est le tour du joueur actuel
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
         partieData.nomJoueur[nomJoueur] = valeurCarte;
       
+        // Appeler la fonction chronometre pour chaque joueur pendant son tour
+        chronometre();
+
+        //Verifier si la carte jouer est la carte café
+        if (valeurCarte==="carte12"){
+            nbJouerPauseCafe++;
+            if(nbJouerPauseCafe===ordreJoueurs.length){
+                alert("Pause café !!!")
+            }
+        }
+
         // Passer au joueur suivant
         indexJoueurActuel = (indexJoueurActuel + 1) % ordreJoueurs.length; 
         var arret =  
@@ -41,8 +57,6 @@ function tourJoueur(nomJoueur, valeurCarte) {
         return; 
     }
 
-      
-    
     } else {
         // C'est le tour d'un autre joueur, gérer le cas d'erreur ou afficher un message
         console.log("Ce n'est pas votre tour !");
@@ -68,7 +82,6 @@ function mettreAJourAffichage() {
     
 }
 
-
 function ecouteur() {
     var cartes = document.querySelectorAll('.carte');
 
@@ -76,9 +89,12 @@ function ecouteur() {
         carte.addEventListener('click', function() {
             // Appel de la fonction tourJoueur avec le nom du joueur et la valeur de la carte
             tourJoueur(ordreJoueurs[indexJoueurActuel], carte.textContent);
-            
         });
     });
+
+    //ecouteur sur le bouton quitter
+    var boutonQuitter = document.getElementById('boutonQuitter');
+    boutonQuitter.addEventListener('click', quitter);
 }
 var index = 1;
 function vote(){
@@ -88,7 +104,7 @@ console.log("Votes terminés. Affichage des cartes jouées :");
     for (var joueur in partieData.nomJoueur) {
         var carteJouee = partieData.nomJoueur[joueur];
         console.log(`${joueur}: ${carteJouee}`);
-       console.log('NOM : ',index)
+        console.log('NOM : ',index)
        
        // Récupérer l'élément span correspondant à la carte jouée du joueur
         var carteJoueeElement = document.getElementById('carteJouee'+index);
@@ -207,7 +223,8 @@ function tachevalidee(){
 
 }
 function quitter(){
-
+    // Redirection vers la page index.html
+    window.location.href = "index.html";
 }
 function enregistrer(){
 
@@ -217,4 +234,28 @@ function ecouesouris(){
 }
 function chronometre(){
 
+    // Définir la durée du compte à rebours en secondes
+    // Demander à l'utilisateur de choixir ???
+    var tempsRestant = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours() {
+        var minutes = Math.floor(tempsRestant / 60);
+        var secondes = tempsRestant % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebour
+        if (tempsRestant <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            // Ici du code à exécuter lorsque le temps est écoulé
+        } else {
+            tempsRestant--;
+        }
+    }
+
+    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
+    var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
 }

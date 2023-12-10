@@ -1,1 +1,2 @@
 var tachesTexte;
+var regleJeu;

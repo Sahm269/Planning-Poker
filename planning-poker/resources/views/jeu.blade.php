@@ -64,7 +64,7 @@
             </div>
 
             <div>
-                <button>Quitter</button>
+                <button id="boutonQuitter">Quitter</button>
             </div>
             </div>
     </div>

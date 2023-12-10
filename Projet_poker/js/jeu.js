@@ -12,6 +12,7 @@ premiereTacheBacklogAffiche.innerText = tachesTexte;
 document.addEventListener('DOMContentLoaded', function () {
     //alert("test")
     tacheDebat();
+    chronometre();
 });
 
 
@@ -42,5 +43,42 @@ function tacheDebat(){
         // Mettre à jour la valeur dans le stockage local
         localStorage.setItem('tachesTexte', tachesDebat);
     });
+}
 
+function chronometre() {
+    // Définir la durée du compte à rebours en secondes
+    // Demander à l'utilisateur de choixir ???
+    var tempsRestant = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours() {
+        var minutes = Math.floor(tempsRestant / 60);
+        var secondes = tempsRestant % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebour
+        if (tempsRestant <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            // Ici du code à exécuter lorsque le temps est écoulé
+        } else {
+            tempsRestant--;
+        }
+    }
+
+    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
+    var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+}
+
+function pauseCafe(){
+    //Initialisation du nombre de joueur ayant choisit la carte café
+    var nbJoueurCafe = 0;
+
+    
+
+    if (nbJoueurCafe === nombre_joueur){
+        alert("Carte café jouée par tout le monde. Demande de pause validée.")
+    }
 }
