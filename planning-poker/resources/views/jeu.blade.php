@@ -65,7 +65,7 @@
             </div>
 
             <div>
-                <button onclick="quitter()">Quitter</button>
+                <button id="boutonQuitter" onclick="quitter()">Quitter</button>
             </div>
             </div>
     </div>

@@ -1,6 +1,7 @@
 
-partieData.backlog = JSON.parse(partieData.backlog );//conversion du backlog en object
-partieData.nomJoueur = JSON.parse(partieData.nomJoueur);// conversion du nom joueur en objet 
+//Voir si il faut les passer en var global avec stockage locale de la même manière que dans comme dans Poker avec global.js
+partieData.backlog = JSON.parse(partieData.backlog );
+partieData.nomJoueur = JSON.parse(partieData.nomJoueur);
 
 var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
 var premierTache = Object.keys(partieData.backlog)[0];
@@ -26,24 +27,40 @@ function initialisation(){
     ecouteur();
 }
 
-//-------------------------------------fonction qui gere les tour du joueur ici on a utilisé lordrre de lobjet nomJoueur qui stocke les nom des joueurs et la carte jouée
+// Initialisation du nombre de joueur qui vont choisir la carte café
+var nbJouerPauseCafe =0;
+
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
     // Vérifier si c'est le tour du joueur actuel
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
         partieData.nomJoueur[nomJoueur] = valeurCarte;
       
+        // Appeler la fonction chronometre pour chaque joueur pendant son tour
+        chronometre();
+
+        //Verifier si la carte jouer est la carte café
+        if (valeurCarte==="carte12"){
+            nbJouerPauseCafe++;
+            if(nbJouerPauseCafe===ordreJoueurs.length){
+                // Enregistrer l'état de la partie
+                enregistrer();
+                alert("Pause café !!!")
+            }
+        }
+
         // Passer au joueur suivant
         indexJoueurActuel = (indexJoueurActuel + 1) % ordreJoueurs.length; 
         
         console.log(ordreJoueurs.length);
         console.log(indexJoueurActuel);
         mettreAJourAffichage();
-   // Vérifier si tous les joueurs ont joué
+        // Vérifier si tous les joueurs ont joué
     if (indexJoueurActuel === 0) {
         vote();
         return; 
     }
+
     } else {
         // C'est le tour d'un autre joueur, gérer le cas d'erreur ou afficher un message
         console.log("Ce n'est pas votre tour !");
@@ -65,7 +82,6 @@ function mettreAJourAffichage() {
     
 }
 
-
 function ecouteur() {
     var cartes = document.querySelectorAll('.carte');
 
@@ -76,6 +92,10 @@ function ecouteur() {
             
         });
     });
+
+    //ecouteur sur le bouton quitter
+    var boutonQuitter = document.getElementById('boutonQuitter');
+    boutonQuitter.addEventListener('click', quitter);
 }
 
 
@@ -87,7 +107,7 @@ console.log("Votes terminés. Affichage des cartes jouées :");
     for (var joueur in partieData.nomJoueur) {
         var carteJouee = partieData.nomJoueur[joueur];
         console.log(`${joueur}: ${carteJouee}`);
-       console.log('NOM : ',index)
+        console.log('NOM : ',index)
        
        // Récupérer l'élément span correspondant à la carte jouée du joueur
         var carteJoueeElement = document.getElementById('carteJouee'+index);
@@ -130,6 +150,8 @@ for (var joueur in votes) {
             console.log("nomMaw");
         }
     }
+
+    
 }
 
 // Vérifier si tous les joueurs ont voté la même carte
@@ -164,11 +186,6 @@ if (tousLesVotesSontIdentiques) {
     // Afficher les résultats dans un popup
        alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
 }
-
-
-
-
-
 
 
 // ----------------------------------------------------------------------------------Fonction Tache suivante 
@@ -209,8 +226,6 @@ function mettreAJourTacheDebattre() {
     // Afficher la tâche à débattre dans l'interface
     tacheDebattreElement.textContent = premierTache !== null ? premierTache : "Aucune tâche restante";
 }
-
-
 
 //(------------------------------------------------------------------------------------------ fonction qui valide une tache 
 function tachevalidee() {
@@ -265,67 +280,76 @@ function revoter(){
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
             partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
             carteJouee = partieData.nomJoueur[joueur];
-            console.log('joueur ', joueur ,' carte',carteJouee);
-            mettreAJourCartesJouees();
-            index++;
+
+              
+       // Récupérer l'élément span correspondant à la carte jouée du joueur
+        var carteJoueeElement = document.getElementById('carteJouee'+index);
+        index = index+1;
+        console.log(carteJoueeElement)
+    
+        // Mettre à jour le contenu de la balise span
+        carteJoueeElement.textContent = carteJouee;
         }
     }
-}
-
-//-----------------------------------------------------------------------------------------------Fonction Mise à jour le contenu des cartes jouées
-function mettreAJourCartesJouees() {
-    var carteJoueeElements = document.querySelectorAll('.carte-jouee-element');
-
-    for (var i = 0; i < carteJoueeElements.length; i++) {
-        var joueur = ordreJoueurs[i];
-        var carteJoueeElement = carteJoueeElements[i];
-
-        // Mise à jour le contenu de la carte jouée
-        carteJoueeElement.textContent = partieData.nomJoueur[joueur];
-    }
-}
 
 
 
-// fonction qui va quitter la partie et enregistrer et renvoyer l'utilisateur dans à la page menu 
-function quitter(){
-    enregistrer();
 
-}
-// function qui va mettre une pause de la partie et enregistre quand meme 
-function pausecafe(){
-    enregistrer();
+    // Mettre à jour l'affichage ou effectuer d'autres actions si nécessaire
+    mettreAJourAffichage(); // Vous devez implémenter cette fonction pour mettre à jour l'affichage
     
 }
-function enregistrer() {
-    var donneesAEnregistrer = {
-        nomJoueur: partieData.nomJoueur,
-        backlog: partieData.backlog,
-        backlogRestantes: obtenirBacklog('backlogList'),
-        backlogValidees: obtenirBacklog('backlogListvalide'),
-        etatpartie:partieData.etatpartie,
-        // Ajoutez d'autres propriétés au besoin
-    };
+function tachevalidee(){
 
-    console.log(donneesAEnregistrer);
+}
+function quitter(){
+
+}
+function enregistrer(){
 
 }
 
-// Fonction pour obtenir les backlogs des tâches restantes ou validées
-function obtenirBacklog(idListe) {
-    var backlogListe = document.getElementById(idListe);
-    var backlog = {};
-
-    Array.from(backlogListe.children).forEach(function (element) {
-        var [tache, estimation] = element.textContent.split(':').map(item => item.trim());
-        backlog[tache] = estimation;
-    });
-
-    return backlog;
-}
-
-
-// chronometre a definir au debut une partie ;
 function chronometre(){
 
+    // Définir la durée du compte à rebours en secondes
+    // Demander à l'utilisateur de choixir ???
+    var tempsRestant = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours() {
+        var minutes = Math.floor(tempsRestant / 60);
+        var secondes = tempsRestant % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebour
+        if (tempsRestant <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            // Ici du code à exécuter lorsque le temps est écoulé
+        } else {
+            tempsRestant--;
+        }
+    }
+
+    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
+    var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
 }
+
+/*
+Des qu'on clic sur reprendre partie
+
+// Récupérer les données sauvegardées du stockage local
+var partieSauvegarde = localStorage.getItem('etatPartie');
+
+// Analyser les données sauvegardées
+var partieRestaure = JSON.parse(partieSauvegarde);
+
+// Maintenant, etatPartieRestaure contient les données sauvegardées
+console.log(partieRestaure);
+
+//Cas d'eereur si partieSauvegard ==null ou ==undifinied
+afficher aucune partie à reprendre
+
+*/
