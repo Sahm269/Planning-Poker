@@ -1,4 +1,5 @@
 
+//Voir si il faut les passer en var global avec stockage locale de la même manière que dans comme dans Poker avec global.js
 partieData.backlog = JSON.parse(partieData.backlog );
 partieData.nomJoueur = JSON.parse(partieData.nomJoueur);
 
@@ -12,8 +13,6 @@ var statutVotes = {}; // Statut des votes
 document.getElementById('boutonRevoter').disabled = true;
 document.getElementById('boutonNextTache').disabled = true;
 
-
-
 console.log(ordreJoueurs)
 console.log (partieData.nomJoueur)
 onload=initialisation
@@ -22,9 +21,8 @@ function initialisation(){
     ecouteur();
 }
 
-
 // Initialisation du nombre de joueur qui vont choisir la carte café
-var nbJouerPauseCafe=0;
+var nbJouerPauseCafe =0;
 
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
@@ -39,6 +37,8 @@ function tourJoueur(nomJoueur, valeurCarte) {
         if (valeurCarte==="carte12"){
             nbJouerPauseCafe++;
             if(nbJouerPauseCafe===ordreJoueurs.length){
+                // Enregistrer l'état de la partie
+                enregistrer();
                 alert("Pause café !!!")
             }
         }
@@ -89,6 +89,7 @@ function ecouteur() {
         carte.addEventListener('click', function() {
             // Appel de la fonction tourJoueur avec le nom du joueur et la valeur de la carte
             tourJoueur(ordreJoueurs[indexJoueurActuel], carte.textContent);
+            
         });
     });
 
@@ -143,9 +144,7 @@ for (var joueur in votes) {
             nomMax = joueur; // Mettre à jour le nomMax
             console.log("nomMaw");
         }
-    }
-
-    
+    }  
 }
 
 // Vérifier si tous les joueurs ont voté la même carte
@@ -164,11 +163,6 @@ boutonRevoter.disabled = tousLesVotesSontIdentiques;
        alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
 }
 
-
-
-
-
-
 // Fonction pour mettre à jour l'affichage de la tâche à débattre
 function mettreAJourTacheDebattre() {
     var tacheDebattreElement = document.getElementById('tacheDebattre'); 
@@ -177,8 +171,6 @@ function mettreAJourTacheDebattre() {
     // Afficher la tâche à débattre dans l'interface
     tacheDebattreElement.textContent = premierTache;
 }
-
-
 
 function nexttache(){
 
@@ -212,9 +204,6 @@ function revoter(){
         }
     }
 
-
-
-
     // Mettre à jour l'affichage ou effectuer d'autres actions si nécessaire
     mettreAJourAffichage(); // Vous devez implémenter cette fonction pour mettre à jour l'affichage
     
@@ -223,15 +212,16 @@ function tachevalidee(){
 
 }
 function quitter(){
+    //Enregistrement de l'état de la partie
+    enregistrer();
     // Redirection vers la page index.html
     window.location.href = "index.html";
 }
 function enregistrer(){
-
+    //Enregistrement de l'état de la partie et des joueurs
+    localStorage.setItem('etatPartie', JSON.stringify(partieData));
 }
-function ecouesouris(){
 
-}
 function chronometre(){
 
     // Définir la durée du compte à rebours en secondes
@@ -259,3 +249,20 @@ function chronometre(){
     // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
     var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
 }
+
+/*
+Des qu'on clic sur reprendre partie
+
+// Récupérer les données sauvegardées du stockage local
+var partieSauvegarde = localStorage.getItem('etatPartie');
+
+// Analyser les données sauvegardées
+var partieRestaure = JSON.parse(partieSauvegarde);
+
+// Maintenant, etatPartieRestaure contient les données sauvegardées
+console.log(partieRestaure);
+
+//Cas d'eereur si partieSauvegard ==null ou ==undifinied
+afficher aucune partie à reprendre
+
+*/
