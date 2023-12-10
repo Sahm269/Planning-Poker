@@ -44,6 +44,7 @@
         <!-- Contenu du footer -->
     </footer>
     <script src="{{asset('js/affichagemenu.js')}}"></script>
+    <script src="{{asset('js/Poker.js')}}"></script>
 
    
 </body>

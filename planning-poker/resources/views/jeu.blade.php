@@ -8,12 +8,11 @@
          <!--Nom du projet ceci doit etre une variable qui doit afficher ce qui a été saisi dans le menu -->
     <div class="groupe1"> 
     <div>
-        <h2 id="nomProjet">Nom Projet: {{ session('nomProjet') }}</h2> <!-- ici on doit mettre le nom projet saisi dans le menu-->
+        <h2 id="nomProjet">Nom Projet: {{ $partie->nom_projet }}</h2> <!-- ici on doit mettre le nom projet saisi dans le menu-->
         <p></p>
     </div>
         <div> 
-            <h3>Tâches à débattre :</h3>
-            <p id="premiereTacheBacklogAffiche"></p> <!-- ici on doit mettre la première liste du backlog saisi dans le menu-->
+            <h3 id="tacheDebattre"></h3>
         </div>
         <div classe="cartes">
            
@@ -37,49 +36,61 @@
     </div>
 
     <!--         Section de tout les joueur sous format de liste avec la carte cachée jusqu'à ce que tout les joueurs jouent -->
-    <div class = "groupe2">
-        <div class="chronometre"> chronometre </div> <!-- Chronomètre à gerer --> 
-        <div>
-            <ul class="liste-joueurs"> <!--LEs noms des joueurs doivent etre chargé automatiquement se lon ce quon a mis sur le menu-->
-                <li>
-                    <div id="joueur0" class="joueur">
-                        <div class="profil-icon"></div>
-                        <span class="nom-joueur">Nom du joueur</span> 
-                        <span class="carte-jouee">Carte jouée</span>
-                    </div>
-                </li>
-                <li>
-                    <div id="joueur0" class="joueur">
-                        <div class="profil-icon"></div>
-                        <span class="nom-joueur">Nom du joueur</span>
-                        <span class="carte-jouee">Carte jouée</span>
-                    </div>
-                </li>
-                <!-- Ajoutez d'autres joueurs selon vos besoins -->
-            </ul>
-        </div>
-        <div class="button-container">
-            <button> Aigain tache <i class="fa fa-spin"></i></button> <!-- si tout le monde n'est pas d'accord  -->
-            <button> Next tache <i class="fa fa-forward"></i></button><!--  Si tout le monde est d'accord -->
-        </div>
+    
+            <!-- Ajoutez une balise div avec un ID pour chaque règle -->
+        <div id="regle1" class="regle" >
+            <!-- Contenu spécifique à la règle 1 -->
+            <div class = "groupe2">
+                <div class="chronometre"> chronometre </div> <!-- Chronomètre à gerer --> 
+                <div>
+                    <ul class="liste-joueurs">
+                    @foreach (json_decode($partie->nomJoueur, true) as $nomJoueur => $carteJouee)
+                        <li>
+                            <div id="joueur{{ $loop->index + 1 }}" class="joueur">
+                                <div class="profil-icon"></div>
+                                <span class="nom-joueur">{{ $nomJoueur }}</span>
+                                <span id="carteJouee{{ $loop->index + 1 }}" class="carte-jouee">{{ $carteJouee }}</span>
+                            </div>
+                        </li>
+                    @endforeach
+
+                    </ul>
+
+                </div>
+          
+            <div class="button-container">
+                <button id ="boutonRevoter" onclick="revoter()"> Aigain tache <i class="fa fa-spin"></i></button> <!-- si tout le monde n'est pas d'accord  -->
+                <button id="boutonNextTache" onclick="nexttache()"> Next tache <i class="fa fa-forward"></i></button><!--  Si tout le monde est d'accord -->
+            </div>
+
+            <div>
+                <button>Quitter</button>
+            </div>
+            </div>
     </div>
 
     <!-- Liste de toute les taches à faire on doit pouvoir le modifier ou ajouter quelque chose ...-->
     <div class="groupe3">
         <div class="backlog">
-            <button class="buttonbacklog active">Taches Restantes</button>
-            <button class="buttonbacklog">Taches Validées</button>
-          
-    
-            <ul class="backlog-list"> <!-- ici on doit pouvoir afficher le backlog saisi numeroé aleatoirement avec l'estimation de la tache dont au chargement du jeu doit etre vide -->
-                <li>Tâche 1</li>
-                <li>Tâche 2</li>
-                <li>Tâche 3</li>
-                <!-- Ajoutez d'autres tâches selon vos besoins -->
-            </ul>
-        </div>
-    </div>
-    
 
+            <button class="buttonbacklog active " onclick="afficherTaches('backlogList',this)">Taches Restantes</button>
+            <button class="buttonbacklog" onclick="afficherTaches('backlogListvalide',this)">Taches Validées</button>
+
+            <ul class="backlog-list" id="backlogList">
+                @foreach (json_decode($partie->backlog, true) as $tache => $estimation)
+                    <li>{{ "$tache: $estimation" }}</li>
+                @endforeach
+            </ul>
+
+
+            <ul class="backlog-list" id="backlogListvalide">
+                <li>Aucune taches validée</li>
+                
+            </ul>
 </div>
+
+<script>
+     var partieData = @json($partie);
+</script>
+
 @endsection

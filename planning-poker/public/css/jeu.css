@@ -129,6 +129,15 @@
     font-weight: bold;
 }
 
+/* Ajoutez ces classes à votre fichier de style CSS */
+.nom-joueur {
+    /* Style par défaut pour le nom du joueur */
+}
+
+.nom-joueur.active {
+    color: violet;  /* Couleur violette pour le joueur actuel */
+}
+
 .profil-icon {
     display: inline-block;
     width: 40px;
@@ -201,8 +210,12 @@
 .buttonbacklog:hover {
     background:var(--color-hover) ;
 }
+#backlogListvalide{
+    display: none;
+}
 .active {
-    background:var(--color-five);
+    background:var(--color-five) 
+   
 }
 
 .backlog-list {
@@ -211,6 +224,8 @@
 
     
 }
+
+
 
 .backlog-list li {
     border: 1px solid var(--color-second);

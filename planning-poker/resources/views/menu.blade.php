@@ -13,8 +13,8 @@
     <!-----------------------          Formulaire pour la partie          ----------------------------->
     
     
-       
-<form class= "form" action="" method="" id="setupForm">
+    <form class="form" action="{{ url('/menu/creer-partie') }}" method="post" id="setupForm">
+    @csrf
 
     <!-- Partie 1 -->
     <div class="partie1">
@@ -59,7 +59,7 @@
         <div id="overlay"></div>
             <div id="popup">
             <p id="descriptionText"></p>
-            <button onclick="fermerPopup()">OK</button>
+            <div id ="bouton-ok"  onclick="fermerPopup()">OK</div>
            </div>
 
         <div class="bouton-container">            
@@ -99,7 +99,7 @@
         </div>
         <div class="bouton-container">
         <button type="button" class="bouton-retour" onclick="showPart('partie2')">Retour</button>
-        <button type="submit" name="valider" onclick="startGame()" >Commencer la partie</button>
+        <button type="submit" name="valider" >Commencer la partie</button>
         </div>
     </div>
 
