@@ -1,5 +1,4 @@
-var tachesTexte;
-var test="test";
+//var tachesTexte;
 
 document.addEventListener('DOMContentLoaded', function () {
     // Add player input fields dynamically based on the number of players
@@ -33,9 +32,9 @@ function showPart(part) {
 
 
 function startGame() {
-   recuperer_donnees();
-   alert("Après récupération des données. tachesTexte: " + tachesTexte);
-   jouer();
+    recuperer_donnees();
+    jouer();
+    //alert("Après récupération des données. tachesTexte: " + tachesTexte);
 }
 
 function jouer(){
@@ -47,13 +46,13 @@ function recuperer_donnees(){
 
     var formulaire = document.getElementById('setupForm');
     var formData = new FormData(formulaire);
-    var pseudo_hote = formData.get('pseudoHote')
-    var nom_projet = formData.get('nomProjet')
-    var nombre_joueur = formData.get('nombreJoueur')
+    var pseudo_hote = formData.get('pseudoHote');
+    var nom_projet = formData.get('nomProjet');
+    var nombre_joueur = formData.get('nombreJoueur');
     var i = 0;
     var tab_nom_joueur = [];
     while(i<=nombre_joueur){
-         tab_nom_joueur[i]=formData.get('player'+i)
+         tab_nom_joueur[i]=formData.get('player'+i);
          i++;
     }
     var backlog = formData.get('backlog');
@@ -81,7 +80,8 @@ tachesTexte = backlogJson.map(function(item, index) {
 
 // Afficher la chaîne de texte dans une alerte
 //alert(tachesTexte);
-
+// Stocker la valeur dans le stockage local
+localStorage.setItem('tachesTexte', tachesTexte);
 }
 
 function afficherDonner(){
