@@ -89,6 +89,10 @@ console.log("Votes terminés. Affichage des cartes jouées :");
         console.log(`${joueur}: ${carteJouee}`);
        console.log('NOM : ',index)
        
+
+       // Appeler la fonction chronometre pour chaque joueur pendant son tour
+       //chronometre();
+
        // Récupérer l'élément span correspondant à la carte jouée du joueur
         var carteJoueeElement = document.getElementById('carteJouee'+index);
         index = index+1;
@@ -139,8 +143,12 @@ var tousLesVotesSontIdentiques = votesUniques.size === 1;
 // Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
 if (tousLesVotesSontIdentiques) {
     var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
-    if (valeurVote === '?' || valeurVote === 'cafe') {
-         estimation = valeurVote;
+    if (valeurVote === 'cafe') {
+         estimation = '';
+            enregistrer();
+            alert("Pause café !!!")
+        
+    }
         
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
         console.log('Estimation attribuée:', estimation);
@@ -151,7 +159,7 @@ if (tousLesVotesSontIdentiques) {
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
         console.log('Estimation attribuée:', estimation);
     }
-}
+
 
         // Sélectionner les boutons
         var boutonNextTache = document.querySelector('#boutonNextTache');
@@ -164,9 +172,6 @@ if (tousLesVotesSontIdentiques) {
     // Afficher les résultats dans un popup
        alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
 }
-
-
-
 
 
 
@@ -328,4 +333,28 @@ function obtenirBacklog(idListe) {
 // chronometre a definir au debut une partie ;
 function chronometre(){
 
+    // Définir la durée du compte à rebours en secondes
+    // Demander à l'utilisateur de choixir ???
+    var tempsRestant = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours() {
+        var minutes = Math.floor(tempsRestant / 60);
+        var secondes = tempsRestant % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebour
+        if (tempsRestant <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            // Ici du code à exécuter lorsque le temps est écoulé
+        } else {
+            tempsRestant--;
+        }
+    }
+
+    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
+    var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
 }

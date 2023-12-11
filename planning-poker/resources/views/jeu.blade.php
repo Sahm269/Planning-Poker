@@ -28,7 +28,7 @@
             <div id="carte9" class="carte">40</div>
             <div id="carte10" class="carte">100</div>
             <div id="carte11" class="carte">?</div>
-            <div id="carte12" class="carte"><i class="fas fa-coffee"></i></div>
+            <div id="carte12" class="carte"><i class="fas fa-coffee"></i>cafe</div>
                   
                
         </div>
@@ -47,7 +47,7 @@
                     @foreach (json_decode($partie->nomJoueur, true) as $nomJoueur => $carteJouee)
                         <li>
                             <div id="joueur{{ $loop->index + 1 }}" class="joueur">
-                                <div class="profil-icon"></div>
+                                <div class="profil-icon"><i class="fa fa-user" aria-hidden="true"></i></div>
                                 <span class="nom-joueur">{{ $nomJoueur }}</span>
                                 <span class="carte-jouee carte-jouee-element"> </span>
 
@@ -68,6 +68,14 @@
                 <button id="boutonQuitter" onclick="quitter()">Quitter</button>
             </div>
             </div>
+    </div>
+
+
+    <div class="Resultat">
+        <h3> Seule les joueurs qui ont jouée la carte max et min c'est à dire les extremité ont le droit de parler</h3>
+        <p>  Discuter avant le fin du chronometre si non on passe dirrectement au vote </p>
+
+
     </div>
 
     <!-- Liste de toute les taches à faire on doit pouvoir le modifier ou ajouter quelque chose ...-->
