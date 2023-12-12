@@ -353,3 +353,54 @@ console.log(partieRestaure);
 afficher aucune partie à reprendre
 
 */
+
+// Affiche une alerte en fonction du mode de jeu choisit avec les règles de jeu
+    
+function afficherDescription(regle) {
+    var description;
+    switch (regle) {
+        case 'regle1':
+            description = "Le mode de jeu stict correspond aux votent de l'estimation des taches du backlog jusqu'à que l'unanimité soit acquise. C'est-à-dire que chaqu'un leur tour les joeurs vont voter avant la fin du temps imprtit. A la fin les cartes seront réveler mais seule ce ayant choisit les avec cartes la plus faible valeur et la plus forte pouront s'exprimer pour ce mettre d'accord. Si durand le temps de négociation les joeurs sont encore en désacord le vote recommence. C'est opération sont répété jusqu'a que l'unanimité soit acquise ou que les joueurs ayans fait le minimu et le maximum se soit mis d'accord. Appuyer sur suivant pour valider ce mode de jeu.";
+            break;
+        case 'regle2':
+            description = "Le mode de jeu majorité relative correspond aux votent de l'estimation des taches du backlog jusqu'à que l'unanimité soit acquise ou la majorité relative. C'est-à-dire que chaqu'un leur tour les joeurs vont voter avant la fin du temps imprtit. Pour le premier tour de vote d'une taches : A la fin les cartes seront réveler mais seule ce ayant choisit les cartes avec la plus faible valeur et la plus forte pour s'exprimer pouront ce mettre d'accord. Si durand le temps de négociation les joeurs sont encore en désacord le vote recommence. Dans cas, l'estimation de la taches correspondrat à à l'estimation la plus présente dans le choix parmis celles choisit par les joueurs.Appuyer sur suivant pour valider ce mode de jeu.";
+            break;
+        default:
+            description = 'Aucune description disponible';
+    }
+    alert(description);
+}
+
+/*
+Si l'estimation choisit est 100 
+==> Proposer de créer un nouveau backlog avec redécoupe de la tache car trop grosse ou bient de la diviser en sous tache
+Si l'estimation est ? leur demander si il souhaite la garder OU la redefinir OU la redécouper OU la définir plus tard
+
+
+if (valeurVote === '100') {
+            // Proposer à l'utilisateur de garder ou de créer une nouvelle tâche
+            var confirmation = window.confirm("L'estimation est 100. Voulez-vous redécouper cette tache ?");
+            
+            if (confirmation) {
+                var nouvellesTaches = [];
+                var nouvelleTache;
+
+                // Utiliser une boucle pour permettre à l'utilisateur de saisir autant de tâches qu'il souhaite
+                while ((nouvelleTache = window.prompt("Veuillez saisir le nom de la nouvelle tâche (annuler pour arrêter) :")) !== null) {
+                    if (nouvelleTache.trim() !== "") {
+                        // Ajouter la nouvelle tâche avec l'estimation ""
+                        partieData.backlog[nouvelleTache] = '';
+
+                        // Ajouter la nouvelle tâche à la liste des tâches restantes dans l'interface
+                        var nouvelleTacheElement = document.createElement('li');
+                        nouvelleTacheElement.textContent = nouvelleTache;
+                        document.getElementById('backlogList').appendChild(nouvelleTacheElement);
+
+                        // Ajouter la nouvelle tâche à la liste des nouvelles tâches
+                        nouvellesTaches.push(nouvelleTache);
+                    } else {
+                        // L'utilisateur a saisi un nom non valide, vous pouvez traiter en conséquence
+                        alert("Nom de tâche non valide. Veuillez saisir un nom valide.");
+                    }
+
+*/
