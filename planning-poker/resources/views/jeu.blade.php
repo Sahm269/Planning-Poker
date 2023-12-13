@@ -14,7 +14,7 @@
         <div> 
             <h3 id="tacheDebattre"></h3>
         </div>
-        <div classe="cartes">
+        <div classe="cartes" id="cartesDiv">
            
             <div id="carte0" class="carte">0</div>  <!-- 1ère carte de la 1ère ligne (en haut à gauche) -->
             <div id="carte1" class="carte">1/2</div>  <!-- 2e carte de la 1ère ligne -->
@@ -31,6 +31,13 @@
             <div id="carte12" class="carte"><i class="fas fa-coffee"></i>cafe</div>
                   
                
+        </div>
+
+        <div class="Resultat" id="resultatDiv">
+            <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
+            <h3> Seule les joueurs qui ont jouée la carte max et min c'est à dire les extremité ont le droit de parler</h3>
+            <p>  Discuter avant le fin du chronometre si non on passe dirrectement au vote </p>
+            <p> Les personnes coloriées en orange doivent parlées </p>
         </div>
  
     </div>
@@ -71,12 +78,7 @@
     </div>
 
 
-    <div class="Resultat">
-        <h3> Seule les joueurs qui ont jouée la carte max et min c'est à dire les extremité ont le droit de parler</h3>
-        <p>  Discuter avant le fin du chronometre si non on passe dirrectement au vote </p>
-
-
-    </div>
+  
 
     <!-- Liste de toute les taches à faire on doit pouvoir le modifier ou ajouter quelque chose ...-->
     <div class="groupe3">
