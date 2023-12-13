@@ -32,12 +32,10 @@ var nbJouerPauseCafe =0;
 
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
+     
     // Vérifier si c'est le tour du joueur actuel
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
         partieData.nomJoueur[nomJoueur] = valeurCarte;
-      
-        // Appeler la fonction chronometre pour chaque joueur pendant son tour
-        chronometre();
 
         //Verifier si la carte jouer est la carte café
         if (valeurCarte==="carte12"){
@@ -86,7 +84,10 @@ function ecouteur() {
     var cartes = document.querySelectorAll('.carte');
 
     cartes.forEach(function(carte) {
+    // Appeler la fonction chronometre pour chaque joueur pendant son tour
+    
         carte.addEventListener('click', function() {
+            chronometre();
             // Appel de la fonction tourJoueur avec le nom du joueur et la valeur de la carte
             tourJoueur(ordreJoueurs[indexJoueurActuel], carte.textContent);
             
