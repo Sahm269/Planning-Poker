@@ -91,9 +91,14 @@
 .carte:hover {
     background: var(--color-foor)
 }
-#resultatDiv {
+#estimation, #discussion {
     display: none;
   }
+  
+.bouton-clique {
+    background: green;
+    color: white;
+}
   
 /*Le groupe 2 qui contient les joueurs , chronomotre , bouton, les cartes jouées */
 .groupe2{
@@ -179,6 +184,13 @@
 
 .button-container button:hover {
     background: var(--color-hover);
+}
+
+/* Ajoutez ces styles dans votre fichier CSS */
+.joueur-special {
+    color: orange;
+    font-weight: bold;
+    /* Ajoutez d'autres styles selon vos besoins */
 }
 
 /************************ groupe 3Backlog*/

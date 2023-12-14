@@ -33,12 +33,17 @@
                
         </div>
 
-        <div class="Resultat" id="resultatDiv">
+      
+            <div id="discussion">
             <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
             <h3> Seule les joueurs qui ont jouée la carte max et min c'est à dire les extremité ont le droit de parler</h3>
-            <p>  Discuter avant le fin du chronometre si non on passe dirrectement au vote </p>
-            <p> Les personnes coloriées en orange doivent parlées </p>
-        </div>
+            <h3> Discuter avant le fin du chronometre si non on passe dirrectement au vote </h3>
+            <h3> Les personnes coloriées en orange doivent parlées </h3></div>
+
+            <div id = "estimation">
+                <h3>La tâche est validée , vous pouvez passer à la tâche suivante. En appuiyannt sur le bouton next tache</h3>
+            </div>
+       
  
     </div>
 
@@ -60,14 +65,16 @@
 
                             </div>
                         </li>
-                    @endforeach                     
+                    @endforeach            
+              
+
 
                     </ul>
 
                 </div>
           
-            <div class="button-container">
-                <button id ="boutonRevoter" onclick="revoter()"> Aigain tache <i class="fa fa-spin"></i></button> <!-- si tout le monde n'est pas d'accord  -->
+            <div class="button-container" >
+                <button id ="boutonRevoter" class="bouton-clique" onclick="revoter()"> Aigain tache <i class="fa fa-spin"></i></button> <!-- si tout le monde n'est pas d'accord  -->
                 <button id="boutonNextTache" onclick="nexttache()"> Next tache <i class="fa fa-forward"></i></button><!--  Si tout le monde est d'accord -->
             </div>
 

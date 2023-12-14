@@ -9,6 +9,9 @@ var index =1;
 var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
 
+var tempsRestant1 = 180;
+var tempsRestant2 = 60;
+
 document.getElementById('boutonRevoter').disabled = true;
 document.getElementById('boutonNextTache').disabled = true;
 
@@ -21,7 +24,7 @@ console.log (partieData.nomJoueur)
 mettreAJourAffichage();
 onload=initialisation
 function initialisation(){
-  
+    tempsRestant2 = 60;
     mettreAJourTacheDebattre();
     ecouteur();
 }
@@ -31,6 +34,7 @@ function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
     // Vérifier si c'est le tour du joueur actuel
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
+        chronometre2();
         partieData.nomJoueur[nomJoueur] = valeurCarte;
       
         // Passer au joueur suivant
@@ -42,6 +46,8 @@ function tourJoueur(nomJoueur, valeurCarte) {
    // Vérifier si tous les joueurs ont joué
     if (indexJoueurActuel === 0) {
         vote();
+        console.log("Votes terminés. Affichage des cartes jouées :");
+
         return; 
     }
     } else {
@@ -68,7 +74,7 @@ function mettreAJourAffichage() {
 
 function ecouteur() {
     var cartes = document.querySelectorAll('.carte');
-
+    tempsRestant2 = 60;
     cartes.forEach(function(carte) {
         carte.addEventListener('click', function() {
             // Appel de la fonction tourJoueur avec le nom du joueur et la valeur de la carte
@@ -129,21 +135,14 @@ function vote() {
 
   // Set the flag to indicate that all players have voted
   allPlayersVoted = true;
-
+  
   // Check if all players have voted before showing the Resultat div
-  checkShowResultat();
+
+
+
 }
 
-// Add this function to check if all players have voted and show Resultat div
-function checkShowResultat() {
-  if (allPlayersVoted) {
-    // Hide the "cartes" div
-    document.getElementById('cartesDiv').style.display = 'none';
 
-    // Show the "Resultat" div
-    document.getElementById('resultatDiv').style.display = 'block';
-  }
-}
 
 
 // --------------------------------------------------------------------------------function qui affiche le min et le max et traite le vote
@@ -171,10 +170,27 @@ for (var joueur in votes) {
         // Si le nomMax n'est pas défini ou si la valeur actuelle est supérieure à la valeur maximale actuelle
         if (nomMax === undefined || votes[joueur] > votes[nomMax]) {
             nomMax = joueur; // Mettre à jour le nomMax
-            console.log("nomMaw");
+            console.log("nomMax");
         }
     }
+
+
+    
+
+    // Après avoir trouvé le min et le max, ajoutez la classe aux éléments correspondants
+    var elementMin = document.getElementById('joueur' + (nomMin + 1));
+    var elementMax = document.getElementById('joueur' + (nomMax + 1));
+
+ // Ajoutez la classe seulement si les éléments existent
+ if (elementMin) {
+     elementMin.classList.add('joueur-special');
+ }
+
+ if (elementMax) {
+     elementMax.classList.add('joueur-special');
+ }
 }
+ 
 
 // Vérifier si tous les joueurs ont voté la même carte
 var votesUniques = new Set(Object.values(partieData.nomJoueur));
@@ -189,17 +205,34 @@ if (tousLesVotesSontIdentiques) {
             alert("Pause café !!!")
         
     }
-        
+            // Hide the "cartes" div
+        document.getElementById('cartesDiv').style.display = 'none';
+
+        // Show the "Resultat" div
+        document.getElementById('estimation').style.display = 'block';
+
+        // Show the "Resultat" div
+        document.getElementById('discussion').style.display = 'none';
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
         console.log('Estimation attribuée:', estimation);
-    }
-    else{
         estimation = valeurVote;
         
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
         console.log('Estimation attribuée:', estimation);
     }
+    else{
+       
+        // Hide the "cartes" div
+        document.getElementById('cartesDiv').style.display = 'none';
 
+        // Show the "Resultat" div
+        document.getElementById('discussion').style.display = 'block';
+
+        // Show the "Resultat" div
+        document.getElementById('estimation').style.display = 'none';
+        chronometre();
+    }
+  
 
         // Sélectionner les boutons
         var boutonNextTache = document.querySelector('#boutonNextTache');
@@ -210,7 +243,7 @@ if (tousLesVotesSontIdentiques) {
         boutonRevoter.disabled = tousLesVotesSontIdentiques;
 
     // Afficher les résultats dans un popup
-       alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
+      // alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
 }
 
 
@@ -219,15 +252,19 @@ if (tousLesVotesSontIdentiques) {
 // ----------------------------------------------------------------------------------Fonction Tache suivante 
 
 function nexttache(){
+  
     tachevalidee();
     mettreAJourTacheDebattre()
+    document.getElementById('boutonNextTache').classList.add('bouton-clique');
     index=0;
 
       // show the "cartes" div
-      document.getElementById('cartesDiv').style.display = 'block';
+    document.getElementById('cartesDiv').style.display = 'block';
+          // Show the "Resultat" div
+    document.getElementById('estimation').style.display = 'none';
+        // Show the "Resultat" div
+     document.getElementById('discussion').style.display = 'none';
 
-      // hide the "Resultat" div
-      document.getElementById('resultatDiv').style.display = 'none';
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
             partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
@@ -306,16 +343,19 @@ function tachevalidee() {
 function revoter(){
     if (document.getElementById('boutonRevoter').disabled === false){
         console.log('boutonactivé')
+        document.getElementById('boutonRevoter').classList.add('bouton-clique');
     }
     var indexJoueurActuel = 0;  
     var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
     index = 0;
+        // Hide the "cartes" div
+        document.getElementById('cartesDiv').style.display = 'block';
 
-      // show the "cartes" div
-      document.getElementById('cartesDiv').style.display = 'block';
+        // Show the "Resultat" div
+        document.getElementById('discussion').style.display = 'none';
 
-      // hide the "Resultat" div
-      document.getElementById('resultatDiv').style.display = 'none';
+        // Show the "Resultat" div
+        document.getElementById('estimation').style.display = 'none';
 
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
@@ -386,7 +426,7 @@ function chronometre(){
 
     // Définir la durée du compte à rebours en secondes
     // Demander à l'utilisateur de choixir ???
-    var tempsRestant = 60;
+    var tempsRestant = 180;
 
     // Fonction pour mettre à jour le compte à rebours
     function mettreAJourCompteRebours() {
@@ -394,12 +434,12 @@ function chronometre(){
         var secondes = tempsRestant % 60;
 
         // Affichage du compte à rebours dans votre élément HTML
-        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+        document.getElementById('chronometrevote').innerText = minutes + 'm ' + secondes + 's';
 
         // Vérification du compte à rebour
         if (tempsRestant <= 0) {
             clearInterval(compteReboursInterval);
-            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            document.getElementById('chronometrevote').innerText = 'Temps écoulé';
             // Ici du code à exécuter lorsque le temps est écoulé
         } else {
             tempsRestant--;
@@ -408,4 +448,34 @@ function chronometre(){
 
     // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
     var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+}
+
+
+// chronometre a definir au debut une partie ;
+function chronometre2(){
+
+    // Définir la durée du compte à rebours en secondes
+    // Demander à l'utilisateur de choixir ???
+    tempsRestant2 = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours2() {
+        var minutes = Math.floor(tempsRestant2 / 60);
+        var secondes = tempsRestant2 % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebour
+        if (tempsRestant2 <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            // Ici du code à exécuter lorsque le temps est écoulé
+        } else {
+            tempsRestant2--;
+        }
+    }
+
+    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
+    var compteReboursInterval = setInterval(mettreAJourCompteRebours2, 1000);
 }
