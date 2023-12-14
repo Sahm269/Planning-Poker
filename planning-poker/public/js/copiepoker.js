@@ -80,7 +80,7 @@ function ecouteur() {
 
 
 
-function vote(){
+/*function vote(){
 // Fonction pour afficher toutes les cartes jouées
 console.log("Votes terminés. Affichage des cartes jouées :");
 
@@ -104,7 +104,47 @@ console.log("Votes terminés. Affichage des cartes jouées :");
 }
 afficheMinMax();
 
+}*/
+
+// Add this variable at the top of your script
+var allPlayersVoted = false;
+
+// Modify your vote() function
+function vote() {
+  console.log("Votes terminés. Affichage des cartes jouées :");
+
+  for (var joueur in partieData.nomJoueur) {
+    var carteJouee = partieData.nomJoueur[joueur];
+    console.log(`${joueur}: ${carteJouee}`);
+    console.log('NOM : ', index)
+
+    var carteJoueeElement = document.getElementById('carteJouee' + index);
+    index = index + 1;
+    console.log(carteJoueeElement)
+
+    mettreAJourCartesJouees();
+  }
+
+  afficheMinMax();
+
+  // Set the flag to indicate that all players have voted
+  allPlayersVoted = true;
+
+  // Check if all players have voted before showing the Resultat div
+  checkShowResultat();
 }
+
+// Add this function to check if all players have voted and show Resultat div
+function checkShowResultat() {
+  if (allPlayersVoted) {
+    // Hide the "cartes" div
+    document.getElementById('cartesDiv').style.display = 'none';
+
+    // Show the "Resultat" div
+    document.getElementById('resultatDiv').style.display = 'block';
+  }
+}
+
 
 // --------------------------------------------------------------------------------function qui affiche le min et le max et traite le vote
 function afficheMinMax() {
@@ -183,6 +223,11 @@ function nexttache(){
     mettreAJourTacheDebattre()
     index=0;
 
+      // show the "cartes" div
+      document.getElementById('cartesDiv').style.display = 'block';
+
+      // hide the "Resultat" div
+      document.getElementById('resultatDiv').style.display = 'none';
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
             partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
@@ -265,6 +310,12 @@ function revoter(){
     var indexJoueurActuel = 0;  
     var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
     index = 0;
+
+      // show the "cartes" div
+      document.getElementById('cartesDiv').style.display = 'block';
+
+      // hide the "Resultat" div
+      document.getElementById('resultatDiv').style.display = 'none';
 
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {

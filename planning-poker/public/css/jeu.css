@@ -91,7 +91,10 @@
 .carte:hover {
     background: var(--color-foor)
 }
-
+#resultatDiv {
+    display: none;
+  }
+  
 /*Le groupe 2 qui contient les joueurs , chronomotre , bouton, les cartes jouées */
 .groupe2{
     height: 500px;
