@@ -1,0 +1,21 @@
+Pour que les bouton change de couleur quand on clik dessus
+
+Dans jeu.blade.html
+<div class="button-container">
+    <button id="boutonRevoter" onclick="revoter()"> Aigain tache <i class="fa fa-spin"></i></button>
+    <button id="boutonNextTache" onclick="nexttache()"> Next tache <i class="fa fa-forward"></i></button>
+</div>
+
+Dans copipoker.js
+
+Fct revoter
+document.getElementById('boutonRevoter').classList.add('bouton-clique');
+Fct nexttache
+document.getElementById('boutonNextTache').classList.add('bouton-clique');
+
+Dans jeu.css
+.bouton-clique {
+    background-color: green;
+    color: white;
+}
+
