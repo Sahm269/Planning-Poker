@@ -19,3 +19,175 @@ Dans jeu.css
     color: white;
 }
 
+------------------------------------
+
+DANS COPIER POKER REMPLACER OU AJOUTER LE CODE EN DESSOUS
+
+function mettreAJourTacheDebattre() {
+    var tacheDebattreElement = document.getElementById('tacheDebattre');
+
+    // Trouver la première tâche non encore débattue
+    var tachesNonDebattues = Object.keys(partieData.backlog);
+    var premierTache = tachesNonDebattues.length > 0 ? tachesNonDebattues[0] : null;
+
+    console.log(premierTache);
+    
+    // Afficher la tâche à débattre dans l'interface
+    if (premierTache !== null) {
+        // Afficher la tâche dans l'interface
+        tacheDebattreElement.textContent = premierTache;
+    } else {
+        tacheDebattreElement.textContent = "Aucune tâche restante";
+        alert('La tâche est terminée!');
+        ouvrirPopupFin('Planning poker finis !');
+    }
+
+}
+
+function ouvrirPopupFin(description) {
+    document.getElementById('finPartiePopUp').textContent = description;
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('popupFin').style.display = 'block';
+}
+
+function fermerPopup() {
+    // Fermer le popup et l'overlay
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('popupFin').style.display = 'none';
+}
+
+function quitter() {
+    alert("Action quitter");
+    enregistrer();
+    fermerPopup('popupFin');
+    window.location.href = '//profile.blade.php';
+}
+
+function nouvellePartie() {
+    alert("Action créer une nouvelle partie");
+    enregistrer();
+    // Rediriger vers menu
+    fermerPopup('popupFin');
+    window.location.href = '//menu.blade.php';
+}
+
+function telechargerJson() {
+    alert("Action télécharger le JSON");
+
+    // Créer un lien de données (data URI) avec les données JSON encodées
+    var lienTelechargement = document.createElement("a");
+    lienTelechargement.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(partieData.backlog);
+    lienTelechargement.download = "backlog.json"; // Nom du fichier à télécharger
+
+    // Ajouter le lien à la page et déclencher un clic
+    document.body.appendChild(lienTelechargement);
+    lienTelechargement.click();
+
+    // Supprimer le lien après le téléchargement
+    document.body.removeChild(lienTelechargement);
+
+    enregistrer();
+
+    fermerPopup('popupFin');
+
+    //Rediriger vers une page ou faire un nouveau popup
+}
+
+
+// Fonction pour enregistrer la partie
+function enregistrer() {
+    var donneesAEnregistrer = {
+        nomJoueur: partieData.nomJoueur,
+        backlog: partieData.backlog,
+        backlogRestantes: obtenirBacklog('backlogList'),
+        backlogValidees: obtenirBacklog('backlogListvalide'),
+        etatpartie: partieData.etatpartie,
+        // Ajoutez d'autres propriétés au besoin
+    };
+
+    // Enregistrez les données dans le stockage local
+    localStorage.setItem('donneesEnregistrees', JSON.stringify(donneesAEnregistrer));
+}
+
+---------------
+
+DANS AFFICHAGE MENU
+
+// Fonction pour récupérer la partie enregistrée
+function recuperer() {
+    var donneesEnregistrees = localStorage.getItem('donneesEnregistrees');
+    if (donneesEnregistrees) {
+        var donneesRestaurees = JSON.parse(donneesEnregistrees);
+
+        partieData.nomJoueur = donneesRestaurees.nomJoueur;
+        partieData.backlog = donneesRestaurees.backlog;
+        partieData.etatpartie = donneesRestaurees.etatpartie;
+        console.log("Partie récupérée:", donneesRestaurees);
+        // Continuez la partie après la restauration
+        continuerPartie();
+    } else {
+        console.log("Aucune donnée enregistrée trouvée.");
+    }
+}
+
+---------------
+
+JSP OU LA METTRE
+
+function continuerPartie() {
+    // Vérifier l'état actuel de la partie
+    if (etat === 'finie') {
+        alert('La partie est terminée!');
+    } else {
+        initialisation();
+    }
+}
+
+ou ajouet etat en cours dans copie js 
+
+---------------
+
+DANS JEU.BLADE mettreAJourTacheDebattre
+
+<div id="overlay"></div>
+<div id="popupFin">
+    <p id="finPartiePopUp"></p>
+    <div class="bouton" id="bouton-quitter" onclick="quitter()">Quitter</div>
+    <div class="bouton" id="bouton-new-partie" onclick="nouvellePartie()">Créer une nouvelle partie</div>
+    <div class="bouton" id="bouton-telecharger" onclick="telechargerJson()">Télécharger le JSON</div>
+</div>
+
+<div class="bouton-container">
+    <button type="button" class="bouton-quitter" onclick="ouvrirPopup('Quitter la partie')">Quitter</button>
+    <button type="button" class="bouton-new-partie" onclick="ouvrirPopup('Créer une nouvelle partie')">Créer une nouvelle partie</button>
+    <button type="button" class="bouton-telecharger" onclick="ouvrirPopup('Télécharger le JSON')">Télécharger le JSON</button>
+</div>
+
+-------------------------------------------
+
+DANS JEU.CSS
+
+<style>
+    .carte-cafe {
+        font-size: 0; /* Rendre la taille du texte zéro */
+    }
+</style>
+
+
+<style>
+    .carte {
+        transition: transform 0.3s ease; /* Ajoute une transition à la propriété 'transform' sur 0.3 seconde avec une accélération régulière */
+    }
+
+    .carte:hover {
+        transform: translateY(-5px); /* Déplace la carte vers le haut de 5 pixels lors du survol */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Ajoute une ombre lors du survol */
+    }
+
+    .carte:not(:hover) {
+        transform: translateY(0); /* Réinitialise la transformation lorsque la souris ne survole plus */
+        box-shadow: none; /* Réinitialise l'ombre */
+    }
+</style>
+
+--------------------------------------------
