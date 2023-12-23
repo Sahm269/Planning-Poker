@@ -120,7 +120,7 @@ function vote() {
 
     var carteJoueeElement = document.getElementById('carteJouee' + index);
     index = index + 1;
-    console.log(carteJoueeElement)
+    console.log(carteJoueeElement)                                
 
     mettreAJourCartesJouees();
   }
