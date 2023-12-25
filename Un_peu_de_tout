@@ -191,3 +191,80 @@ DANS JEU.CSS
 </style>
 
 --------------------------------------------
+
+
+DANS COPIEPOKER SUPPRIMER TOUT CE QUI CONCERNE LE CHONOMETRE ET A LA PLACE METTRE 
+
+//AU CHARGEMENT DE LA PAGE LANCE CHRONOMETTRE
+document.addEventListener('DOMContentLoaded', function () {
+    chronometre();
+});
+
+var compteReboursInterval;
+
+var indexJoueurChrono=1;
+
+function chronometre() {
+    // Réinitialiser le temps restant
+    var tempsRestant = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours() {
+        var minutes = Math.floor(tempsRestant / 60);
+        var secondes = tempsRestant % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebours
+        if (tempsRestant <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+
+        } else {
+            tempsRestant--;
+        }
+    }
+
+    // Effacer l'ancien intervalle s'il existe
+    clearInterval(compteReboursInterval);
+
+    // Définir le nouvel intervalle
+    compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+
+    // Retourner l'identifiant de l'intervalle
+    return compteReboursInterval;
+}
+
+
+// Gestionnaire d'événements à chaque div de carte
+for (let i = 0; i <= 12; i++) {
+    // Supposons que vos div ont les identifiants de 'carte0' à 'carte12'
+    var carteDiv = document.getElementById('carte' + i);
+    // Gestionnaire d'événements à chaque div de carte
+    carteDiv.addEventListener('click', function() {
+        // Arrêter le chronomètre en utilisant l'identifiant de l'intervalle
+        clearInterval(compteReboursInterval);
+        if (indexJoueurChrono==ordreJoueurs.length){
+            alert("Tous le monde a voté !");
+            document.getElementById('chronometre').innerText = 'chronomètre';
+        }
+        else{
+            // Redémarrer le chronomètre après un délai 2 secondes
+            setTimeout(chronometre, 2000);
+            alert("Passez le téléphone aux joueur suivant.");
+            indexJoueurChrono++;
+        }
+    });
+}
+
+// Fonction pour réinitialiser les variables du chronomètre
+function reinitialiserChronometre() {
+    indexJoueurChrono= 1;
+    chronometre();
+}
+
+// Gestionnaire d'événements pour le boutonNextTache
+document.getElementById('boutonNextTache').addEventListener('click', function() {
+    reinitialiserChronometre();
+});
