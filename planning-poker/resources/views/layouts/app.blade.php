@@ -31,9 +31,9 @@
     <div class="navbar">
         <nav class="navbar navbar-light bg-light static-top">
             <div class="navcontainer">
-                <a class="" href="#"><img  id ="logo" src = "{{asset('asset/logo.png')}}"/>
+                <a class="" href="{{ route('accueil') }}"><img id="logo" src="{{ asset('asset/logo.png') }}"/></a>
                 <a href="#">Aide <i class="fa fa-question-circle"></i></a>
-                <a class="ml-auto" href="#">Profile <i class="fa fa-user"></i></a>
+                <a class="ml-auto" href="{{ route('profile') }}">Profile <i class="fa fa-user"></i></a>
             </div>
         </nav>
     </div>

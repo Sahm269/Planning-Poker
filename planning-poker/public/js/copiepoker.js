@@ -8,6 +8,7 @@ var estimation = '';
 var index =1;
 var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
+var allPlayersVoted = false;
 
 var tempsRestant1 = 180;
 var tempsRestant2 = 60;
@@ -32,20 +33,33 @@ function initialisation(){
 //-------------------------------------fonction qui gere les tour du joueur ici on a utilisé lordrre de lobjet nomJoueur qui stocke les nom des joueurs et la carte jouée
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
-    // Vérifier si c'est le tour du joueur actuel
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
         //chronometre2();
         partieData.nomJoueur[nomJoueur] = valeurCarte;
-      
+    
+        // Rendre la carte visible pour le joueur actuel
+        var joueurActuelElement = document.getElementById('joueur' + (indexJoueurActuel + 1));
+        var carteJoueeElement = joueurActuelElement.querySelector('.carte-jouee');
+        carteJoueeElement.style.visibility = 'visible';
+        carteJoueeElement.classList.add('visible');
+    
         // Passer au joueur suivant
-        indexJoueurActuel = (indexJoueurActuel + 1) % ordreJoueurs.length; 
-        
+        indexJoueurActuel = (indexJoueurActuel + 1) % ordreJoueurs.length;
+    
         console.log(ordreJoueurs.length);
         console.log(indexJoueurActuel);
         mettreAJourAffichage();
+        // Vérifier si tous les joueurs ont joué 
+    
+    
    // Vérifier si tous les joueurs ont joué
     if (indexJoueurActuel === 0) {
+        var nomsJoueurs = document.querySelectorAll('.nom-joueur');
+        nomsJoueurs.forEach(function(nomJoueur) {
+            nomJoueur.classList.remove('active');
+        });
         vote();
+      
         console.log("Votes terminés. Affichage des cartes jouées :");
 
         return; 
@@ -85,35 +99,6 @@ function ecouteur() {
 }
 
 
-
-/*function vote(){
-// Fonction pour afficher toutes les cartes jouées
-console.log("Votes terminés. Affichage des cartes jouées :");
-
-    for (var joueur in partieData.nomJoueur) {
-        var carteJouee = partieData.nomJoueur[joueur];
-        console.log(`${joueur}: ${carteJouee}`);
-       console.log('NOM : ',index)
-       
-
-       // Appeler la fonction chronometre pour chaque joueur pendant son tour
-       //chronometre();
-
-       // Récupérer l'élément span correspondant à la carte jouée du joueur
-        var carteJoueeElement = document.getElementById('carteJouee'+index);
-        index = index+1;
-        console.log(carteJoueeElement)
-    
-        // Mettre à jour le contenu de la balise span
-        mettreAJourCartesJouees();
-
-}
-afficheMinMax();
-
-}*/
-
-// Add this variable at the top of your script
-var allPlayersVoted = false;
 
 // Modify your vote() function
 function vote() {
@@ -296,11 +281,20 @@ if (tousLesVotesSontIdentiques) {
 // ----------------------------------------------------------------------------------Fonction Tache suivante 
 
 function nexttache(){
-  
+    mettreAJourAffichage();
     tachevalidee();
     mettreAJourTacheDebattre()
     document.getElementById('boutonNextTache').classList.add('bouton-clique');
     index=0;
+    
+    // on rend de nouveau les cartes invisible
+    var joueursElements = document.querySelectorAll('.joueur');
+    joueursElements.forEach(function (joueurElement) {
+        var carteJoueeElement = joueurElement.querySelector('.carte-jouee');
+       carteJoueeElement.style.visibility = 'hidden';
+       carteJoueeElement.classList.remove('visible');
+       
+    });
 
     if  (partieData.etatpartie  == "finie"){
         document.getElementById('fin').style.display = 'block';
@@ -424,9 +418,17 @@ function tachevalidee() {
 // ---------------------------------------------------------------------------------------fonction revoter 
 
 function revoter(){
+    mettreAJourAffichage();
     if (document.getElementById('boutonRevoter').disabled === false){
-        console.log('boutonactivé')
         document.getElementById('boutonRevoter').classList.add('bouton-clique');
+       
+        // on rend de nouveau invisible les cartes 
+        var joueursElements = document.querySelectorAll('.joueur');
+        joueursElements.forEach(function (joueurElement) {
+            var carteJoueeElement = joueurElement.querySelector('.carte-jouee');
+            carteJoueeElement.style.visibility = 'hidden';
+            carteJoueeElement.classList.remove('visible');
+        });
     }
     var indexJoueurActuel = 0;  
     var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs

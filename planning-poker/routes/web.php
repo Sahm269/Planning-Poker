@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('accueil');
 
 
 /*route::get('/menu', function () {
@@ -29,9 +29,7 @@ Route::get('/menu/jeu', [PartieController::class, 'afficherPageJeu']);
 // Route pour traiter le formulaire de création de partie
 Route::post('/menu/creer-partie', [PartieController::class, 'creerPartie']);
 
-Route::get('/profile', function () {
-    return view('profile');
-});
+
 // routes/web.php
 Route::post('/enregistrer-partie', [PartieController::class,'enregistrerPartie']);
 
@@ -39,3 +37,11 @@ Route::post('/enregistrer-partie', [PartieController::class,'enregistrerPartie']
 
 
 Route::get('/generer-pdf', [PartieController::class, 'genererPDF']);
+
+
+/*Route::get('/profile', function () {
+    return view('profile');
+});*/
+Route::get('/profile', [PartieController::class, 'afficherProfile'])->name('profile');;
+
+Route::get('/parties-crees', [PartieController::class, 'partiesCrees']);

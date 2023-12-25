@@ -132,22 +132,17 @@
 }
 
 
-.nom-joueur::first-letter {
+.nom-joueur{
     text-transform: uppercase;
     font-weight: bold;
-}
-
-/* Ajoutez ces classes à votre fichier de style CSS */
-.nom-joueur {
-    /* Style par défaut pour le nom du joueur */
+    width: 200px;
+    height: 30px;
 }
 
 .nom-joueur.active {
-    background-color: var(--color-success);  /* Couleur violette pour le joueur actuel */
+    background-color: var(--color-success); 
     color: var(--color-white);
     border-radius: 5px;
-    width: 200px;
-    height: 30px;
     text-align: center;
     padding-top: 5px;
 }
@@ -280,6 +275,56 @@
     cursor: not-allowed; 
 }
 
+/* Animation pour rendre la carte visible */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation pour rendre la carte invisible */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+/* Animation pour rendre la carte visible */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation pour rendre la carte invisible */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.visible {
+    visibility: visible;
+    animation: fadeIn 0.5s ease-in-out; /* Ajustez la durée et l'effet au besoin */
+}
+
+.invisible {
+    visibility: hidden;
+    animation: fadeOut 0.5s ease-in-out; /* Ajustez la durée et l'effet au besoin */
+}
+
+
 .carte-jouee{
 margin-left: 15px;
 border-radius: 3px;
@@ -290,5 +335,43 @@ height: 30px;
 color: var(--color-white);
 font-size: 20px;
 text-align: center;
+visibility: hidden;/*par defaut*/
+}
 
+.boutonfin button {
+    background-color: var(--color-first);
+    color: var(--color-white);
+    border: 2px solid var(--color-white);
+    /*display: block;*/
+    font-family: inherit;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+    width: 200px; /* Ajustez la largeur en fonction de vos besoins */
+    margin-bottom: 10px;
+    cursor: pointer;
+    margin-left: 20px; 
+   
+}
+
+.boutonfin button:hover {
+    background-color: var(--color-five);
+}
+
+#boutonQuitter {
+    background-color: var(--color-first);
+    color: var(--color-white);
+    border: 2px solid var(--color-white);
+    display: block;
+    font-family: inherit;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+    width: 200px; /* Ajustez la largeur en fonction de vos besoins */
+    margin: 0px;
+    cursor: pointer;
+   
+}
+#boutonQuitter:hover {
+    background-color: var(--color-five);
 }

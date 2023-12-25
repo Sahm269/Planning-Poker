@@ -24,23 +24,36 @@
     display: flex;
 }
 
+#partie1{
+    width: 48%;
+}
 .titrejeu {
-    margin-top: 100px;
+    margin-top: 70px;
     font-family: var(--police-h1);
     color: var(--color-white);
     font-size: 32px;
 
 }
 
-.titrejeu hr {
 
-}
-p {
+.Resume p {
     color: var(--color-white);
     font-size: 18px;
-    width: 50%;
+    width: 60%;
+    text-align: justify;
    
 }
+
+#gifaccueil{
+    width: 48%;
+}
+
+#gifaccueil img {
+    border-radius: 12px;
+    width: auto;
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre douce */
+}
+
 .bouttons {
     display: flex;
     margin-top: 20px;

@@ -36,26 +36,35 @@
       
             <div id="discussion">
             <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
-            <h3> Seule les joueurs qui ont jouée la carte max et min c'est à dire les extremité ont le droit de parler</h3>
-            <h3> Discuter avant le fin du chronometre si non on passe dirrectement au vote </h3>
-            <h3> Les personnes coloriées en orange doivent parlées </h3></div>
+            <h3> Seule les joueurs qui ont joué la carte max et min c'est à dire les extremité ont le droit de parler. 
+                Discuter avant le fin du chronometre si non on passe dirrectement au vote</h3>
+           
+                <img src="{{ asset('asset/discussion.gif') }}" height="200px">
+
+            </div>
 
             <div id = "estimation">
                 <h3>La tâche est validée , vous pouvez passer à la tâche suivante. En appuiyannt sur le bouton next tache</h3>
+                <img src="{{ asset('asset/tacheok.gif') }}" height="200px">
             </div>
 
             <div id="interrogation">
                 <h3> Vous avez tous joué la carte interrogation, cette tache est à rejouée</h3>
+                <img src="{{ asset('asset/interrogation.gif') }}" height="200px">
             </div>
             <div id="cafe">
-                <h3> Vous avez tous joué la carte caffée, cette tache est à rejouée, Après votre petite pause bien meritée </h3>
+                <h3> Vous avez tous joué la carte cafée, cette tache est à rejouée, Après votre petite pause bien meritée </h3>
+                <img src="{{ asset('asset/cafee.gif') }}" height="200px">
             </div>
             <div id = "fin">
                 <h3>Bravo vous avez fini !!! </h3>
+                <img src="{{ asset('asset/fini.gif') }}" height="200px">
+                <div class="boutonfin">
                 <button type="button" class="bouton" onclick="quitter()">Quitter</button>
-                <button type="button" class="bouton"onclick="nouvellepartie()">New Game</button>
+                <button type="button" class="bouton" onclick="nouvellepartie()">New Game</button>
                 <button type="button" class="bouton" onclick="telechargerJson()"> Sauvegarder <i class="fas fa-download"></i> </button>
                 <button tyoe="bouton" class="bouton" onclick="telechargerPDF()"> Backlog <i class="fas fa-download"></i></button>
+                </div>
             </div>
             
 

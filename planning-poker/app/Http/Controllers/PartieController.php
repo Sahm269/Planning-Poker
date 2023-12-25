@@ -116,7 +116,7 @@ public function genererPDF()
             // Logique par défaut si la règle n'est pas reconnue
     }
         $partie->save();
-
+    
         // Rediriger vers la page de jeu
         return view('jeu', ['partie' => $partie]);
 
@@ -155,6 +155,35 @@ public function enregistrerPartie(Request $request)
 
     return response()->json(['message' => 'Partie mise à jour avec succès']);
 }
+
+public function partiesCrees()
+{
+    try {
+        $partiesCrees = Partie::all();
+
+        return response()->json($partiesCrees);
+    } catch (\Exception $e) {
+        // Gérez les erreurs
+        return response()->json(['error' => 'Erreur serveur'], 500);
+    }
+}
+
+public function afficherProfile()
+{
+    try {
+        // Récupérez toutes les parties de la base de données
+        $partiesCrees = Partie::all();
+
+        // Retournez la vue "profile" en passant les parties créées comme variable
+        return view('profile', ['partiesCrees' => $partiesCrees]);
+    } catch (\Exception $e) {
+        // Gérez les erreurs
+        dd($e->getMessage()); // Ajoutez cette ligne pour afficher les détails de l'exception
+        return response()->json(['error' => 'Erreur serveur'], 500);
+    }
+}
+
+
 
 
 
