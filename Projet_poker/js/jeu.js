@@ -45,9 +45,13 @@ function tacheDebat(){
     });
 }
 
+var compteReboursInterval;
+
+var nb_joueur=3;
+var indexJoueurActuel=1;
+
 function chronometre() {
-    // Définir la durée du compte à rebours en secondes
-    // Demander à l'utilisateur de choixir ???
+    // Réinitialiser le temps restant
     var tempsRestant = 60;
 
     // Fonction pour mettre à jour le compte à rebours
@@ -58,20 +62,63 @@ function chronometre() {
         // Affichage du compte à rebours dans votre élément HTML
         document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
 
-        // Vérification du compte à rebour
+        // Vérification du compte à rebours
         if (tempsRestant <= 0) {
             clearInterval(compteReboursInterval);
             document.getElementById('chronometre').innerText = 'Temps écoulé';
             // Ici du code à exécuter lorsque le temps est écoulé
+
         } else {
             tempsRestant--;
         }
     }
 
-    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
-    var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+    // Effacer l'ancien intervalle s'il existe
+    clearInterval(compteReboursInterval);
+
+    // Définir le nouvel intervalle
+    compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+
+    // Retourner l'identifiant de l'intervalle
+    return compteReboursInterval;
 }
 
+
+// Ajoutez un gestionnaire d'événements à chaque div de carte
+for (let i = 0; i <= 12; i++) {
+    // Supposons que vos div ont les identifiants de 'carte0' à 'carte12'
+    var carteDiv = document.getElementById('carte' + i);
+    // Ajoutez un gestionnaire d'événements à chaque div de carte
+    carteDiv.addEventListener('click', function() {
+        // Arrêter le chronomètre en utilisant l'identifiant de l'intervalle
+        clearInterval(compteReboursInterval);
+        if (indexJoueurActuel==nb_joueur){
+            alert("Tous le monde a voté !");
+            document.getElementById('chronometre').innerText = 'chronomètre';
+        }
+        else{
+            // Redémarrer le chronomètre après un délai 2 secondes
+            setTimeout(chronometre, 2000);
+            alert("Passez le téléphone aux joueur suivant.");
+            
+            indexJoueurActuel++;
+        }
+    });
+}
+
+// Fonction pour réinitialiser les variables du chronomètre
+function reinitialiserChronometre() {
+    indexJoueurActuel= 1;
+    chronometre();
+}
+
+// Gestionnaire d'événements pour le boutonNextTache
+document.getElementById('TacheSuivante').addEventListener('click', function() {
+    reinitialiserChronometre();
+});
+
+
+//////////////////////////////////////////////////////////////
 function pauseCafe(){
     //Initialisation du nombre de joueur ayant choisit la carte café
     var nbJoueurCafe = 0;
