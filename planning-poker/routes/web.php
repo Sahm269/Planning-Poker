@@ -38,3 +38,4 @@ Route::post('/enregistrer-partie', [PartieController::class,'enregistrerPartie']
 
 
 
+Route::get('/generer-pdf', [PartieController::class, 'genererPDF']);

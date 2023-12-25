@@ -3,9 +3,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Partie;
-
+use PDF;
 class PartieController extends Controller
 {
+    
+
+
+public function genererPDF()
+{
+    // Récupérer la dernière partie depuis la base de données
+    $partie = Partie::latest()->first();
+
+    // Générer le PDF
+    $pdf = PDF::loadView('pdf.tachevalide', ['partie' => $partie]);
+
+    // Télécharger le PDF
+    return $pdf->download('tachevalide.pdf');
+}
+
+    
     public function creerPartie(Request $request)
     {
         // Valider les données du formulaire

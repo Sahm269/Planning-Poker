@@ -52,13 +52,13 @@
             </div>
             <div id = "fin">
                 <h3>Bravo vous avez fini !!! </h3>
-                <button type="button" class="bouton" onclick="nouvellePartie()">Quitter</button>
-                <button type="button" class="bouton"onclick="telechargerJson()">New Game</button>
+                <button type="button" class="bouton" onclick="quitter()">Quitter</button>
+                <button type="button" class="bouton"onclick="nouvellepartie()">New Game</button>
                 <button type="button" class="bouton" onclick="telechargerJson()"> Sauvegarder <i class="fas fa-download"></i> </button>
-                <button tyoe="bouton" class="bouton" onclick="telechargerJson()"> Backlog <i class="fas fa-download"></i></button>
+                <button tyoe="bouton" class="bouton" onclick="telechargerPDF()"> Backlog <i class="fas fa-download"></i></button>
             </div>
-       
- 
+            
+
     </div>
 
     <!--         Section de tout les joueur sous format de liste avec la carte cachée jusqu'à ce que tout les joueurs jouent -->
@@ -129,5 +129,7 @@
 <script>
      var partieData = @json($partie);
 </script>
+
+
 
 @endsection

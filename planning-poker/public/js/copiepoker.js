@@ -301,14 +301,32 @@ function nexttache(){
     mettreAJourTacheDebattre()
     document.getElementById('boutonNextTache').classList.add('bouton-clique');
     index=0;
-if  (partieData.etatpartie !== "finie"){
-    document.getElementById('cartesDiv').style.display = 'block';
-    document.getElementById('estimation').style.display = 'none';
-    document.getElementById('discussion').style.display = 'none';
-    document.getElementById('cafe').style.display = 'none';
-    document.getElementById('interrogation').style.display = 'none';
-    document.getElementById('fin').style.display = 'none';
-}
+
+    if  (partieData.etatpartie  == "finie"){
+        document.getElementById('fin').style.display = 'block';
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display ='none';
+       
+       
+        
+
+    }
+
+    else  {
+        document.getElementById('cartesDiv').style.display = 'block';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'none';
+
+    }
+
+    
+
 
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
@@ -448,48 +466,11 @@ function mettreAJourCartesJouees() {
 
 
 
-function quitter() {
-    alert("Action quitter");
-    enregistrer();
-    fermerPopup('popupFin');
-    window.location.href = '//profile.blade.php';
-}
-
-function nouvellePartie() {
-    alert("Action créer une nouvelle partie");
-    enregistrer();
-    // Rediriger vers menu
-    fermerPopup('popupFin');
-    window.location.href = '//menu.blade.php';
-}
-// function qui va mettre une pause de la partie et enregistre quand meme 
 function pausecafe(){
     enregistrer();
     
 }
 
-
-function telechargerJson() {
-    alert("Action télécharger le JSON");
-
-    // Créer un lien de données (data URI) avec les données JSON encodées
-    var lienTelechargement = document.createElement("a");
-    lienTelechargement.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(partieData.backlog);
-    lienTelechargement.download = "backlog.json"; // Nom du fichier à télécharger
-
-    // Ajouter le lien à la page et déclencher un clic
-    document.body.appendChild(lienTelechargement);
-    lienTelechargement.click();
-
-    // Supprimer le lien après le téléchargement
-    document.body.removeChild(lienTelechargement);
-
-    enregistrer();
-
-    fermerPopup('popupFin');
-
-    //Rediriger vers une page ou faire un nouveau popup
-}
 // Fonction pour enregistrer la partie
 function enregistrer() {
     partieData.tachevalide =  obtenirBacklog('backlogListvalide');
@@ -564,6 +545,99 @@ function obtenirBacklog(idListe) {
     // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
     var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
 }*/
+
+function telechargerJson() {
+    alert("Votre partie sera enregistrée et téléchargée en format JSON");
+
+    // Enregistrez la partie
+    enregistrer();
+
+    // Créez un objet Blob avec les données JSON
+    var donneesAEnregistrer = {
+        nomJoueur: partieData.nomJoueur,
+        backlog: partieData.backlog,
+        backlogList: partieData.tacherestante,
+        backlogListvalide: partieData.tachevalide,
+        etatpartie: partieData.etatpartie,
+        partie_id: partieData.id  
+    };
+    var blob = new Blob([JSON.stringify(donneesAEnregistrer)], { type: 'application/json' });
+
+    // Créez un URL pour le Blob
+    var url = window.URL.createObjectURL(blob);
+
+    // Créez un lien et définissez l'URL du lien sur l'URL du Blob
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'partie.json'; // Nom du fichier téléchargé
+    document.body.appendChild(a);
+
+    // Cliquez sur le lien pour déclencher le téléchargement
+    a.click();
+
+    // Retirez le lien de l'élément body
+    document.body.removeChild(a);
+
+  
+
+    // Rediriger vers une page ou faire un nouveau popup
+}
+
+
+
+function quitter() {
+    // Demandez à l'utilisateur s'il veut vraiment quitter la partie
+    var confirmation = confirm("Vous allez quitter cette partie. Êtes-vous sûr(e) de vouloir continuer?");
+
+    // Si l'utilisateur confirme, enregistrez la partie et redirigez
+    if (confirmation) {
+        enregistrer();
+        window.location.href = '/profile';
+    }
+  
+}
+
+
+function nouvellepartie() {
+    window.location.href = '/menu';
+}
+
+
+function telechargerPDF() {
+    // Effectuer la requête Ajax
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/generer-pdf', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                // La requête a réussi, déclencher le téléchargement du PDF
+                var blob = new Blob([xhr.response], { type: 'application/pdf' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'tachevalide.pdf';
+                link.click();
+                console.log('PDF généré avec succès');
+            } else {
+                // La requête a échoué
+                console.error('Échec de la génération du PDF');
+            }
+        }
+    };
+    
+    // Indiquer que la réponse doit être traitée en tant que binaire
+    xhr.responseType = 'arraybuffer';
+    
+    // Envoyer la requête
+    xhr.send();
+}
+
+
+
+// Déclaration de la fonction à l'extérieur de l'événement onload
+
+
 
 
 /*/ chronometre a definir au debut une partie ;
