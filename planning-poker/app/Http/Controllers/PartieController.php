@@ -33,7 +33,7 @@ class PartieController extends Controller
         $partie->chronometre = 0; 
         $partie->nbjoueur = $request->input('nombreJoueur');
         $partie->regle = $request->input('regle');
-
+     
         
         
         // Récupérer le nom des joueurs et les stocker en JSON avec cartes initialement vides
@@ -57,12 +57,17 @@ class PartieController extends Controller
 
         // Initialiser le tableau associatif avec des estimations vides
         $backlogData = [];
+        $tacherestanteData =[];
+        $tachevalideData = [];
         foreach ($taches as $tache) {
             $backlogData[$tache] = ''; 
+            $tacherestanteData[$tache]='';
         }
 
         // Encoder le tableau associatif en JSON
         $partie->backlog = json_encode($backlogData);
+        $partie-> tacherestante = json_encode($tacherestanteData);
+        $partie-> tachevalide = json_encode( $tachevalideData);
 
 
 
@@ -111,7 +116,32 @@ class PartieController extends Controller
         return view('jeu', ['partie' => $partie]);
 
     }
+// Ajoutez cette méthode à votre PartieController
+public function enregistrerPartie(Request $request)
+{
+    // Validez les données si nécessaire
+
+    // Récupérez la partie à mettre à jour
+    $partie = Partie::find($request->input('partie_id'));
+
+    // Mise à jour des champs nécessaires
+    $partie->nomJoueur = $request->input('nomJoueur');
+    $partie->backlog = $request->input('backlog');
     
+    
+    $partie->tachevalide = $request->input('backlogListvalide');
+    $partie->tacherestante = $request->input('backlogList');
+    $partie->etatpartie = $request->input('etatpartie');
+
+
+    // Mettez à jour d'autres champs au besoin
+    $partie->save();
+
+    return response()->json(['message' => 'Partie mise à jour avec succès']);
+}
+
+
+
 }
 
 ?>

@@ -9,6 +9,9 @@ var index =1;
 var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
 
+var tempsRestant1 = 180;
+var tempsRestant2 = 60;
+
 document.getElementById('boutonRevoter').disabled = true;
 document.getElementById('boutonNextTache').disabled = true;
 
@@ -21,7 +24,7 @@ console.log (partieData.nomJoueur)
 mettreAJourAffichage();
 onload=initialisation
 function initialisation(){
-  
+    tempsRestant2 = 60;
     mettreAJourTacheDebattre();
     ecouteur();
 }
@@ -31,6 +34,7 @@ function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
     // Vérifier si c'est le tour du joueur actuel
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
+        //chronometre2();
         partieData.nomJoueur[nomJoueur] = valeurCarte;
       
         // Passer au joueur suivant
@@ -42,6 +46,8 @@ function tourJoueur(nomJoueur, valeurCarte) {
    // Vérifier si tous les joueurs ont joué
     if (indexJoueurActuel === 0) {
         vote();
+        console.log("Votes terminés. Affichage des cartes jouées :");
+
         return; 
     }
     } else {
@@ -68,7 +74,7 @@ function mettreAJourAffichage() {
 
 function ecouteur() {
     var cartes = document.querySelectorAll('.carte');
-
+    tempsRestant2 = 60;
     cartes.forEach(function(carte) {
         carte.addEventListener('click', function() {
             // Appel de la fonction tourJoueur avec le nom du joueur et la valeur de la carte
@@ -120,7 +126,7 @@ function vote() {
 
     var carteJoueeElement = document.getElementById('carteJouee' + index);
     index = index + 1;
-    console.log(carteJoueeElement)                                
+    console.log(carteJoueeElement)
 
     mettreAJourCartesJouees();
   }
@@ -129,21 +135,14 @@ function vote() {
 
   // Set the flag to indicate that all players have voted
   allPlayersVoted = true;
-
+  
   // Check if all players have voted before showing the Resultat div
-  checkShowResultat();
+
+
+
 }
 
-// Add this function to check if all players have voted and show Resultat div
-function checkShowResultat() {
-  if (allPlayersVoted) {
-    // Hide the "cartes" div
-    document.getElementById('cartesDiv').style.display = 'none';
 
-    // Show the "Resultat" div
-    document.getElementById('resultatDiv').style.display = 'block';
-  }
-}
 
 
 // --------------------------------------------------------------------------------function qui affiche le min et le max et traite le vote
@@ -171,46 +170,124 @@ for (var joueur in votes) {
         // Si le nomMax n'est pas défini ou si la valeur actuelle est supérieure à la valeur maximale actuelle
         if (nomMax === undefined || votes[joueur] > votes[nomMax]) {
             nomMax = joueur; // Mettre à jour le nomMax
-            console.log("nomMaw");
+            console.log("nomMax");
         }
     }
+
+
+    
+
+    // Après avoir trouvé le min et le max, ajoutez la classe aux éléments correspondants
+    var elementMin = document.getElementById('joueur' + (nomMin + 1));
+    var elementMax = document.getElementById('joueur' + (nomMax + 1));
+
+ // Ajoutez la classe seulement si les éléments existent
+ if (elementMin) {
+     elementMin.classList.add('joueur-special');
+ }
+
+ if (elementMax) {
+     elementMax.classList.add('joueur-special');
+ }
 }
+ 
 
 // Vérifier si tous les joueurs ont voté la même carte
 var votesUniques = new Set(Object.values(partieData.nomJoueur));
 var tousLesVotesSontIdentiques = votesUniques.size === 1;
 
+// Sélectionner les boutons
+var boutonNextTache = document.querySelector('#boutonNextTache');
+var boutonRevoter = document.querySelector('#boutonRevoter');
 // Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
 if (tousLesVotesSontIdentiques) {
     var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
+
+
     if (valeurVote === 'cafe') {
          estimation = '';
             enregistrer();
             alert("Pause café !!!")
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'block';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'none';
+
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
         
     }
-        
+    else if(valeurVote === '?'){
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'block';
+        document.getElementById('fin').style.display = 'none';
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
+      
+    }
+    else if( partieData.etatpartie === "finie")  {
+       
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'block';
+        document.getElementById('boutonRevoter').disabled = true;
+        document.getElementById('boutonNextTache').disabled = true;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.add('bouton-desactive');
+    }
+        else {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'block';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'none';
+
+      
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
         console.log('Estimation attribuée:', estimation);
-    }
-    else{
         estimation = valeurVote;
         
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
         console.log('Estimation attribuée:', estimation);
+        boutonNextTache.disabled = false;
+        boutonRevoter.disabled = true;
+        boutonNextTache.classList.remove('bouton-desactive');
+        boutonRevoter.classList.add('bouton-desactive');
+    
+    
     }
+    }
+    else{
+       
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('discussion').style.display = 'block';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
+    
+    }
+  
 
+      
 
-        // Sélectionner les boutons
-        var boutonNextTache = document.querySelector('#boutonNextTache');
-        var boutonRevoter = document.querySelector('#boutonRevoter');
-
-        // Activer ou désactiver les boutons en fonction du consensus des votes
-        boutonNextTache.disabled = !tousLesVotesSontIdentiques;
-        boutonRevoter.disabled = tousLesVotesSontIdentiques;
-
-    // Afficher les résultats dans un popup
-       alert(`Voici les joueurs qui ont le droit de parler Minimum : ${minVote} par ${nomMin}\nMaximum : ${maxVote} par ${nomMax}`);
+  
 }
 
 
@@ -219,15 +296,20 @@ if (tousLesVotesSontIdentiques) {
 // ----------------------------------------------------------------------------------Fonction Tache suivante 
 
 function nexttache(){
+  
     tachevalidee();
     mettreAJourTacheDebattre()
+    document.getElementById('boutonNextTache').classList.add('bouton-clique');
     index=0;
+if  (partieData.etatpartie !== "finie"){
+    document.getElementById('cartesDiv').style.display = 'block';
+    document.getElementById('estimation').style.display = 'none';
+    document.getElementById('discussion').style.display = 'none';
+    document.getElementById('cafe').style.display = 'none';
+    document.getElementById('interrogation').style.display = 'none';
+    document.getElementById('fin').style.display = 'none';
+}
 
-      // show the "cartes" div
-      document.getElementById('cartesDiv').style.display = 'block';
-
-      // hide the "Resultat" div
-      document.getElementById('resultatDiv').style.display = 'none';
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
             partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
@@ -243,24 +325,32 @@ function nexttache(){
  // Désactiver les boutons 
  document.getElementById('boutonRevoter').disabled = true;
  document.getElementById('boutonNextTache').disabled = true;
+ boutonNextTache.classList.add('bouton-desactive');
+ boutonRevoter.classList.add('bouton-desactive');
  
 }
 
 //-------------------------------------------------------------------------------------- Fonction pour mettre à jour l'affichage de la tâche à débattre
 function mettreAJourTacheDebattre() {
     var tacheDebattreElement = document.getElementById('tacheDebattre');
-
     // Trouver la première tâche non encore débattue
     var tachesNonDebattues = Object.keys(partieData.backlog);
     var premierTache = tachesNonDebattues.length > 0 ? tachesNonDebattues[0] : null;
 
     console.log(premierTache);
-
+    
     // Afficher la tâche à débattre dans l'interface
-    tacheDebattreElement.textContent = premierTache !== null ? premierTache : "Aucune tâche restante";
+    if (premierTache !== null) {
+        tacheDebattreElement.textContent = premierTache;
+    } else {
+        tacheDebattreElement.textContent = "Aucune tâche restante";
+        partieData.etatpartie = "finie";
+        etat = partieData.etatpartie;
+       
+        
+    }
+
 }
-
-
 
 //(------------------------------------------------------------------------------------------ fonction qui valide une tache 
 function tachevalidee() {
@@ -294,7 +384,20 @@ function tachevalidee() {
         tacheDebattreElement.textContent = "Aucune tâche restante";
         partieData.etatpartie = "finie";
         etat = partieData.etatpartie;
-        console.log('ekhtkghkyhrkth',etat);
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'block';
+        document.getElementById('boutonRevoter').disabled = true;
+        document.getElementById('boutonNextTache').disabled = true;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.add('bouton-desactive');
+
+
+        
+
     }
 }
 
@@ -305,16 +408,16 @@ function tachevalidee() {
 function revoter(){
     if (document.getElementById('boutonRevoter').disabled === false){
         console.log('boutonactivé')
+        document.getElementById('boutonRevoter').classList.add('bouton-clique');
     }
     var indexJoueurActuel = 0;  
     var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
-    index = 0;
-
-      // show the "cartes" div
-      document.getElementById('cartesDiv').style.display = 'block';
-
-      // hide the "Resultat" div
-      document.getElementById('resultatDiv').style.display = 'none';
+        index = 0;
+        document.getElementById('cartesDiv').style.display = 'block';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
 
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
@@ -325,6 +428,8 @@ function revoter(){
             index++;
         }
     }
+ boutonNextTache.classList.add('bouton-desactive');
+ boutonRevoter.classList.add('bouton-desactive');
 }
 
 //-----------------------------------------------------------------------------------------------Fonction Mise à jour le contenu des cartes jouées
@@ -340,29 +445,82 @@ function mettreAJourCartesJouees() {
     }
 }
 
-// fonction qui va quitter la partie et enregistrer et renvoyer l'utilisateur dans à la page menu 
-function quitter(){
-    enregistrer();
 
+
+
+function quitter() {
+    alert("Action quitter");
+    enregistrer();
+    fermerPopup('popupFin');
+    window.location.href = '//profile.blade.php';
+}
+
+function nouvellePartie() {
+    alert("Action créer une nouvelle partie");
+    enregistrer();
+    // Rediriger vers menu
+    fermerPopup('popupFin');
+    window.location.href = '//menu.blade.php';
 }
 // function qui va mettre une pause de la partie et enregistre quand meme 
 function pausecafe(){
     enregistrer();
     
 }
+
+
+function telechargerJson() {
+    alert("Action télécharger le JSON");
+
+    // Créer un lien de données (data URI) avec les données JSON encodées
+    var lienTelechargement = document.createElement("a");
+    lienTelechargement.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(partieData.backlog);
+    lienTelechargement.download = "backlog.json"; // Nom du fichier à télécharger
+
+    // Ajouter le lien à la page et déclencher un clic
+    document.body.appendChild(lienTelechargement);
+    lienTelechargement.click();
+
+    // Supprimer le lien après le téléchargement
+    document.body.removeChild(lienTelechargement);
+
+    enregistrer();
+
+    fermerPopup('popupFin');
+
+    //Rediriger vers une page ou faire un nouveau popup
+}
+// Fonction pour enregistrer la partie
 function enregistrer() {
+    partieData.tachevalide =  obtenirBacklog('backlogListvalide');
+    partieData.tacherestante = obtenirBacklog('backlogList');
     var donneesAEnregistrer = {
         nomJoueur: partieData.nomJoueur,
         backlog: partieData.backlog,
-        backlogRestantes: obtenirBacklog('backlogList'),
-        backlogValidees: obtenirBacklog('backlogListvalide'),
-        etatpartie:partieData.etatpartie,
-        // Ajoutez d'autres propriétés au besoin
+        backlogList: partieData.tacherestante,
+        backlogListvalide: partieData.tachevalide,
+        etatpartie: partieData.etatpartie,
+        partie_id: partieData.id  
     };
-
-    console.log(donneesAEnregistrer);
-
+    console.log(donneesAEnregistrer)
+    fetch('/enregistrer-partie', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(donneesAEnregistrer)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+        
+    })
+    .catch(error => console.error('Erreur lors de la requête AJAX:', error));
 }
+
+
+
 
 // Fonction pour obtenir les backlogs des tâches restantes ou validées
 function obtenirBacklog(idListe) {
@@ -379,11 +537,11 @@ function obtenirBacklog(idListe) {
 
 
 // chronometre a definir au debut une partie ;
-function chronometre(){
+/*function chronometre(){
 
     // Définir la durée du compte à rebours en secondes
     // Demander à l'utilisateur de choixir ???
-    var tempsRestant = 60;
+    var tempsRestant = 180;
 
     // Fonction pour mettre à jour le compte à rebours
     function mettreAJourCompteRebours() {
@@ -391,12 +549,12 @@ function chronometre(){
         var secondes = tempsRestant % 60;
 
         // Affichage du compte à rebours dans votre élément HTML
-        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+        document.getElementById('chronometrevote').innerText = minutes + 'm ' + secondes + 's';
 
         // Vérification du compte à rebour
         if (tempsRestant <= 0) {
             clearInterval(compteReboursInterval);
-            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            document.getElementById('chronometrevote').innerText = 'Temps écoulé';
             // Ici du code à exécuter lorsque le temps est écoulé
         } else {
             tempsRestant--;
@@ -405,4 +563,35 @@ function chronometre(){
 
     // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
     var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+}*/
+
+
+/*/ chronometre a definir au debut une partie ;
+function chronometre2(){
+
+    // Définir la durée du compte à rebours en secondes
+    // Demander à l'utilisateur de choixir ???
+    tempsRestant2 = 60;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours2() {
+        var minutes = Math.floor(tempsRestant2 / 60);
+        var secondes = tempsRestant2 % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
+
+        // Vérification du compte à rebour
+        if (tempsRestant2 <= 0) {
+            clearInterval(compteReboursInterval);
+            document.getElementById('chronometre').innerText = 'Temps écoulé';
+            // Ici du code à exécuter lorsque le temps est écoulé
+        } else {
+            tempsRestant2--;
+        }
+    }
+
+    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
+    var compteReboursInterval = setInterval(mettreAJourCompteRebours2, 1000);
 }
+*/

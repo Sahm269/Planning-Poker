@@ -91,3 +91,8 @@ function afficherDescription(regle) {
         document.getElementById(liste).style.display = 'block';
         bouton.classList.add('active');
     }
+// Fonction pour récupérer la partie enregistrée
+function recuperer() {
+  
+  
+}

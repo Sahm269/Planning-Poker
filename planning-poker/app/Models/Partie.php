@@ -21,6 +21,8 @@ class Partie extends Model
         'nbjoueur',
         'regle',
         'nomJoueur',
+        'tacherestante',
+        'tachevalide'
     ];
     
 

@@ -43,6 +43,20 @@
             <div id = "estimation">
                 <h3>La tâche est validée , vous pouvez passer à la tâche suivante. En appuiyannt sur le bouton next tache</h3>
             </div>
+
+            <div id="interrogation">
+                <h3> Vous avez tous joué la carte interrogation, cette tache est à rejouée</h3>
+            </div>
+            <div id="cafe">
+                <h3> Vous avez tous joué la carte caffée, cette tache est à rejouée, Après votre petite pause bien meritée </h3>
+            </div>
+            <div id = "fin">
+                <h3>Bravo vous avez fini !!! </h3>
+                <button type="button" class="bouton" onclick="nouvellePartie()">Quitter</button>
+                <button type="button" class="bouton"onclick="telechargerJson()">New Game</button>
+                <button type="button" class="bouton" onclick="telechargerJson()"> Sauvegarder <i class="fas fa-download"></i> </button>
+                <button tyoe="bouton" class="bouton" onclick="telechargerJson()"> Backlog <i class="fas fa-download"></i></button>
+            </div>
        
  
     </div>
@@ -73,10 +87,11 @@
 
                 </div>
           
-            <div class="button-container" >
-                <button id ="boutonRevoter" class="bouton-clique" onclick="revoter()"> Aigain tache <i class="fa fa-spin"></i></button> <!-- si tout le monde n'est pas d'accord  -->
-                <button id="boutonNextTache" onclick="nexttache()"> Next tache <i class="fa fa-forward"></i></button><!--  Si tout le monde est d'accord -->
-            </div>
+                <div class="button-container">
+                <button id="boutonRevoter" class="bouton-clique bouton-desactive" onclick="revoter()"> Aigain tache <i class="fa fa-spin"></i></button>
+                <button id="boutonNextTache" class="bouton-clique bouton-desactive" onclick="nexttache()"> Next tache <i class="fa fa-forward"></i></button>
+                </div>
+
 
             <div>
                 <button id="boutonQuitter" onclick="quitter()">Quitter</button>
@@ -102,10 +117,14 @@
 
 
             <ul class="backlog-list" id="backlogListvalide">
-                <li>Aucune taches validée                    </li>
+                
                 
             </ul>
 </div>
+
+
+
+
 
 <script>
      var partieData = @json($partie);

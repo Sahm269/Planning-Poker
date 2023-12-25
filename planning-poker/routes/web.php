@@ -32,6 +32,8 @@ Route::post('/menu/creer-partie', [PartieController::class, 'creerPartie']);
 Route::get('/profile', function () {
     return view('profile');
 });
+// routes/web.php
+Route::post('/enregistrer-partie', [PartieController::class,'enregistrerPartie']);
 
 
 
