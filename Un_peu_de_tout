@@ -339,3 +339,24 @@ function trouverEstimationMajoritaire(estimations) {
     }
     return carteMajoritaire;
 }
+
+/////////////////////////////////
+
+//variable globale compteur de vote
+var compteurVotes = 0;
+
+//dans reinitialiserVariables() ajoueter
+function reinitialiserVariables() {
+    compteurVotes = 0;
+}
+
+// Vérifier si le compteur de votes est supérieur à 1
+if (compteurVotes > 1) {
+    maxMajorite();
+}
+
+//dans la fonction vote au tout début
+compteurVotes=0;
+
+//dans la fonction vote après aficheminmax()
+compteurVotes++;
