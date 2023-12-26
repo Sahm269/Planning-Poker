@@ -91,7 +91,7 @@
 .carte:hover {
     background: var(--color-foor)
 }
-#estimation, #discussion,#interrogation,#cafe,#fin {
+#estimation, #discussion,#interrogation,#cafe,#fin,#estimationmaj, #discussionmaj {
     display: none;
   }
   
@@ -99,6 +99,13 @@
     background: var(--color-first);
     color: white;
 }
+#pieChart {
+    width: 300px !important;
+    height: 300px !important;
+    margin: 0 auto; /* Ajoute une marge automatique sur les côtés gauche et droit pour centrer */
+    display: block; /* Assure que le canvas est affiché comme un élément de bloc */
+}
+
   
 /*Le groupe 2 qui contient les joueurs , chronomotre , bouton, les cartes jouées */
 .groupe2{
@@ -265,7 +272,8 @@
     box-shadow: none; /* Réinitialise l'ombre */
 }
 .carte-cafe {
-    font-size: 0; /* Rendre la taille du texte zéro */
+    font-size: 0;
+    visibility: hidden;
 }
 
 /* Style pour les boutons désactivés */

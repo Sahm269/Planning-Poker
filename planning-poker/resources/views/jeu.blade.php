@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
@@ -42,10 +43,22 @@
                 <img src="{{ asset('asset/discussion.gif') }}" height="200px">
 
             </div>
+            <div id="discussionmaj">
+            <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
+            <h3> OUPS ! Il n'y a pas de majorité, Discutez ou refaites le vote SVP</h3>
+                <img src="{{ asset('asset/discussion.gif') }}" height="200px">
+
+            </div>
 
             <div id = "estimation">
                 <h3>La tâche est validée , vous pouvez passer à la tâche suivante. En appuiyannt sur le bouton next tache</h3>
                 <img src="{{ asset('asset/tacheok.gif') }}" height="200px">
+            </div>
+            <div id = "estimationmaj">
+                <h3>La tâche est validée  grace à la majorité absolue,  passez à la tâche suivante.</h3>
+                <canvas id="pieChart"></canvas>
+
+                <!--img src="{{ asset('asset/tacheok.gif') }}" height="200px"-->
             </div>
 
             <div id="interrogation">
@@ -126,9 +139,13 @@
 
 
             <ul class="backlog-list" id="backlogListvalide">
-                
-                
+                @foreach(json_decode($partie->tachevalide, true) as $tache => $estimation)
+                    <li>{{ $tache }} : {{ $estimation }}</li>
+                @endforeach
             </ul>
+                            
+                
+           
 </div>
 
 
