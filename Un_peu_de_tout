@@ -360,3 +360,50 @@ compteurVotes=0;
 
 //dans la fonction vote après aficheminmax()
 compteurVotes++;
+
+////////////////////////////
+
+// Fonction pour estimer la tâche en utilisant la stratégie appropriée
+function estimerTache(regleValue, partieData) {
+    var estimationStrategy;
+  
+    if (regleValue === 'strict') {
+      estimationStrategy = new StrictEstimationStrategy();
+    } else if (regleValue === 'majorite') {
+      estimationStrategy = new MajorityEstimationStrategy();
+    } else {
+      // Stratégie par défaut ou gestion d'erreur si nécessaire
+      estimationStrategy = new StrictEstimationStrategy();
+    }
+  
+    // Utilisation de la stratégie pour effectuer l'estimation
+    estimationStrategy.estimate(partieData);
+  }
+  
+  // Classe de stratégie d'estimation de base
+  class EstimationStrategy {
+    estimate(partieData) {
+      // Implémentation par défaut, peut être remplacée par des sous-classes
+    }
+  }
+  
+  // Classe de stratégie d'estimation pour la règle 'strict'
+  class StrictEstimationStrategy extends EstimationStrategy {
+    estimate(partieData) {
+      // Code de base
+  }
+  
+  // Classe de stratégie d'estimation pour la règle 'majorite'
+  class MajorityEstimationStrategy extends EstimationStrategy {
+    estimate(partieData) {
+      maxMajorite(partieData);
+    }
+  }
+  
+  function maxMajorite(partieData) {
+    //code de base
+  }
+
+  // Appel de la fonction principale pour estimer la tâche
+  estimerTache(regleValue, partieData);
+  
