@@ -10,6 +10,7 @@ var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
 var allPlayersVoted = false;
 var regleValue = partieData.regle;
+var compteurVotes = 0;
 
 var tempsRestant1 = 180;
 var tempsRestant2 = 60;
@@ -122,7 +123,8 @@ function vote() {
 
     mettreAJourCartesJouees();
   }
-
+  compteurVotes++;
+  console.log(' compteurVotes ',  compteurVotes)
   afficheMinMax();
 
   // Set the flag to indicate that all players have voted
@@ -133,7 +135,7 @@ function vote() {
 
 
 }
-
+var myPieChart;
 function maxMajorite() {
     var carteOccurrences = {};
 
@@ -152,6 +154,48 @@ function maxMajorite() {
             }
         }
     }
+
+    // Créer un tableau pour les libellés et les données du diagramme
+    var labels = [];
+    var data = [];
+
+    // Remplir le tableau avec les données des occurrences
+    for (var carte in carteOccurrences) {
+        labels.push(carte);
+        data.push(carteOccurrences[carte]);
+    }
+    // Récupérer la référence du canevas
+    var pieChartCanvas = document.getElementById('pieChart');
+
+    // Vérifier si le graphique existe déjà
+    if (myPieChart) {
+        // Détruire le graphique existant
+        window.myPieChart.destroy();
+    }
+
+
+
+    // Créer le diagramme avec Chart.js
+    var ctx = document.getElementById('pieChart').getContext('2d');
+     myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    'red',
+                    'blue',
+                    'green',
+                    'purple',
+                    'yellow',
+                    'orange'
+                   
+                ]
+            }]
+        }
+    });
+
   // Trouver la carte la plus jouée
   var carteMaxOccurrences;
   var maxOccurrences = 0;
@@ -172,9 +216,12 @@ function maxMajorite() {
 
             document.getElementById('cartesDiv').style.display = 'none';
             document.getElementById('discussion').style.display = 'none';
-            document.getElementById('estimation').style.display = 'block';
+            document.getElementById('discussionmaj').style.display = 'none';
+            document.getElementById('estimation').style.display = 'none';
+            document.getElementById('estimationmaj').style.display = 'block';
             document.getElementById('cafe').style.display = 'none';
             document.getElementById('interrogation').style.display = 'none';
+            
             boutonNextTache.disabled = false;
             boutonRevoter.disabled = true;
             boutonNextTache.classList.remove('bouton-desactive');
@@ -183,8 +230,10 @@ function maxMajorite() {
   
     } else {
             document.getElementById('cartesDiv').style.display = 'none';
-            document.getElementById('discussion').style.display = 'block';
+            document.getElementById('discussion').style.display = 'none';
             document.getElementById('estimation').style.display = 'none';
+            document.getElementById('estimationmaj').style.display = 'none';
+            document.getElementById('discussionmaj').style.display = 'block';
             document.getElementById('cafe').style.display = 'none';
             document.getElementById('interrogation').style.display = 'none';
             boutonNextTache.disabled = true;
@@ -272,6 +321,8 @@ if (tousLesVotesSontIdentiques) {
         document.getElementById('cafe').style.display = 'block';
         document.getElementById('interrogation').style.display = 'none';
         document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
 
         boutonNextTache.disabled = true;
         boutonRevoter.disabled = false;
@@ -286,6 +337,8 @@ if (tousLesVotesSontIdentiques) {
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'block';
         document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
         boutonNextTache.disabled = true;
         boutonRevoter.disabled = false;
         boutonNextTache.classList.add('bouton-desactive');
@@ -293,13 +346,14 @@ if (tousLesVotesSontIdentiques) {
       
     }
     else if( partieData.etatpartie === "finie")  {
-       
         document.getElementById('cartesDiv').style.display = 'none';
         document.getElementById('estimation').style.display = 'none';
         document.getElementById('discussion').style.display = 'none';
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'none';
         document.getElementById('fin').style.display = 'block';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
         document.getElementById('boutonRevoter').disabled = true;
         document.getElementById('boutonNextTache').disabled = true;
         boutonNextTache.classList.add('bouton-desactive');
@@ -312,6 +366,8 @@ if (tousLesVotesSontIdentiques) {
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'none';
         document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
 
       
         // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
@@ -336,6 +392,8 @@ if (tousLesVotesSontIdentiques) {
         document.getElementById('estimation').style.display = 'none';
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
         boutonNextTache.disabled = true;
         boutonRevoter.disabled = false;
         boutonNextTache.classList.add('bouton-desactive');
@@ -344,8 +402,25 @@ if (tousLesVotesSontIdentiques) {
 
 
         else{
+            if (compteurVotes > 1) {
+                maxMajorite();
+            } else{
+                document.getElementById('cartesDiv').style.display = 'none';
+                document.getElementById('discussion').style.display = 'block';
+                document.getElementById('estimation').style.display = 'none';
+                document.getElementById('cafe').style.display = 'none';
+                document.getElementById('interrogation').style.display = 'none';
+                document.getElementById('estimationmaj').style.display = 'none';
+                document.getElementById('discussionmaj').style.display = 'none';
+                boutonNextTache.disabled = true;
+                boutonRevoter.disabled = false;
+                boutonNextTache.classList.add('bouton-desactive');
+                boutonRevoter.classList.remove('bouton-desactive');
+                chronometre2()}
+            }
         
-         maxMajorite();
+        
+       
       
 
 
@@ -354,7 +429,7 @@ if (tousLesVotesSontIdentiques) {
     }
   
   
-}
+
 
 
  
@@ -384,6 +459,8 @@ function nexttache(){
         document.getElementById('discussion').style.display = 'none';
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display ='none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
        
        
         
@@ -397,7 +474,8 @@ function nexttache(){
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'none';
         document.getElementById('fin').style.display = 'none';
-
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
     }
 
     
@@ -447,6 +525,7 @@ function mettreAJourTacheDebattre() {
 
 //(------------------------------------------------------------------------------------------ fonction qui valide une tache 
 function tachevalidee() {
+    compteurVotes=0;
     var tacheDebattreElement = document.getElementById('tacheDebattre');
     var tacheValideeListe = document.getElementById('backlogListvalide');
     var tacheRestanteListe = document.getElementById('backlogList');
@@ -483,6 +562,8 @@ function tachevalidee() {
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'none';
         document.getElementById('fin').style.display = 'block';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
         document.getElementById('boutonRevoter').disabled = true;
         document.getElementById('boutonNextTache').disabled = true;
         boutonNextTache.classList.add('bouton-desactive');
@@ -519,6 +600,8 @@ function revoter(){
         document.getElementById('estimation').style.display = 'none';
         document.getElementById('cafe').style.display = 'none';
         document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
 
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
@@ -645,6 +728,7 @@ function quitter() {
     // Si l'utilisateur confirme, enregistrez la partie et redirigez
     if (confirmation) {
         enregistrer();
+        console.log(partieData.tachevalide)
         window.location.href = '/profile';
     }
   
@@ -757,6 +841,8 @@ for (let i = 0; i <= 12; i++) {
             chronometre();
             //alert("Passez le téléphone aux joueur suivant.");
             indexJoueurChrono++;
+
+
         }
     });
 }
@@ -769,7 +855,8 @@ function reinitialiserChronometre() {
 
 // Gestionnaire d'événements pour le boutonNextTache
 document.getElementById('boutonNextTache').addEventListener('click', function() {
-    reinitialiserChronometre();
+    if (partieData.etatpartie !== "finie"){
+    reinitialiserChronometre();}
     
 });
 

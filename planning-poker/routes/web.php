@@ -36,3 +36,5 @@ Route::get('/generer-pdf', [PartieController::class, 'genererPDF']);
 Route::get('/profile', [PartieController::class, 'afficherProfile'])->name('profile');
 
 Route::get('/parties-crees', [PartieController::class, 'partiesCrees']);
+
+Route::get('/continuer-partie/{partieId}', [PartieController::class,'continuerPartie'])->name('continuer.partie');

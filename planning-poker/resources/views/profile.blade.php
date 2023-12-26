@@ -21,7 +21,7 @@
                         <td>{{ $partie->etatpartie }}</td>
                         <td>
                             @if ($partie->etatpartie === 'en cours')
-                                <button>Reprendre</button>
+                            <a href="{{ route('continuer.partie', ['partieId' => $partie->id]) }}"> <button>Reprendre</button></a>
                             @endif
                             <button class="downloadBtn">Backlog <i class="fas fa-download"></i></button>
                         </td>

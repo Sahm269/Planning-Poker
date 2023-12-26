@@ -182,6 +182,22 @@ public function afficherProfile()
         return response()->json(['error' => 'Erreur serveur'], 500);
     }
 }
+public function continuerPartie($partieId)
+{
+    try {
+        // Retrieve the specified game from the database
+        $partie = Partie::find($partieId);
+
+        // Perform any additional logic needed for continuing a game
+
+        // Pass the game data to the view
+        return view('jeu', ['partie' => $partie]);
+    } catch (\Exception $e) {
+        // Handle errors
+        dd($e->getMessage()); // Output details of the exception
+        return response()->json(['error' => 'Erreur serveur'], 500);
+    }
+}
 
 
 

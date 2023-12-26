@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
@@ -35,17 +36,29 @@
 
       
             <div id="discussion">
-            <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
+            <div class="chronometre" id="chronometrevote">  </div> <!-- Chronomètre à gerer --> 
             <h3> Seule les joueurs qui ont joué la carte max et min c'est à dire les extremité ont le droit de parler. 
                 Discuter avant le fin du chronometre si non on passe dirrectement au vote</h3>
            
                 <img src="{{ asset('asset/discussion.gif') }}" height="200px">
 
             </div>
+            <div id="discussionmaj">
+            <div class="chronometre" id="chronometrevote"> </div> <!-- Chronomètre à gerer --> 
+            <h3> OUPS ! Il n'y a pas de majorité. Recommencez le vote</h3>
+                <img src="{{ asset('asset/rejouer.gif') }}" height="200px">
+
+            </div>
 
             <div id = "estimation">
                 <h3>La tâche est validée , vous pouvez passer à la tâche suivante. En appuiyannt sur le bouton next tache</h3>
                 <img src="{{ asset('asset/tacheok.gif') }}" height="200px">
+            </div>
+            <div id = "estimationmaj">
+                <h3>La tâche est validée  grace à la majorité absolue,  passez à la tâche suivante.</h3>
+                <canvas id="pieChart"></canvas>
+
+                <!--img src="{{ asset('asset/tacheok.gif') }}" height="200px"-->
             </div>
 
             <div id="interrogation">
@@ -76,7 +89,11 @@
         <div id="regle1" class="regle" >
             <!-- Contenu spécifique à la règle 1 -->
             <div class = "groupe2">
-                <div class="chronometre" id="chronometre">  </div> <!-- Chronomètre à gerer --> 
+                <div class="blocreglechrono">
+                <div class="chronometre" id="chronometre">  </div> 
+                <div id = "reglejeu" > MODE : {{ $partie->regle }}</div>
+                </div>
+
                 <div>
                     <ul class="liste-joueurs">
                     @foreach (json_decode($partie->nomJoueur, true) as $nomJoueur => $carteJouee)
@@ -126,9 +143,13 @@
 
 
             <ul class="backlog-list" id="backlogListvalide">
-                
-                
+                @foreach(json_decode($partie->tachevalide, true) as $tache => $estimation)
+                    <li>{{ $tache }} : {{ $estimation }}</li>
+                @endforeach
             </ul>
+                            
+                
+           
 </div>
 
 
