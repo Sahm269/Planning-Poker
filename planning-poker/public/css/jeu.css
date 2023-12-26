@@ -122,10 +122,32 @@
 }
 
 .chronometre {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
+    color: #2ecc71; /* Couleur du texte */
+    background-color: #ecf0f1; /* Couleur de fond */
+    padding: 10px; /* Espacement intérieur */
+    border-radius: 5px; /* Coins arrondis */
+    display: inline-block; /* Affichage en ligne avec espacement */
+    margin: 10px 0; /* Marge supérieure et inférieure */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+.blocreglechrono{
+    display: flex;
+    
+
 }
 
+#reglejeu{
+
+   text-transform: uppercase;
+   padding-left : 30px;
+   padding-top: 20px;
+   font-size: 14px;
+   font-weight: bold;
+  
+
+}
 .liste-joueurs {
     list-style: none;
     padding: 0;
@@ -137,8 +159,6 @@
 .joueur{
     display: flex;
 }
-
-
 .nom-joueur{
     text-transform: uppercase;
     font-weight: bold;

@@ -10,6 +10,7 @@ var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
 var allPlayersVoted = false;
 var regleValue = partieData.regle;
+var compteurVotes = 0;
 
 var tempsRestant1 = 180;
 var tempsRestant2 = 60;
@@ -122,7 +123,8 @@ function vote() {
 
     mettreAJourCartesJouees();
   }
-
+  compteurVotes++;
+  console.log(' compteurVotes ',  compteurVotes)
   afficheMinMax();
 
   // Set the flag to indicate that all players have voted
@@ -344,7 +346,6 @@ if (tousLesVotesSontIdentiques) {
       
     }
     else if( partieData.etatpartie === "finie")  {
-       
         document.getElementById('cartesDiv').style.display = 'none';
         document.getElementById('estimation').style.display = 'none';
         document.getElementById('discussion').style.display = 'none';
@@ -401,8 +402,22 @@ if (tousLesVotesSontIdentiques) {
 
 
         else{
-    
-            maxMajorite();
+            if (compteurVotes > 1) {
+                maxMajorite();
+            } else{
+                document.getElementById('cartesDiv').style.display = 'none';
+                document.getElementById('discussion').style.display = 'block';
+                document.getElementById('estimation').style.display = 'none';
+                document.getElementById('cafe').style.display = 'none';
+                document.getElementById('interrogation').style.display = 'none';
+                document.getElementById('estimationmaj').style.display = 'none';
+                document.getElementById('discussionmaj').style.display = 'none';
+                boutonNextTache.disabled = true;
+                boutonRevoter.disabled = false;
+                boutonNextTache.classList.add('bouton-desactive');
+                boutonRevoter.classList.remove('bouton-desactive');
+                chronometre2()}
+            }
         
         
        
@@ -414,7 +429,7 @@ if (tousLesVotesSontIdentiques) {
     }
   
   
-}
+
 
 
  
@@ -510,6 +525,7 @@ function mettreAJourTacheDebattre() {
 
 //(------------------------------------------------------------------------------------------ fonction qui valide une tache 
 function tachevalidee() {
+    compteurVotes=0;
     var tacheDebattreElement = document.getElementById('tacheDebattre');
     var tacheValideeListe = document.getElementById('backlogListvalide');
     var tacheRestanteListe = document.getElementById('backlogList');
@@ -825,6 +841,8 @@ for (let i = 0; i <= 12; i++) {
             chronometre();
             //alert("Passez le téléphone aux joueur suivant.");
             indexJoueurChrono++;
+
+
         }
     });
 }
@@ -837,7 +855,8 @@ function reinitialiserChronometre() {
 
 // Gestionnaire d'événements pour le boutonNextTache
 document.getElementById('boutonNextTache').addEventListener('click', function() {
-    reinitialiserChronometre();
+    if (partieData.etatpartie !== "finie"){
+    reinitialiserChronometre();}
     
 });
 

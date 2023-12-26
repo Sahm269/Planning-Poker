@@ -36,7 +36,7 @@
 
       
             <div id="discussion">
-            <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
+            <div class="chronometre" id="chronometrevote">  </div> <!-- Chronomètre à gerer --> 
             <h3> Seule les joueurs qui ont joué la carte max et min c'est à dire les extremité ont le droit de parler. 
                 Discuter avant le fin du chronometre si non on passe dirrectement au vote</h3>
            
@@ -44,9 +44,9 @@
 
             </div>
             <div id="discussionmaj">
-            <div class="chronometrevote" id="chronometrevote"> chronometre </div> <!-- Chronomètre à gerer --> 
-            <h3> OUPS ! Il n'y a pas de majorité, Discutez ou refaites le vote SVP</h3>
-                <img src="{{ asset('asset/discussion.gif') }}" height="200px">
+            <div class="chronometre" id="chronometrevote"> </div> <!-- Chronomètre à gerer --> 
+            <h3> OUPS ! Il n'y a pas de majorité. Recommencez le vote</h3>
+                <img src="{{ asset('asset/rejouer.gif') }}" height="200px">
 
             </div>
 
@@ -89,7 +89,11 @@
         <div id="regle1" class="regle" >
             <!-- Contenu spécifique à la règle 1 -->
             <div class = "groupe2">
-                <div class="chronometre" id="chronometre">  </div> <!-- Chronomètre à gerer --> 
+                <div class="blocreglechrono">
+                <div class="chronometre" id="chronometre">  </div> 
+                <div id = "reglejeu" > MODE : {{ $partie->regle }}</div>
+                </div>
+
                 <div>
                     <ul class="liste-joueurs">
                     @foreach (json_decode($partie->nomJoueur, true) as $nomJoueur => $carteJouee)
