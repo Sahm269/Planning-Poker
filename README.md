@@ -28,3 +28,13 @@
   - if toutes les cartes sont identiques et que c'est un café ou un point ?
   - majorité relative ==> page de message qui change et nb tour de jeu
   - crhonométre vote commprendre pourquoi il ne fonctionne avec une réniatilisation
+
+POUR LE 27/12
+- Remettre le backlog en mode json car pdf ne fct pas
+- Mettre en place 2 designs patterns supp
+- Mettre en place l'intégration continu
+- Mettre en place la documentation
+- Rapport
+- Nettoyer le code + mettre les commentaires partout + tous en francais
+- Faire la vidéo de présentation
+- Faire le readme
