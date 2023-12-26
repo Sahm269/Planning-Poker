@@ -220,6 +220,7 @@ function chronometre() {
         if (tempsRestant <= 0) {
             clearInterval(compteReboursInterval);
             document.getElementById('chronometre').innerText = 'Temps écoulé';
+            
 
         } else {
             tempsRestant--;
@@ -308,3 +309,33 @@ QUAND
 document.getElementById('discussion').style.display = 'block';
 FAIRE
 chronometre2();
+
+DANS COPIEPOKER A LA FIN DE LA FONCTION VOTE AJOUTER
+    // Vérifier si regleValue est égal à "majorite" avant d'attribuer l'estimation majoritaire à la tâche
+    var regleValue = partieData.regle;
+    if (regleValue === "majorite") {
+        var estimationMajoritaire = trouverEstimationMajoritaire(partieData.nomJoueur);
+        attribuerEstimationATache(estimationMajoritaire);
+    }
+
+DANS COPIEPOKER AJOUTER
+function attribuerEstimationATache(estimation) {
+    var tacheDebattreElement = document.getElementById('tacheDebattre');
+    var tacheActuelle = tacheDebattreElement.textContent;
+    // Attribution de l'estimation majoritaire à la tâche actuelle
+    partieData.backlog[tacheActuelle] = estimation;
+}
+
+DANS COPIEPOKER AJOUTER
+function trouverEstimationMajoritaire(estimations) {
+    var maxVotes = 0;
+    var carteMajoritaire = null;
+
+    for (var estimation in estimations) {
+        if (estimations.hasOwnProperty(estimation) && estimations[estimation] > maxVotes) {
+            maxVotes = estimations[estimation];
+            carteMajoritaire = estimation;
+        }
+    }
+    return carteMajoritaire;
+}
