@@ -745,38 +745,3 @@ function chronometre2() {
     // Retourner l'identifiant de l'intervalle
     return compteReboursInterval2;
 }
-//////////////
-var compteReboursInterval2;
-function chronometre2() {
-    // Réinitialiser le temps restant
-    var tempsRestant2 = 180;
-
-    // Fonction pour mettre à jour le compte à rebours
-    function mettreAJourCompteRebours2() {
-        var minutes2 = Math.floor(tempsRestant2 / 60);
-        var secondes2 = tempsRestant2 % 60;
-
-        // Affichage du compte à rebours dans votre élément HTML
-        document.getElementById('chronometrevote').innerText = minutes2 + 'm ' + secondes2 + 's';
-
-        // Vérification du compte à rebours
-        if (tempsRestant2 <= 0) {
-            clearInterval(compteReboursInterval2);
-            document.getElementById('chronometrevote').innerText = 'Temps écoulé';
-            revoter();
-            reinitialiserChronometre();
-
-        } else {
-            tempsRestant2--;
-        }
-    }
-
-    // Effacer l'ancien intervalle s'il existe
-    clearInterval(compteReboursInterval2);
-
-    // Définir le nouvel intervalle
-    compteReboursInterval2 = setInterval(mettreAJourCompteRebours2, 1000);
-
-    // Retourner l'identifiant de l'intervalle
-    return compteReboursInterval2;
-}
