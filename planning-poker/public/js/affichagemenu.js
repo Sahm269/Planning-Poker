@@ -65,6 +65,7 @@ function afficherDescription(regle) {
 
   function getDescription(regle) {
     // Retourner la description en fonction de la règle
+    //verifierOptionSelectionnee();
     switch (regle) {
       case 'regle1':
         return "Le mode de jeu stict correspond aux votes de l'estimation des taches du backlog jusqu'à que l'unanimité soit acquise. C'est-à-dire que chaqu'un leur tour les joeurs vont voter avant la fin du temps imprtit. A la fin les cartes seront réveler mais seule ce ayant choisit les avec cartes la plus faible valeur et la plus forte pouront s'exprimer pour ce mettre d'accord. Si durand le temps de négociation les joeurs sont encore en désacord le vote recommence. C'est opération sont répété jusqu'a que l'unanimité soit acquise ou que les joueurs ayans fait le minimu et le maximum se soit mis d'accord. Appuyer sur suivant pour valider ce mode de jeu.";
@@ -72,8 +73,14 @@ function afficherDescription(regle) {
         return "Le mode de jeu majorité relative correspond aux votent de l'estimation des taches du backlog jusqu'à que l'unanimité soit acquise ou la majorité relative. C'est-à-dire que chaqu'un leur tour les joeurs vont voter avant la fin du temps imprtit. Pour le premier tour de vote d'une taches : A la fin les cartes seront réveler mais seule ce ayant choisit les cartes avec la plus faible valeur et la plus forte pour s'exprimer pouront ce mettre d'accord. Si durand le temps de négociation les joeurs sont encore en désacord le vote recommence. Dans cas, l'estimation de la taches correspondrat à à l'estimation la plus présente dans le choix parmis celles choisit par les joueurs.Appuyer sur suivant pour valider ce mode de jeu.";
       default:
         return "Description non définie.";
+
     }
+   
   }
+
+
+  
+
 
   /* fonction qui affiches les taches selon le boutons cliquée  */
 
@@ -82,7 +89,7 @@ function afficherDescription(regle) {
         document.getElementById('backlogListvalide').style.display = 'none';
 
 
-           // Retirer la classe "active" de tous les boutons
+        // Retirer la classe "active" de tous les boutons
         var boutons = document.getElementsByClassName('buttonbacklog');
         for (var i = 0; i < boutons.length; i++) {
             boutons[i].classList.remove('active');

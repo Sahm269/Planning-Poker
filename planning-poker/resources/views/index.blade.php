@@ -21,8 +21,8 @@
     <!-----------------------                              Call to actions           ----------------------------->
     
     <div class="bouttons">
-       <a href="{{ route('/menu') }}"> <button class="itembouton"> ! Nouvelle Partie !</button></a>
-       <a href="{{ route('/profile') }}"> <button class="itembouton">continuer la partie</button></a>
+       <a href="{{ route('menu') }}"> <button class="itembouton"> ! Nouvelle Partie !</button></a>
+       <a href="{{ route('profile') }}"> <button class="itembouton">continuer la partie</button></a>
        
     </div>
     </div>

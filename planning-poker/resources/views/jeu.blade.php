@@ -76,7 +76,7 @@
         <div id="regle1" class="regle" >
             <!-- Contenu spécifique à la règle 1 -->
             <div class = "groupe2">
-                <div class="chronometre" id="chronometre"> chronometre </div> <!-- Chronomètre à gerer --> 
+                <div class="chronometre" id="chronometre">  </div> <!-- Chronomètre à gerer --> 
                 <div>
                     <ul class="liste-joueurs">
                     @foreach (json_decode($partie->nomJoueur, true) as $nomJoueur => $carteJouee)

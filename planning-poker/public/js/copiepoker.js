@@ -25,10 +25,26 @@ console.log (partieData.nomJoueur)
 mettreAJourAffichage();
 onload=initialisation
 function initialisation(){
-    tempsRestant2 = 60;
     mettreAJourTacheDebattre();
     ecouteur();
+    verifierOptionSelectionnee();
 }
+
+
+
+function verifierOptionSelectionnee() {
+
+ // Supposons que partieData.regle contient la valeur récupérée de la base de données
+    var regleValue = partieData.regle;
+    //var regleElement = document.getElementById('regle2'); 
+    //regleElement.textContent = regleValue;
+  
+  console.log( regleValue);
+   
+   
+    
+}
+
 
 //-------------------------------------fonction qui gere les tour du joueur ici on a utilisé lordrre de lobjet nomJoueur qui stocke les nom des joueurs et la carte jouée
 function tourJoueur(nomJoueur, valeurCarte) {
@@ -256,7 +272,7 @@ if (tousLesVotesSontIdentiques) {
     }
     }
     else{
-       
+        
         document.getElementById('cartesDiv').style.display = 'none';
         document.getElementById('discussion').style.display = 'block';
         document.getElementById('estimation').style.display = 'none';
@@ -266,17 +282,15 @@ if (tousLesVotesSontIdentiques) {
         boutonRevoter.disabled = false;
         boutonNextTache.classList.add('bouton-desactive');
         boutonRevoter.classList.remove('bouton-desactive');
+        chronometre2()
     
     }
   
-
-      
-
   
 }
 
 
-
+ 
 
 // ----------------------------------------------------------------------------------Fonction Tache suivante 
 
@@ -518,36 +532,6 @@ function obtenirBacklog(idListe) {
     return backlog;
 }
 
-
-// chronometre a definir au debut une partie ;
-/*function chronometre(){
-
-    // Définir la durée du compte à rebours en secondes
-    // Demander à l'utilisateur de choixir ???
-    var tempsRestant = 180;
-
-    // Fonction pour mettre à jour le compte à rebours
-    function mettreAJourCompteRebours() {
-        var minutes = Math.floor(tempsRestant / 60);
-        var secondes = tempsRestant % 60;
-
-        // Affichage du compte à rebours dans votre élément HTML
-        document.getElementById('chronometrevote').innerText = minutes + 'm ' + secondes + 's';
-
-        // Vérification du compte à rebour
-        if (tempsRestant <= 0) {
-            clearInterval(compteReboursInterval);
-            document.getElementById('chronometrevote').innerText = 'Temps écoulé';
-            // Ici du code à exécuter lorsque le temps est écoulé
-        } else {
-            tempsRestant--;
-        }
-    }
-
-    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
-    var compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
-}*/
-
 function telechargerJson() {
     alert("Votre partie sera enregistrée et téléchargée en format JSON");
 
@@ -637,37 +621,162 @@ function telechargerPDF() {
 
 
 
-// Déclaration de la fonction à l'extérieur de l'événement onload
+//AU CHARGEMENT DE LA PAGE LANCE CHRONOMETTRE
+document.addEventListener('DOMContentLoaded', function () {
+    chronometre();
+  
+    
+});
+
+var compteReboursInterval;
+var indexJoueurChrono=1;
 
 
-
-
-/*/ chronometre a definir au debut une partie ;
-function chronometre2(){
-
-    // Définir la durée du compte à rebours en secondes
-    // Demander à l'utilisateur de choixir ???
-    tempsRestant2 = 60;
+function chronometre() {
+    // Réinitialiser le temps restant
+    var tempsRestant = 60;
 
     // Fonction pour mettre à jour le compte à rebours
-    function mettreAJourCompteRebours2() {
-        var minutes = Math.floor(tempsRestant2 / 60);
-        var secondes = tempsRestant2 % 60;
+    function mettreAJourCompteRebours() {
+        var minutes = Math.floor(tempsRestant / 60);
+        var secondes = tempsRestant % 60;
 
         // Affichage du compte à rebours dans votre élément HTML
         document.getElementById('chronometre').innerText = minutes + 'm ' + secondes + 's';
 
-        // Vérification du compte à rebour
-        if (tempsRestant2 <= 0) {
+        // Vérification du compte à rebours
+        if (tempsRestant <= 0) {
             clearInterval(compteReboursInterval);
+            tourJoueur(ordreJoueurs[indexJoueurActuel], '?');
             document.getElementById('chronometre').innerText = 'Temps écoulé';
+            console.log(indexJoueurChrono);
+            console.log(ordreJoueurs.length);
+            //indexJoueurChrono++;
+           if (indexJoueurActuel !== 0){
+               chronometre();
+           }
+            
+
+        } else {
+            tempsRestant--;
+        }
+    }
+
+    // Effacer l'ancien intervalle s'il existe
+    clearInterval(compteReboursInterval);
+
+    // Définir le nouvel intervalle
+    compteReboursInterval = setInterval(mettreAJourCompteRebours, 1000);
+
+    // Retourner l'identifiant de l'intervalle
+    return compteReboursInterval;
+}
+
+// Gestionnaire d'événements à chaque div de carte
+for (let i = 0; i <= 12; i++) {
+    // Supposons que vos div ont les identifiants de 'carte0' à 'carte12'
+    var carteDiv = document.getElementById('carte' + i);
+    // Gestionnaire d'événements à chaque div de carte
+    carteDiv.addEventListener('click', function() {
+        // Arrêter le chronomètre en utilisant l'identifiant de l'intervalle
+        clearInterval(compteReboursInterval);
+        if (indexJoueurChrono==ordreJoueurs.length){
+           // alert("Tous le monde a voté !");
+         // document.getElementById('chronometre').innerText = 'chronomètre';
+        }
+        else{
+            // Redémarrer le chronomètre après un délai 2 secondes
+            //setTimeout(chronometre, 2000);
+            chronometre();
+            //alert("Passez le téléphone aux joueur suivant.");
+            indexJoueurChrono++;
+        }
+    });
+}
+
+// Fonction pour réinitialiser les variables du chronomètre
+function reinitialiserChronometre() {
+    indexJoueurChrono= 1;
+    chronometre();
+}
+
+// Gestionnaire d'événements pour le boutonNextTache
+document.getElementById('boutonNextTache').addEventListener('click', function() {
+    reinitialiserChronometre();
+    
+});
+
+document.getElementById('boutonRevoter').addEventListener('click', function() {
+    reinitialiserChronometre();
+    
+});
+
+///////////////
+var compteReboursInterval2;
+function chronometre2() {
+    // Réinitialiser le temps restant
+    var tempsRestant2 = 180;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours2() {
+        var minutes2 = Math.floor(tempsRestant2 / 60);
+        var secondes2 = tempsRestant2 % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometrevote').innerText = minutes2 + 'm ' + secondes2 + 's';
+
+        // Vérification du compte à rebours
+        if (tempsRestant2 <= 0) {
+            clearInterval(compteReboursInterval2);
+            document.getElementById('chronometrevote').innerText = 'Temps écoulé';
             // Ici du code à exécuter lorsque le temps est écoulé
+
         } else {
             tempsRestant2--;
         }
     }
 
-    // Fonction chronometre appele toutes les secondes pour mettre à jours le compte à rebour
-    var compteReboursInterval = setInterval(mettreAJourCompteRebours2, 1000);
+    // Effacer l'ancien intervalle s'il existe
+    clearInterval(compteReboursInterval2);
+
+    // Définir le nouvel intervalle
+    compteReboursInterval2 = setInterval(mettreAJourCompteRebours2, 1000);
+
+    // Retourner l'identifiant de l'intervalle
+    return compteReboursInterval2;
 }
-*/
+//////////////
+var compteReboursInterval2;
+function chronometre2() {
+    // Réinitialiser le temps restant
+    var tempsRestant2 = 180;
+
+    // Fonction pour mettre à jour le compte à rebours
+    function mettreAJourCompteRebours2() {
+        var minutes2 = Math.floor(tempsRestant2 / 60);
+        var secondes2 = tempsRestant2 % 60;
+
+        // Affichage du compte à rebours dans votre élément HTML
+        document.getElementById('chronometrevote').innerText = minutes2 + 'm ' + secondes2 + 's';
+
+        // Vérification du compte à rebours
+        if (tempsRestant2 <= 0) {
+            clearInterval(compteReboursInterval2);
+            document.getElementById('chronometrevote').innerText = 'Temps écoulé';
+            revoter();
+            reinitialiserChronometre();
+
+        } else {
+            tempsRestant2--;
+        }
+    }
+
+    // Effacer l'ancien intervalle s'il existe
+    clearInterval(compteReboursInterval2);
+
+    // Définir le nouvel intervalle
+    compteReboursInterval2 = setInterval(mettreAJourCompteRebours2, 1000);
+
+    // Retourner l'identifiant de l'intervalle
+    return compteReboursInterval2;
+}

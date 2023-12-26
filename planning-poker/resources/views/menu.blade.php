@@ -45,10 +45,10 @@
 
          <!-- Boutons pour les règles avec champs de description Ondoit gerer cette partie avec un du js qui affichera un petit pop up a chaque fois qu'on va cliquer sur une regle  -->
         <div class="form-control" id="regle" >
-            <input type="radio" name="regle" id="regle1" onclick="afficherDescription('regle1')">
+            <input type="radio" name="regle" value="strict" id="regle1" onclick="afficherDescription('regle1')">
             <label for="regle1">Mode strict</label>
 
-            <input type="radio" name="regle" id="regle2" onclick="afficherDescription('regle2')">
+            <input type="radio" name="regle" value="majorite" id="regle2" onclick="afficherDescription('regle2')">
             <label for="regle2">Majorité Relative</label>
 
             <!--input type="radio" name="regle" id="regle3" onclick="afficherDescription('regle3')">
