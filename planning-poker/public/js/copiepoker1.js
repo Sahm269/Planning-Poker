@@ -10,7 +10,6 @@ var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
 var allPlayersVoted = false;
 var regleValue = partieData.regle;
-var myPieChart;
 var compteurVotes = 0;
 
 var tempsRestant1 = 180;
@@ -136,8 +135,8 @@ function vote() {
 
 
 }
-
-function maxMajorite(partieData) {
+var myPieChart;
+function maxMajorite() {
     var carteOccurrences = {};
 
     // Compter les occurrences de chaque carte
@@ -255,7 +254,6 @@ function maxMajorite(partieData) {
 
 // --------------------------------------------------------------------------------function qui affiche le min et le max et traite le vote
 function afficheMinMax() {
-    estimerTache(regleValue, partieData);
     var votes = partieData.nomJoueur;
     console.log(votes)
     // Convertir les valeurs en tableau
@@ -361,8 +359,72 @@ if (tousLesVotesSontIdentiques) {
         boutonNextTache.classList.add('bouton-desactive');
         boutonRevoter.classList.add('bouton-desactive');
     }
-       
+        else {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'block';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+
+      
+        // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+        console.log('Estimation attribuée:', estimation);
+        estimation = valeurVote;
+        
+        // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+        console.log('Estimation attribuée:', estimation);
+        boutonNextTache.disabled = false;
+        boutonRevoter.disabled = true;
+        boutonNextTache.classList.remove('bouton-desactive');
+        boutonRevoter.classList.add('bouton-desactive');
+    
+    
     }
+    }
+    else{
+        
+        if (regleValue==='strict'){
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('discussion').style.display = 'block';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
+        chronometre2()}
+
+
+        else{
+            if (compteurVotes > 1) {
+                maxMajorite();
+            } else{
+                document.getElementById('cartesDiv').style.display = 'none';
+                document.getElementById('discussion').style.display = 'block';
+                document.getElementById('estimation').style.display = 'none';
+                document.getElementById('cafe').style.display = 'none';
+                document.getElementById('interrogation').style.display = 'none';
+                document.getElementById('estimationmaj').style.display = 'none';
+                document.getElementById('discussionmaj').style.display = 'none';
+                boutonNextTache.disabled = true;
+                boutonRevoter.disabled = false;
+                boutonNextTache.classList.add('bouton-desactive');
+                boutonRevoter.classList.remove('bouton-desactive');
+                chronometre2()}
+            }
+        
+        
+       
+      
+
+
+        }
     
     }
   
@@ -848,115 +910,3 @@ function chronometre2() {
 
 
 
-
-
-
-
-
-
-
-
-
-/* ________________________________________________________DESIGN PATTERN STRATEGY______________________________________ */
-function estimerTache(regleValue, partieData) {
-    var estimationStrategy;
-  
-    if (regleValue === 'strict') {
-      estimationStrategy = new StrictEstimationStrategy();
-    } else if (regleValue === 'majorite') {
-      estimationStrategy = new MajorityEstimationStrategy();
-    } else {
-      // Stratégie par défaut ou gestion d'erreur si nécessaire
-      estimationStrategy = new StrictEstimationStrategy();
-    }
-  
-    // Utilisation de la stratégie pour effectuer l'estimation
-    estimationStrategy.estimate(partieData);
-  }
-  
-// Classe de stratégie d'estimation de base
-class EstimationStrategy {
-    estimate(partieData) {
-      // Implémentation par défaut, peut être remplacée par des sous-classes
-    }
-  }
-  
-// Classe de stratégie d'estimation pour la règle 'strict'
-class StrictEstimationStrategy extends EstimationStrategy {
-    estimate(partieData) {
-    console.log('on est dans le strict ');
-
-        
-// Vérifier si tous les joueurs ont voté la même carte
-var votesUniques = new Set(Object.values(partieData.nomJoueur));
-var tousLesVotesSontIdentiques = votesUniques.size === 1;
-
-// Sélectionner les boutons
-var boutonNextTache = document.querySelector('#boutonNextTache');
-var boutonRevoter = document.querySelector('#boutonRevoter');
-// Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
-if (tousLesVotesSontIdentiques) {
-    var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
-    document.getElementById('cartesDiv').style.display = 'none';
-    document.getElementById('estimation').style.display = 'block';
-    document.getElementById('discussion').style.display = 'none';
-    document.getElementById('cafe').style.display = 'none';
-    document.getElementById('interrogation').style.display = 'none';
-    document.getElementById('fin').style.display = 'none';
-    document.getElementById('estimationmaj').style.display = 'none';
-    document.getElementById('discussionmaj').style.display = 'none';
-
-  
-    // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
-    console.log('Estimation attribuée:', estimation);
-    estimation = valeurVote;
-    
-    // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
-    console.log('Estimation attribuée:', estimation);
-    boutonNextTache.disabled = false;
-    boutonRevoter.disabled = true;
-    boutonNextTache.classList.remove('bouton-desactive');
-    boutonRevoter.classList.add('bouton-desactive');
-      
-  } 
-  else{
-        document.getElementById('cartesDiv').style.display = 'none';
-        document.getElementById('discussion').style.display = 'block';
-        document.getElementById('estimation').style.display = 'none';
-        document.getElementById('cafe').style.display = 'none';
-        document.getElementById('interrogation').style.display = 'none';
-        document.getElementById('estimationmaj').style.display = 'none';
-        document.getElementById('discussionmaj').style.display = 'none';
-        boutonNextTache.disabled = true;
-        boutonRevoter.disabled = false;
-        boutonNextTache.classList.add('bouton-desactive');
-        boutonRevoter.classList.remove('bouton-desactive');
-        chronometre2()
-  }
-
-} }
-  
-  // Classe de stratégie d'estimation pour la règle 'majorite'
-  class MajorityEstimationStrategy extends EstimationStrategy {
-    estimate(partieData) {
-      if (compteurVotes>1){
-      maxMajorite(partieData);}
-      else{
-        document.getElementById('cartesDiv').style.display = 'none';
-        document.getElementById('discussion').style.display = 'block';
-        document.getElementById('estimation').style.display = 'none';
-        document.getElementById('cafe').style.display = 'none';
-        document.getElementById('interrogation').style.display = 'none';
-        document.getElementById('estimationmaj').style.display = 'none';
-        document.getElementById('discussionmaj').style.display = 'none';
-        boutonNextTache.disabled = true;
-        boutonRevoter.disabled = false;
-        boutonNextTache.classList.add('bouton-desactive');
-        boutonRevoter.classList.remove('bouton-desactive');
-        chronometre2()}
-      
-      console.log('on est dans le mode majorite ')
-      
-    }
-  }
-  
