@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\Controleur;
 
@@ -9,14 +8,6 @@ Route::get('/', function () {
 })->name('accueil');
 
 
-/*route::get('/menu', function () {
-    return view('menu');
-});
-
-
-Route::get('/menu/jeu', function () {
-    return view('jeu');
-});*/
 use App\Http\Controllers\PartieController;
 // Route pour afficher la page de menu
 Route::get('/menu', function () {

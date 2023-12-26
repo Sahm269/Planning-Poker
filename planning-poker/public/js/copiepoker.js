@@ -9,6 +9,7 @@ var index =1;
 var indexJoueurActuel = 0;  // Initialisation à 0, le premier joueur à jouer
 var etat = partieData.etatpartie;
 var allPlayersVoted = false;
+var regleValue = partieData.regle;
 
 var tempsRestant1 = 180;
 var tempsRestant2 = 60;
@@ -27,23 +28,12 @@ onload=initialisation
 function initialisation(){
     mettreAJourTacheDebattre();
     ecouteur();
-    verifierOptionSelectionnee();
+   
 }
 
 
 
-function verifierOptionSelectionnee() {
 
- // Supposons que partieData.regle contient la valeur récupérée de la base de données
-    var regleValue = partieData.regle;
-    //var regleElement = document.getElementById('regle2'); 
-    //regleElement.textContent = regleValue;
-  
-  console.log(regleValue);
-   
-   
-    
-}
 
 
 //-------------------------------------fonction qui gere les tour du joueur ici on a utilisé lordrre de lobjet nomJoueur qui stocke les nom des joueurs et la carte jouée
@@ -129,6 +119,7 @@ function vote() {
     index = index + 1;
     console.log(carteJoueeElement)
 
+
     mettreAJourCartesJouees();
   }
 
@@ -142,6 +133,72 @@ function vote() {
 
 
 }
+
+function maxMajorite() {
+    var carteOccurrences = {};
+
+    // Compter les occurrences de chaque carte
+    for (var joueur in partieData.nomJoueur) {
+        var carteJouee = partieData.nomJoueur[joueur];
+
+        // Ignorer les cartes '?' et 'cafe'
+        if (carteJouee !== '?' && carteJouee !== 'cafe') {
+            // Initialiser le compteur de la carte si elle n'existe pas encore
+            if (!carteOccurrences[carteJouee]) {
+                carteOccurrences[carteJouee] = 1;
+            } else {
+                // Incrémenter le compteur si la carte a déjà été rencontrée
+                carteOccurrences[carteJouee]++;
+            }
+        }
+    }
+  // Trouver la carte la plus jouée
+  var carteMaxOccurrences;
+  var maxOccurrences = 0;
+
+  // Parcourir les occurrences pour trouver la carte la plus jouée
+  for (var carte in carteOccurrences) {
+      if (carteOccurrences[carte] > maxOccurrences) {
+          maxOccurrences = carteOccurrences[carte];
+          carteMaxOccurrences = carte;
+      }
+  }
+
+
+    // Vérifier s'il y a une majorité
+    if (maxOccurrences > 1) {
+        console.log(`La carte la plus jouée est : ${carteMaxOccurrences} (${maxOccurrences} fois)`);
+        estimation = carteMaxOccurrences;
+
+            document.getElementById('cartesDiv').style.display = 'none';
+            document.getElementById('discussion').style.display = 'none';
+            document.getElementById('estimation').style.display = 'block';
+            document.getElementById('cafe').style.display = 'none';
+            document.getElementById('interrogation').style.display = 'none';
+            boutonNextTache.disabled = false;
+            boutonRevoter.disabled = true;
+            boutonNextTache.classList.remove('bouton-desactive');
+            boutonRevoter.classList.add('bouton-desactive');
+          
+  
+    } else {
+            document.getElementById('cartesDiv').style.display = 'none';
+            document.getElementById('discussion').style.display = 'block';
+            document.getElementById('estimation').style.display = 'none';
+            document.getElementById('cafe').style.display = 'none';
+            document.getElementById('interrogation').style.display = 'none';
+            boutonNextTache.disabled = true;
+            boutonRevoter.disabled = false;
+            boutonNextTache.classList.add('bouton-desactive');
+            boutonRevoter.classList.remove('bouton-desactive');
+            chronometre2();
+        console.log("Pas de majorité, toutes les cartes ont été jouées le même nombre de fois.");
+       
+    }
+
+}
+
+
 
 
 
@@ -273,6 +330,7 @@ if (tousLesVotesSontIdentiques) {
     }
     else{
         
+        if (regleValue==='strict'){
         document.getElementById('cartesDiv').style.display = 'none';
         document.getElementById('discussion').style.display = 'block';
         document.getElementById('estimation').style.display = 'none';
@@ -282,7 +340,16 @@ if (tousLesVotesSontIdentiques) {
         boutonRevoter.disabled = false;
         boutonNextTache.classList.add('bouton-desactive');
         boutonRevoter.classList.remove('bouton-desactive');
-        chronometre2()
+        chronometre2()}
+
+
+        else{
+        
+         maxMajorite();
+      
+
+
+        }
     
     }
   
