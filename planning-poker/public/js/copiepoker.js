@@ -39,7 +39,7 @@ function verifierOptionSelectionnee() {
     //var regleElement = document.getElementById('regle2'); 
     //regleElement.textContent = regleValue;
   
-  console.log( regleValue);
+  console.log(regleValue);
    
    
     
