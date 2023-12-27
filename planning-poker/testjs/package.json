@@ -1,0 +1,17 @@
+{
+  "name": "testjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "docdash": "^2.0.2"
+  },
+  "description": ""
+}
