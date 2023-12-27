@@ -392,7 +392,7 @@ function estimerTache(regleValue, partieData) {
     estimate(partieData) {
       // Code de base
   }
-  
+}
   // Classe de stratégie d'estimation pour la règle 'majorite'
   class MajorityEstimationStrategy extends EstimationStrategy {
     estimate(partieData) {
@@ -407,3 +407,148 @@ function estimerTache(regleValue, partieData) {
   // Appel de la fonction principale pour estimer la tâche
   estimerTache(regleValue, partieData);
   
+  ////////////////////////////////////
+  ///////////////////////////////////
+  //////////////////////////////////
+
+  class State {
+    handle() {
+      // Comportement par défaut ou générique
+    }
+  }
+  
+  class DiscussionMajoriteState extends State {
+    handle() {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'block';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
+        chronometre2();
+        console.log("Pas de majorité, toutes les cartes ont été jouées le même nombre de fois.");
+    }
+  }
+  
+  class EstimationMajoriteState extends State {
+    handle() {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'block';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        
+        boutonNextTache.disabled = false;
+        boutonRevoter.disabled = true;
+        boutonNextTache.classList.remove('bouton-desactive');
+        boutonRevoter.classList.add('bouton-desactive');
+    }
+  }
+  
+  class PauseCafeState extends State {
+    handle() {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'block';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
+    }
+  }
+  
+  class InterrogationState extends State {
+    handle() {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'block';
+        document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+        boutonNextTache.disabled = true;
+        boutonRevoter.disabled = false;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.remove('bouton-desactive');
+    }
+  }
+  
+  class PartieFinieState extends State {
+    handle() {
+        document.getElementById('cartesDiv').style.display = 'none';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'block';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+        document.getElementById('boutonRevoter').disabled = true;
+        document.getElementById('boutonNextTache').disabled = true;
+        boutonNextTache.classList.add('bouton-desactive');
+        boutonRevoter.classList.add('bouton-desactive');
+    }
+  }
+  
+  class PartieEnCoursState extends State {
+    handle() {
+        document.getElementById('cartesDiv').style.display = 'block';
+        document.getElementById('estimation').style.display = 'none';
+        document.getElementById('discussion').style.display = 'none';
+        document.getElementById('cafe').style.display = 'none';
+        document.getElementById('interrogation').style.display = 'none';
+        document.getElementById('fin').style.display = 'none';
+        document.getElementById('estimationmaj').style.display = 'none';
+        document.getElementById('discussionmaj').style.display = 'none';
+    }
+  }
+  
+  // Utilisation du State
+  const discussionMajoriteState = new DiscussionMajoriteState();
+  // Appel de la méthode handle pour mettre à jour l'affichage selon l'état.
+  discussionMajoriteState.handle(); 
+
+  ///faire de même pour chaque
+
+  ////////////////
+  /////////////
+  ///////////
+
+  // Interface Command
+class Command {
+    execute() {}
+  }
+
+  class TourJoueurCommand extends Command {
+    constructor(nomJoueur, valeurCarte, indexJoueurActuel) {
+      super();
+      this.nomJoueur = nomJoueur;
+      this.valeurCarte = valeurCarte;
+      this.indexJoueurActuel = indexJoueurActuel;
+    }
+  
+    execute() {
+      tourJoueur(this.nomJoueur, this.valeurCarte, this.indexJoueurActuel);
+    }
+  }
+
+  // Au lieu de
+// tourJoueur(ordreJoueurs[indexJoueurActuel], carte.textContent);
+
+// Utilisez
+const tourCommand = new TourJoueurCommand(ordreJoueurs[indexJoueurActuel], carte.textContent, indexJoueurActuel);
+tourCommand.execute();
