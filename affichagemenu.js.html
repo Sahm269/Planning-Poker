@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: affichagemenu.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: affichagemenu.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Recuperation des elements
+var formulaire = document.querySelector('#setupForm');
+var pseudo_hote = document.querySelector('#pseudoHote');
+var nom_projet = document.querySelector('#nomProjet');
+var nombre_joueur = document.querySelector('#nombreJoueur');
+var tab_nom_joueur = [];
+var backlog = document.querySelector('#backlog');
+var regleValue = document.querySelector('input[name="regle"]:checked');
+
+
+//evenements
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Add player input fields dynamically based on the number of players
+    document.getElementById('nombreJoueur').addEventListener('input', function () {
+        const numberOfPlayers = parseInt(this.value);
+        const playersContainer = document.getElementById('nomJoueur');
+        playersContainer.innerHTML = ""; // Clear previous inputs
+
+        for (let i = 1; i &lt;= numberOfPlayers; i++) {
+            const playerInput = document.createElement('input');
+            playerInput.type = 'text';
+            playerInput.placeholder = 'Joueur ' + i;
+            playerInput.name = 'player' + i;
+            playerInput.id = 'nom_du_joueur' + 1;
+            playersContainer.appendChild(playerInput);
+        }
+    });
+});
+
+
+/**
+ * Recupération des parties du formaulaire
+ * @param {string}
+ */
+
+// Fonctions 
+function showPart(part) {
+    var parts = ['partie1', 'partie2', 'partie3'];
+
+    // Hide all parts
+    for (var i = 0; i &lt; parts.length; i++) {
+        document.querySelector('.' + parts[i]).style.display = 'none';
+    }
+
+    // Show the selected part
+    document.querySelector('.' + part).style.display = 'block';
+}
+
+// ...
+
+// gestion de la regle choisie 
+function afficherDescription(regle) {
+    // Récupérer la description en fonction de la règle
+    let description = getDescription(regle);
+
+    // Afficher le popup et l'overlay
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+    document.getElementById('descriptionText').innerHTML = description;
+  }
+
+  function fermerPopup() {
+    // Fermer le popup et l'overlay
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+  }
+
+  function getDescription(regle) {
+    // Retourner la description en fonction de la règle
+    //verifierOptionSelectionnee();
+    switch (regle) {
+      case 'regle1':
+        return "Le mode de jeu stict correspond aux votes de l'estimation des taches du backlog jusqu'à que l'unanimité soit acquise. C'est-à-dire que chaqu'un leur tour les joeurs vont voter avant la fin du temps imprtit. A la fin les cartes seront réveler mais seule ce ayant choisit les avec cartes la plus faible valeur et la plus forte pouront s'exprimer pour ce mettre d'accord. Si durand le temps de négociation les joeurs sont encore en désacord le vote recommence. C'est opération sont répété jusqu'a que l'unanimité soit acquise ou que les joueurs ayans fait le minimu et le maximum se soit mis d'accord. Appuyer sur suivant pour valider ce mode de jeu.";
+      case 'regle2':
+        return "Le mode de jeu majorité relative correspond aux votent de l'estimation des taches du backlog jusqu'à que l'unanimité soit acquise ou la majorité relative. C'est-à-dire que chaqu'un leur tour les joeurs vont voter avant la fin du temps imprtit. Pour le premier tour de vote d'une taches : A la fin les cartes seront réveler mais seule ce ayant choisit les cartes avec la plus faible valeur et la plus forte pour s'exprimer pouront ce mettre d'accord. Si durand le temps de négociation les joeurs sont encore en désacord le vote recommence. Dans cas, l'estimation de la taches correspondrat à à l'estimation la plus présente dans le choix parmis celles choisit par les joueurs.Appuyer sur suivant pour valider ce mode de jeu.";
+      default:
+        return "Description non définie.";
+
+    }
+   
+  }
+
+
+  
+
+
+  /* fonction qui affiches les taches selon le boutons cliquée  */
+
+    function afficherTaches(liste,bouton) {
+        document.getElementById('backlogList').style.display = 'none';
+        document.getElementById('backlogListvalide').style.display = 'none';
+
+
+        // Retirer la classe "active" de tous les boutons
+        var boutons = document.getElementsByClassName('buttonbacklog');
+        for (var i = 0; i &lt; boutons.length; i++) {
+            boutons[i].classList.remove('active');
+        }
+        // Afficher la liste spécifiée
+        document.getElementById(liste).style.display = 'block';
+        bouton.classList.add('active');
+    }
+// Fonction pour récupérer la partie enregistrée
+function recuperer() {
+  
+  
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#showPart">showPart</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Dec 27 2023 14:03:25 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
