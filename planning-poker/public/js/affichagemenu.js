@@ -29,7 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
+/**
+ * Recupération des parties du formaulaire
+ * @param {string}
+ */
 
 // Fonctions 
 function showPart(part) {
