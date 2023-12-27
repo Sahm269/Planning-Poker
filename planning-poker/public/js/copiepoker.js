@@ -311,8 +311,6 @@ var boutonRevoter = document.querySelector('#boutonRevoter');
 // Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
 if (tousLesVotesSontIdentiques) {
     var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
-
-
     if (valeurVote === 'cafe') {
          estimation = '';
             enregistrer();
@@ -360,6 +358,29 @@ if (tousLesVotesSontIdentiques) {
         document.getElementById('boutonNextTache').disabled = true;
         boutonNextTache.classList.add('bouton-desactive');
         boutonRevoter.classList.add('bouton-desactive');
+    } else{
+
+    document.getElementById('cartesDiv').style.display = 'none';
+    document.getElementById('estimation').style.display = 'block';
+    document.getElementById('discussion').style.display = 'none';
+    document.getElementById('cafe').style.display = 'none';
+    document.getElementById('interrogation').style.display = 'none';
+    document.getElementById('fin').style.display = 'none';
+    document.getElementById('estimationmaj').style.display = 'none';
+    document.getElementById('discussionmaj').style.display = 'none';
+
+  
+    // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+    console.log('Estimation attribuée:', estimation);
+    estimation = valeurVote;
+    
+    // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+    console.log('Estimation attribuée:', estimation);
+    boutonNextTache.disabled = false;
+    boutonRevoter.disabled = true;
+    boutonNextTache.classList.remove('bouton-desactive');
+    boutonRevoter.classList.add('bouton-desactive');
+      
     }
        
     }
@@ -609,6 +630,7 @@ function enregistrer() {
 
 // Fonction pour obtenir les backlogs des tâches restantes ou validées
 function obtenirBacklog(idListe) {
+
     var backlogListe = document.getElementById(idListe);
     var backlog = {};
 
@@ -618,6 +640,31 @@ function obtenirBacklog(idListe) {
     });
 
     return backlog;
+}function telechargerbacklog(){
+    enregistrer()
+    var donneesBacklog = {
+        backlogListvalide: partieData.tachevalide,
+        NomProjet: partieData.nom_projet
+        
+    };
+    var blob = new Blob([JSON.stringify(donneesBacklog)], { type: 'application/json' });
+
+    // Créez un URL pour le Blob
+    var url = window.URL.createObjectURL(blob);
+
+    // Créez un lien et définissez l'URL du lien sur l'URL du Blob
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'backlog.json'; // Nom du fichier téléchargé
+    document.body.appendChild(a);
+
+    // Cliquez sur le lien pour déclencher le téléchargement
+    a.click();
+
+    // Retirez le lien de l'élément body
+    document.body.removeChild(a);
+
+
 }
 
 function telechargerJson() {

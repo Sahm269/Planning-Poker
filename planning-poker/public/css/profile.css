@@ -62,3 +62,38 @@
 .downloadBtn {
     margin-left: 10px;
 }
+
+.newPart button{
+    background: var(--color-hover);
+    border: none;
+    color: var(--color-white);
+    font-family: inherit;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.newPart button:hover{
+    background: var(--color-first);
+cursor: pointer;}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile h2 {
+    margin-left: 10px; /* Espacement entre l'icône et le nom */
+}
+
+.logout a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333; /* Couleur du texte du lien, adaptez selon votre design */
+}
+
+.logout img {
+    margin-right: 5px; /* Espacement entre l'icône et le texte */
+}

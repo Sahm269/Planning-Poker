@@ -1,26 +1,15 @@
 <?php
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Partie;
+use App\Models\User; 
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Response;
 use PDF;
 class PartieController extends Controller
 {
-    
-
-
-public function genererPDF()
-{
-    // Récupérer la dernière partie depuis la base de données
-    $partie = Partie::latest()->first();
-
-    // Générer le PDF
-    $pdf = PDF::loadView('pdf.tachevalide', ['partie' => $partie]);
-
-    // Télécharger le PDF
-    return $pdf->download('tachevalide.pdf');
-}
-
+   
     
     public function creerPartie(Request $request)
     {
@@ -44,7 +33,7 @@ public function genererPDF()
         // Créer une nouvelle partie dans la base de données
         $partie = new Partie;
         $partie->nom_projet = $request->input('nomProjet');
-        $partie->pseudo_hote = $request->input('pseudoHote');
+        $partie->pseudo_hote = auth()->user()->pseudo_hote;
         $partie->etatpartie = 'en cours'; 
         $partie->chronometre = 0; 
         $partie->nbjoueur = $request->input('nombreJoueur');
@@ -155,15 +144,24 @@ public function enregistrerPartie(Request $request)
 
     return response()->json(['message' => 'Partie mise à jour avec succès']);
 }
-
 public function partiesCrees()
 {
     try {
-        $partiesCrees = Partie::all();
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
 
-        return response()->json($partiesCrees);
+        // Vérifier si l'utilisateur est connecté
+        if ($user) {
+            // Récupérer les parties créées par l'utilisateur connecté
+            $partiesCrees = Partie::where('pseudo_hote', $user->pseudo_hote)->get();
+
+            return response()->json($partiesCrees);
+        } else {
+            // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+            return response()->json(['error' => 'Utilisateur non connecté'], 401);
+        }
     } catch (\Exception $e) {
-        // Gérez les erreurs
+        // Gérer les erreurs
         return response()->json(['error' => 'Erreur serveur'], 500);
     }
 }
@@ -171,17 +169,28 @@ public function partiesCrees()
 public function afficherProfile()
 {
     try {
-        // Récupérez toutes les parties de la base de données
-        $partiesCrees = Partie::all();
+        // Récupérer l'utilisateur connecté
+        $user = Auth::user();
 
-        // Retournez la vue "profile" en passant les parties créées comme variable
-        return view('profile', ['partiesCrees' => $partiesCrees]);
+        // Vérifier si l'utilisateur est connecté
+        if ($user) {
+            // Récupérer les parties associées à l'utilisateur connecté
+            $partiesCrees = Partie::where('pseudo_hote', $user->pseudo_hote)->get();
+
+            // Retourner la vue "profile" en passant les parties créées comme variable
+            return view('profile', ['partiesCrees' => $partiesCrees]);
+        } else {
+            // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+            return redirect()->route('login');
+        }
     } catch (\Exception $e) {
-        // Gérez les erreurs
-        dd($e->getMessage()); // Ajoutez cette ligne pour afficher les détails de l'exception
+        // Gérer les erreurs
+        dd($e->getMessage()); // Ajouter cette ligne pour afficher les détails de l'exception
         return response()->json(['error' => 'Erreur serveur'], 500);
     }
 }
+
+
 public function continuerPartie($partieId)
 {
     try {
@@ -199,6 +208,44 @@ public function continuerPartie($partieId)
     }
 }
 
+
+//Telechargement json
+
+public function telechargerBacklog($partieId)
+{
+    try {
+        
+        $partie = Partie::findOrFail($partieId);
+        $donneesBacklog = $partie->tachevalide;
+        $nomProjet = $partie->nom_Projet;
+
+        // Décoder le JSON en tableau associatif
+        $tacheValideArray = json_decode($donneesBacklog, true);
+
+
+        // Construisez un tableau associatif avec les données du Backlog et le nom du projet
+        $donnees = [
+            'nomProjet' => $nomProjet,
+            'backlog' =>  $tacheValideArray,
+        ];
+
+       // Convertissez les données en format JSON avec l'option JSON_UNESCAPED_UNICODE
+        $donneesJSON = json_encode($donnees, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+
+        // Définissez les en-têtes pour indiquer que c'est un fichier JSON à télécharger
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Content-Disposition' => 'attachment; filename="backlog.json"',
+        ];
+
+        // Envoyez une réponse avec le contenu JSON et les en-têtes appropriés
+        return new Response($donneesJSON, 200, $headers);
+    } catch (\Exception $e) {
+        // Gérez les erreurs
+        return response()->json(['error' => 'Erreur serveur'], 500);
+    }
+}
 
 
 

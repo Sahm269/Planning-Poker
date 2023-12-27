@@ -68,6 +68,10 @@ body{
     text-align: center;
    
 }
+
+.bouton-container a{
+  color:var(--color-error)
+}
 .form{
     padding: 30px 40px;
 }

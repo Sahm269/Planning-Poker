@@ -20,8 +20,13 @@
     <div class="partie1">
         <!-- ... Your existing Partie 1 HTML ... -->
         <div class="form-control ">
-            <label for="pseudoHote">Nom de l'hote </label>
-            <input type="text" id="pseudoHote" name="pseudoHote" placeholder="Entre ton pseudo" required>
+        <label for="pseudoHote">Nom de l'hôte</label>
+            @auth
+                <input type="text" id="pseudoHote" name="pseudoHote" value="{{ auth()->user()->pseudo_hote }}" readonly>
+               
+            @else
+                <input type="text" id="pseudoHote" name="pseudoHote" placeholder="Entre ton pseudo" required>
+            @endauth
             <i class="fas fa-check-circle"></i>
             <i class="fas fa-exclamation"></i>
             <small>Message d'erreur </small>
@@ -63,7 +68,7 @@
            </div>
 
         <div class="bouton-container">            
-        <button type="button" class="bouton-quitter" onclick="">Quitter</button>
+         <a  href="{{ route('accueil') }}">Quitter</a> 
         <button type="button" id="boutonSuivantPartie1" class="bouton-suivant" onclick="showPart('partie2')">Suivant</button>
         </div>
     </div>

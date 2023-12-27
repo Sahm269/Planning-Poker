@@ -76,7 +76,7 @@
                 <button type="button" class="bouton" onclick="quitter()">Quitter</button>
                 <button type="button" class="bouton" onclick="nouvellepartie()">New Game</button>
                 <button type="button" class="bouton" onclick="telechargerJson()"> Sauvegarder <i class="fas fa-download"></i> </button>
-                <button tyoe="bouton" class="bouton" onclick="telechargerPDF()"> Backlog <i class="fas fa-download"></i></button>
+                <button tyoe="bouton" class="bouton" onclick=" telechargerbacklog()"> Backlog <i class="fas fa-download"></i></button>
                 </div>
             </div>
             

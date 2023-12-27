@@ -44,6 +44,18 @@
    
 }
 
+#label{
+    font-size: 24px;
+}
+#pseudo_hote{
+    border:  2px solid var(--color-second);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    height: 40px;
+    padding-left: 10px;
+    transition: border-color 0.3s; /* Ajout de transition pour une animation fluide */
+}
 #gifaccueil{
     width: 48%;
 }

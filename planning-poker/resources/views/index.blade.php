@@ -7,7 +7,7 @@
    <!-----------------------                              Titre           ----------------------------->
    <div class="titrejeu">
         <h1 class="">Planning Pocker </h1>
-      
+
    </div>
    <div class="Resume">
      <p>
@@ -15,16 +15,30 @@
           Découvrez un planning poker conçu pour répondre à vos besoins, offrant des fonctionnalités
           exceptionnelles et une facilité d'utilisation hors du commun.
      </p>
+     
 
    </div>
-   
-    <!-----------------------                              Call to actions           ----------------------------->
-    
+
+
+   <form method="POST" action="{{ route('inscription-connexion') }}">
+    @csrf <!-- Protection CSRF -->
+
+    <!-- Champ pour le nom -->
+    <label id="label" for="pseudo_hote">Nom :</label>
+    <input type="text" id="pseudo_hote" name="pseudo_hote" required>
+
+    <!-- Champ caché pour l'action -->
+    <input type="hidden" name="action" value="connexion">
+
     <div class="bouttons">
-       <a href="{{ route('menu') }}"> <button class="itembouton"> ! Nouvelle Partie !</button></a>
-       <a href="{{ route('profile') }}"> <button class="itembouton">continuer la partie</button></a>
-       
+        <button type="submit" class="itembouton">! Nouvelle partie !</button>
+        <button type="submit" class="itembouton" name="connexion">Connexion</button>
     </div>
+</form>
+
+
+
+
     </div>
 
     <div id = "gifaccueil" >
