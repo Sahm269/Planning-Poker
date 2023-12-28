@@ -18,7 +18,6 @@
 
     <!-- Partie 1 -->
     <div class="partie1">
-        <!-- ... Your existing Partie 1 HTML ... -->
         <div class="form-control ">
         <label for="pseudoHote">Nom de l'hôte</label>
             @auth
@@ -27,25 +26,19 @@
             @else
                 <input type="text" id="pseudoHote" name="pseudoHote" placeholder="Entre ton pseudo" required>
             @endauth
-            <i class="fas fa-check-circle"></i>
-            <i class="fas fa-exclamation"></i>
-            <small>Message d'erreur </small>
+            
         </div>
 
         <!-- Champ de texte pour le nom du projet -->
         <div class="form-control">
             <label for="nomProjet">Nom du Projet </label>
             <input  type="text" id="nomProjet" name="nomProjet" placeholder="Nom pour votre projet...">
-            <i class="fas fa-check-circle"></i>
-            <i class="fas fa-exclamation"></i>
-            <small>Message d'erreur </small>
+            
         </div>
-        <div class="form-control">   <!-- Liste déroulante pour le nombre de joueurs -->
-            <label for="nombreJoueur">Nombre de joueurs</label>
+        <div class="form-control">   <!-- Liste déroulante pour le nombre de joueurs avec maximum 10 -->
+            <label for="nombreJoueur">Nombre de joueurs(max 10)</label>
             <input name="nombreJoueur" type="number" id="nombreJoueur" min="1"  max = "10" required>
-            <i class="fas fa-check-circle"></i>
-            <i class="fas fa-exclamation"></i>
-            <small>Message d'erreur </small>
+            
         </div> 
 
          <!-- Boutons pour les règles avec champs de description Ondoit gerer cette partie avec un du js qui affichera un petit pop up a chaque fois qu'on va cliquer sur une regle  -->
@@ -68,7 +61,7 @@
            </div>
 
         <div class="bouton-container">            
-         <a  href="{{ route('accueil') }}">Quitter</a> 
+         <a  href="{{ route('accueil') }}">Quitter <i class="fas fa-sign-out-alt"></i></a> 
         <button type="button" id="boutonSuivantPartie1" class="bouton-suivant" onclick="showPart('partie2')">Suivant</button>
         </div>
     </div>
@@ -97,9 +90,7 @@
        <div class="form-control">
             <label for="backlog">Backlog des tâches :</label>
             <textarea name="backlog" id="backlog" rows="4" placeholder="Saisissez une tâche par ligne"></textarea>
-            <i class="fas fa-check-circle"></i>
-            <i class="fas fa-exclamation"></i>
-            <small>Message d'erreur </small>
+           
             
         </div>
         <div class="bouton-container">

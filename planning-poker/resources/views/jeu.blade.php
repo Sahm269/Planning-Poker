@@ -37,7 +37,7 @@
       
             <div id="discussion">
             <div class="chronometre" id="chronometrevote">  </div> <!-- Chronomètre à gerer --> 
-            <h3> Seule les joueurs qui ont joué la carte max et min c'est à dire les extremité ont le droit de parler. 
+            <h3> Seule les extremités ont le droit de parler. 
                 Discuter avant le fin du chronometre si non on passe dirrectement au vote</h3>
            
                 <img src="{{ asset('asset/discussion.gif') }}" height="200px">
@@ -62,11 +62,11 @@
             </div>
 
             <div id="interrogation">
-                <h3> Vous avez tous joué la carte interrogation, cette tache est à rejouée</h3>
+                <h3> Vous avez tous joué la carte interrogation, cette tache est à rejouer</h3>
                 <img src="{{ asset('asset/interrogation.gif') }}" height="200px">
             </div>
             <div id="cafe">
-                <h3> Vous avez tous joué la carte cafée, cette tache est à rejouée, Après votre petite pause bien meritée </h3>
+                <h3> Vous avez tous joué la carte cafée, cette tache est à rejouer, Après votre petite pause bien meritée </h3>
                 <img src="{{ asset('asset/cafee.gif') }}" height="200px">
             </div>
             <div id = "fin">

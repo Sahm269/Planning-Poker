@@ -6,7 +6,7 @@
 <div id="partie1">
    <!-----------------------                              Titre           ----------------------------->
    <div class="titrejeu">
-        <h1 class="">Planning Pocker </h1>
+        <h1 class="">Planning Poker </h1>
 
    </div>
    <div class="Resume">

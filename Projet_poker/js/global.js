@@ -1,2 +1,0 @@
-var tachesTexte;
-var regleJeu;

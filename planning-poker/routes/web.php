@@ -18,27 +18,21 @@ Route::get('/menu/jeu', [PartieController::class, 'afficherPageJeu']);
 Route::post('/menu/creer-partie', [PartieController::class, 'creerPartie']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-// routes/web.php
+// routes pour enregistrer la parite
 Route::post('/enregistrer-partie', [PartieController::class,'enregistrerPartie']);
 
-
-/*Route::get('/profile', function () {
-    return view('profile');
-});*/
+// route pour le profile
 Route::get('/profile', [PartieController::class, 'afficherProfile'])->name('profile');
 
+// route pour les parties crées et continuer une partie
 Route::get('/parties-crees', [PartieController::class, 'partiesCrees']);
-
 Route::get('/continuer-partie/{partieId}', [PartieController::class,'continuerPartie'])->name('continuer.partie');
-//Route::post('/auth', [PartieController::class, 'handleAuth'])->name('handle-auth');
-// routes/web.php
-//Route::post('/register', [PartieController::class, 'handleRegistration'])->name('register');
-// Route pour afficher la page de menu
+
+// Route pour afficher la page de menu inscritpion et connexion
 Route::get('/menu', function () {
     return view('menu'); 
 })->name('menu');
-Route::get('/telecharger-backlog/{partieId}', [PartieController::class, 'telechargerBacklog'])->name('telecharger.backlog');
-
-
 Route::post('/inscription-connexion', [AuthController::class, 'handleRegistrationOrLogin'])->name('inscription-connexion');
+
+// Route pour telecharger le bakclog selon une partie 
+Route::get('/telecharger-backlog/{partieId}', [PartieController::class, 'telechargerBacklog'])->name('telecharger.backlog');

@@ -1,39 +1,10 @@
-
-@font-face {
-  font-family: 'little_boy_2';
-  src: url('../fonts/little_boy_2.otf') format('otf'),
-       url('../fonts/font.ttf') format('ttf');
-  /* Ajoutez des formats supplémentaires si nécessaire */
-  font-weight: normal;
-  font-style: normal;
-}
+@import 'root.css';
 
 
 *{
     box-sizing: border-box;
 }
 
-:root{
-    --color-background:linear-gradient(to right, var(--color-first), var(--color-five));
-    --color-first:#5680E9;
-    --color-second:#84CEEB;
-    --color-third:#5AB9EA;
-    --color-foor:#C1C8E4;
-    --color-hover:#906bd3;
-    --color-five:#b8a6da;
-    
-    --color-white:#fff;
-    --color-success:#2ecc71;
-    --color-error:#e74c3c;
-
-
-
-    --police-h1: 'Roboto', sans-serif; /* Exemple de police populaire */
-    --police-h2: 'Montserrat', sans-serif; /* Exemple de police populaire */
-    --police-p: 'Arial', sans-serif; /* Exemple de police générique */
-      
-      
-}
 
 body{
     position: relative;

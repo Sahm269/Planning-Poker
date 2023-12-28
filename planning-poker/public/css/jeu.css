@@ -102,11 +102,10 @@
 #pieChart {
     width: 300px !important;
     height: 300px !important;
-    margin: 0 auto; /* Ajoute une marge automatique sur les côtés gauche et droit pour centrer */
-    display: block; /* Assure que le canvas est affiché comme un élément de bloc */
+    margin: 0 auto;
+    display: block; 
 }
 
-  
 /*Le groupe 2 qui contient les joueurs , chronomotre , bouton, les cartes jouées */
 .groupe2{
     min-height: 500px;
@@ -124,13 +123,13 @@
 .chronometre {
     font-size: 24px;
     font-weight: bold;
-    color: #2ecc71; /* Couleur du texte */
-    background-color: #ecf0f1; /* Couleur de fond */
-    padding: 10px; /* Espacement intérieur */
-    border-radius: 5px; /* Coins arrondis */
-    display: inline-block; /* Affichage en ligne avec espacement */
-    margin: 10px 0; /* Marge supérieure et inférieure */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    color: #2ecc71; 
+    background-color: #ecf0f1; 
+    padding: 10px; 
+    border-radius: 5px; 
+    display: inline-block; 
+    margin: 10px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
 }
 .blocreglechrono{
     display: flex;
@@ -214,12 +213,6 @@
   
 }
 
-/* Ajoutez ces styles dans votre fichier CSS */
-.joueur-special {
-    color: orange;
-    font-weight: bold;
-    /* Ajoutez d'autres styles selon vos besoins */
-}
 
 /************************ groupe 3Backlog*/
 .groupe3{

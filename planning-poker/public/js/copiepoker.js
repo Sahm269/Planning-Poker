@@ -12,74 +12,198 @@ var allPlayersVoted = false;
 var regleValue = partieData.regle;
 var myPieChart;
 var compteurVotes = 0;
-
 var tempsRestant1 = 180;
 var tempsRestant2 = 60;
 
-document.getElementById('boutonRevoter').disabled = true;
-document.getElementById('boutonNextTache').disabled = true;
+/**
+ * Classe de stratégie d'estimation de base.
+ * @class
+ */
+class EstimationStrategy {
+    /**
+     * Méthode d'estimation par défaut, peut être remplacée par des sous-classes.
+     * @param {Object} partieData - Les données de la partie en cours.
+     */
+    estimate(partieData) {
+      // Implémentation par défaut, peut être remplacée par des sous-classes
+    }
+}
 
-console.log(ordreJoueurs)
-console.log (partieData.nomJoueur)
+/**
+ * Classe de stratégie d'estimation pour la règle 'strict'.
+ * @extends EstimationStrategy
+ * @class
+ */
+class StrictEstimationStrategy extends EstimationStrategy {
+    /**
+     * Méthode d'estimation pour la règle 'strict'.
+     * @param {Object} partieData - Les données de la partie en cours.
+     */
+    estimate(partieData) {
+        console.log('On est dans le mode strict.');
+        
+        // Vérifier si tous les joueurs ont voté la même carte
+        var votesUniques = new Set(Object.values(partieData.nomJoueur));
+        var tousLesVotesSontIdentiques = votesUniques.size === 1;
+
+        // Sélectionner les boutons
+        var boutonNextTache = document.querySelector('#boutonNextTache');
+        var boutonRevoter = document.querySelector('#boutonRevoter');
+        
+        // Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
+        if (tousLesVotesSontIdentiques) {
+            var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
+            document.getElementById('cartesDiv').style.display = 'none';
+            document.getElementById('estimation').style.display = 'block';
+            document.getElementById('discussion').style.display = 'none';
+            document.getElementById('cafe').style.display = 'none';
+            document.getElementById('interrogation').style.display = 'none';
+            document.getElementById('fin').style.display = 'none';
+            document.getElementById('estimationmaj').style.display = 'none';
+            document.getElementById('discussionmaj').style.display = 'none';
+
+            // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
+            console.log('Estimation attribuée:', estimation);
+            estimation = valeurVote;
+            
+            boutonNextTache.disabled = false;
+            boutonRevoter.disabled = true;
+            boutonNextTache.classList.remove('bouton-desactive');
+            boutonRevoter.classList.add('bouton-desactive');
+        } else {
+            document.getElementById('cartesDiv').style.display = 'none';
+            document.getElementById('discussion').style.display = 'block';
+            document.getElementById('estimation').style.display = 'none';
+            document.getElementById('cafe').style.display = 'none';
+            document.getElementById('interrogation').style.display = 'none';
+            document.getElementById('estimationmaj').style.display = 'none';
+            document.getElementById('discussionmaj').style.display = 'none';
+            boutonNextTache.disabled = true;
+            boutonRevoter.disabled = false;
+            boutonNextTache.classList.add('bouton-desactive');
+            boutonRevoter.classList.remove('bouton-desactive');
+            chronometre2();
+        }
+    }
+}
+
+/**
+ * Classe de stratégie d'estimation pour la règle 'majorite'.
+ * @extends EstimationStrategy
+ * @class
+ */
+class MajorityEstimationStrategy extends EstimationStrategy {
+    /**
+     * Méthode d'estimation pour la règle 'majorite'.
+     * @param {Object} partieData - Les données de la partie en cours.
+     */
+    estimate(partieData) {
+        if (compteurVotes > 1) {
+            maxMajorite(partieData);
+        } else {
+            document.getElementById('cartesDiv').style.display = 'none';
+            document.getElementById('discussion').style.display = 'block';
+            document.getElementById('estimation').style.display = 'none';
+            document.getElementById('cafe').style.display = 'none';
+            document.getElementById('interrogation').style.display = 'none';
+            document.getElementById('estimationmaj').style.display = 'none';
+            document.getElementById('discussionmaj').style.display = 'none';
+            boutonNextTache.disabled = true;
+            boutonRevoter.disabled = false;
+            boutonNextTache.classList.add('bouton-desactive');
+            boutonRevoter.classList.remove('bouton-desactive');
+            chronometre2();
+        }
+      
+        console.log('On est dans le mode majorite.');
+    }
+}
+
+
 
 
 
 // Initialisation du jeu 
 mettreAJourAffichage();
+document.getElementById('boutonRevoter').disabled = true;
+document.getElementById('boutonNextTache').disabled = true;
 onload=initialisation
 function initialisation(){
     mettreAJourTacheDebattre();
     ecouteur();
-   
 }
 
 
 
 
+/**
+ * Estime une tâche en fonction de la règle spécifiée.
+ *
+ * @param {string} regleValue - La règle du jeu ('strict' ou 'majorite').
+ * @param {Object} partieData - Les données de la partie en cours.
+ */
+function estimerTache(regleValue, partieData) {
+    /** @type {EstimationStrategy} estimationStrategy - Stratégie d'estimation à utiliser. */
+    var estimationStrategy;
+
+    // Sélectionner la stratégie en fonction de la règle spécifiée
+    if (regleValue === 'strict') {
+        estimationStrategy = new StrictEstimationStrategy();
+    } else if (regleValue === 'majorite') {
+        estimationStrategy = new MajorityEstimationStrategy();
+    } else {
+        // Stratégie par défaut ou gestion d'erreur si nécessaire
+        estimationStrategy = new StrictEstimationStrategy();
+    }
+
+    // Utiliser la stratégie pour effectuer l'estimation
+    estimationStrategy.estimate(partieData);
+}
 
 
-//-------------------------------------fonction qui gere les tour du joueur ici on a utilisé lordrre de lobjet nomJoueur qui stocke les nom des joueurs et la carte jouée
+/**
+ * Gère le tour d'un joueur en enregistrant la carte jouée et passant au joueur suivant.
+ *
+ * @param {string} nomJoueur - Le nom du joueur dont c'est le tour.
+ * @param {string} valeurCarte - La valeur de la carte jouée par le joueur.
+ */
 function tourJoueur(nomJoueur, valeurCarte) {
     console.log(`Tour du joueur ${nomJoueur}. Carte jouée : ${valeurCarte}`);
+
     if (nomJoueur === ordreJoueurs[indexJoueurActuel]) {
-        //chronometre2();
         partieData.nomJoueur[nomJoueur] = valeurCarte;
-    
+
         // Rendre la carte visible pour le joueur actuel
         var joueurActuelElement = document.getElementById('joueur' + (indexJoueurActuel + 1));
         var carteJoueeElement = joueurActuelElement.querySelector('.carte-jouee');
         carteJoueeElement.style.visibility = 'visible';
         carteJoueeElement.classList.add('visible');
-    
+
         // Passer au joueur suivant
         indexJoueurActuel = (indexJoueurActuel + 1) % ordreJoueurs.length;
-    
-        console.log(ordreJoueurs.length);
-        console.log(indexJoueurActuel);
-        mettreAJourAffichage();
-        // Vérifier si tous les joueurs ont joué 
-    
-    
-   // Vérifier si tous les joueurs ont joué
-    if (indexJoueurActuel === 0) {
-        var nomsJoueurs = document.querySelectorAll('.nom-joueur');
-        nomsJoueurs.forEach(function(nomJoueur) {
-            nomJoueur.classList.remove('active');
-        });
-        vote();
-      
-        console.log("Votes terminés. Affichage des cartes jouées :");
 
-        return; 
-    }
+        mettreAJourAffichage();
+
+        // Vérifier si tous les joueurs ont joué
+        if (indexJoueurActuel === 0) {
+            var nomsJoueurs = document.querySelectorAll('.nom-joueur');
+            nomsJoueurs.forEach(function(nomJoueur) {
+                nomJoueur.classList.remove('active');
+            });
+            vote();
+
+            console.log("Votes terminés. Affichage des cartes jouées :");
+            return;
+        }
     } else {
         // C'est le tour d'un autre joueur, gérer le cas d'erreur ou afficher un message
         console.log("Ce n'est pas votre tour !");
     }
-
 }
 
-// -----------------------------------fonction qui met à jpur l'affichage du joueur qui va joueur en lui ajoutant une couleur à la classe active
+/**
+ * Met à jour l'affichage en ajoutant une classe "active" au joueur qui doit jouer.
+ */
 function mettreAJourAffichage() {
     var nomsJoueurs = document.querySelectorAll('.nom-joueur');
 
@@ -90,53 +214,79 @@ function mettreAJourAffichage() {
             nomJoueur.classList.remove('active');
         }
     });
-    
 }
 
 
+
+/**
+ * Ajoute des écouteurs d'événements aux cartes pour gérer les clics des joueurs.
+ * Réinitialise également le temps restant.
+ */
 function ecouteur() {
+    /**
+     * @type {NodeListOf<Element>} cartes - Liste des éléments HTML représentant les cartes.
+     */
     var cartes = document.querySelectorAll('.carte');
+
+    /**
+     * @type {number} tempsRestant2 - Temps restant pour le joueur actuel.
+     */
     tempsRestant2 = 60;
+
+    // Ajouter un écouteur d'événements à chaque carte
     cartes.forEach(function(carte) {
         carte.addEventListener('click', function() {
             // Appel de la fonction tourJoueur avec le nom du joueur et la valeur de la carte
             tourJoueur(ordreJoueurs[indexJoueurActuel], carte.textContent);
-            
         });
     });
 }
 
-
-
-// Modify your vote() function
+/**
+ * Termine le processus de vote en affichant les cartes jouées par chaque joueur.
+ * Met également à jour les cartes jouées à l'écran et affiche le résultat.
+ */
 function vote() {
-  console.log("Votes terminés. Affichage des cartes jouées :");
-
-  for (var joueur in partieData.nomJoueur) {
-    var carteJouee = partieData.nomJoueur[joueur];
-    console.log(`${joueur}: ${carteJouee}`);
-    console.log('NOM : ', index)
-
-    var carteJoueeElement = document.getElementById('carteJouee' + index);
-    index = index + 1;
-    console.log(carteJoueeElement)
-
-
-    mettreAJourCartesJouees();
-  }
-  compteurVotes++;
-  console.log(' compteurVotes ',  compteurVotes)
-  afficheMinMax();
-
-  // Set the flag to indicate that all players have voted
-  allPlayersVoted = true;
+    console.log("Votes terminés. Affichage des cartes jouées :");
   
-  // Check if all players have voted before showing the Resultat div
+    // Parcours chaque joueur et affiche la carte jouée
+    for (var joueur in partieData.nomJoueur) {
+      var carteJouee = partieData.nomJoueur[joueur];
+      console.log(`${joueur}: ${carteJouee}`);
+  
+      // Obtient l'élément de la carte jouée à l'aide de l'index
+      var carteJoueeElement = document.getElementById('carteJouee' + index);
+      index = index + 1;
+      console.log(carteJoueeElement);
+  
+      // Met à jour l'affichage des cartes jouées à l'écran
+      mettreAJourCartesJouees();
+    }
+  
+    // Incrémente le compteur de votes
+    compteurVotes++;
+    console.log(' compteurVotes ',  compteurVotes);
+  
+    // Affiche les valeurs minimales et maximales des votes
+    afficheMinMax();
+  
+    // Définit le drapeau pour indiquer que tous les joueurs ont voté
+    allPlayersVoted = true;
+  
+    // Vérifie si tous les joueurs ont voté avant d'afficher la div des résultats
+  }
 
 
 
-}
-
+/**
+ * Calcule la carte la plus jouée en fonction des votes des joueurs.
+ * Affiche le résultat sur un diagramme à secteurs.
+ * Si une majorité se dégage, attribue cette carte comme estimation.
+ * Si aucune majorité, affiche un message indiquant qu'aucune carte n'a été jouée plus fréquemment.
+ *
+ * @param {Object} partieData - Les données de la partie, contenant les votes des joueurs.
+ */
+  
 function maxMajorite(partieData) {
     var carteOccurrences = {};
 
@@ -251,55 +401,17 @@ function maxMajorite(partieData) {
 
 
 
-
+/**
+ * Affiche le résultat de l'estimation en fonction des votes des joueurs.
+ * Vérifie s'il y a un consensus ou si la valeur est '?', 'cafe' ou autre.
+ * Gère les différentes situations en modifiant l'affichage sur l'interface utilisateur.
+ */
 
 // --------------------------------------------------------------------------------function qui affiche le min et le max et traite le vote
 function afficheMinMax() {
     estimerTache(regleValue, partieData);
     var votes = partieData.nomJoueur;
-    console.log(votes)
-    // Convertir les valeurs en tableau
-    var valeursVotes = Object.values(votes).map(Number);
-
-    // Trouver le minimum et le maximum
-    var minVote = Math.min(...valeursVotes);
-    var maxVote = Math.max(...valeursVotes);
-
-   // Initialisation des noms min et max à undefined
-var nomMin, nomMax;
-
-// Parcourir toutes les clés
-for (var joueur in votes) {
-    if (votes.hasOwnProperty(joueur)) {
-        // Si le nomMin n'est pas défini ou si la valeur actuelle est inférieure à la valeur minimale actuelle
-        if (nomMin === undefined || votes[joueur] < votes[nomMin]) {
-            nomMin = joueur; // Mettre à jour le nomMin
-        }
-
-        // Si le nomMax n'est pas défini ou si la valeur actuelle est supérieure à la valeur maximale actuelle
-        if (nomMax === undefined || votes[joueur] > votes[nomMax]) {
-            nomMax = joueur; // Mettre à jour le nomMax
-            console.log("nomMax");
-        }
-    }
-
-
-    
-
-    // Après avoir trouvé le min et le max, ajoutez la classe aux éléments correspondants
-    var elementMin = document.getElementById('joueur' + (nomMin + 1));
-    var elementMax = document.getElementById('joueur' + (nomMax + 1));
-
- // Ajoutez la classe seulement si les éléments existent
- if (elementMin) {
-     elementMin.classList.add('joueur-special');
- }
-
- if (elementMax) {
-     elementMax.classList.add('joueur-special');
- }
-}
- 
+    console.log(votes) 
 
 // Vérifier si tous les joueurs ont voté la même carte
 var votesUniques = new Set(Object.values(partieData.nomJoueur));
@@ -393,8 +505,12 @@ if (tousLesVotesSontIdentiques) {
 
  
 
-// ----------------------------------------------------------------------------------Fonction Tache suivante 
-
+/**
+ * Fonction appelée pour passer à la tâche suivante.
+ * Met à jour l'affichage, valide la tâche en cours, et prépare le débat pour la prochaine tâche.
+ * Affiche les cartes des joueurs pour la nouvelle tâche et réinitialise les cartes jouées.
+ * Désactive les boutons de revote et de passage à la tâche suivante.
+ */
 function nexttache(){
     mettreAJourAffichage();
     tachevalidee();
@@ -442,11 +558,10 @@ function nexttache(){
 
     for (var joueur in partieData.nomJoueur) {
         if (partieData.nomJoueur.hasOwnProperty(joueur)) {
-            partieData.nomJoueur[joueur] = ''; // Réinitialiser la carte jouée comme vide
+            partieData.nomJoueur[joueur] = ''; // Réinitialise la carte jouée comme vide
             carteJouee = partieData.nomJoueur[joueur];
             console.log('joueur ', joueur ,' carte',carteJouee);
             mettreAJourCartesJouees();
-            // Augmenter l'index pour le prochain joueur
             index++;}
         
   
@@ -460,7 +575,13 @@ function nexttache(){
  
 }
 
-//-------------------------------------------------------------------------------------- Fonction pour mettre à jour l'affichage de la tâche à débattre
+
+/**
+ * Fonction pour mettre à jour l'affichage de la tâche à débattre.
+ * Trouve la première tâche non encore débattue dans le backlog,
+ * puis affiche cette tâche dans l'interface. Si toutes les tâches ont été débattues,
+ * met à jour l'état de la partie à "finie".
+ */
 function mettreAJourTacheDebattre() {
     var tacheDebattreElement = document.getElementById('tacheDebattre');
     // Trouver la première tâche non encore débattue
@@ -482,7 +603,15 @@ function mettreAJourTacheDebattre() {
 
 }
 
-//(------------------------------------------------------------------------------------------ fonction qui valide une tache 
+/**
+ * Fonction qui valide une tâche du backlog.
+ * Cette fonction met à jour l'estimation de la tâche actuelle dans l'objet partieData.backlog,
+ * la supprime de la liste des tâches restantes, l'ajoute à la liste des tâches validées,
+ * puis met à jour la tâche à débattre pour la prochaine tâche restante.
+ * Si aucune tâche restante n'est disponible, elle met à jour l'état de la partie à "finie"
+ * et affiche le contenu approprié.
+ */
+
 function tachevalidee() {
     compteurVotes=0;
     var tacheDebattreElement = document.getElementById('tacheDebattre');
@@ -534,10 +663,13 @@ function tachevalidee() {
     }
 }
 
-
-
-// ---------------------------------------------------------------------------------------fonction revoter 
-
+/**
+ * Fonction qui permet aux joueurs de revoter pour la tâche actuelle.
+ * Elle met à jour l'affichage, réactive les cartes des joueurs pour permettre un nouveau vote,
+ * et réinitialise les cartes jouées par les joueurs. Elle rend également visible les cartes
+ * pour les joueurs actuels, réinitialise l'index du joueur actuel, et affiche l'interface
+ * de vote.
+ */
 function revoter(){
     mettreAJourAffichage();
     if (document.getElementById('boutonRevoter').disabled === false){
@@ -551,8 +683,6 @@ function revoter(){
             carteJoueeElement.classList.remove('visible');
         });
     }
-    var indexJoueurActuel = 0;  
-    var ordreJoueurs = Object.keys(partieData.nomJoueur); // Récupère l'ordre des joueurs
         index = 0;
         document.getElementById('cartesDiv').style.display = 'block';
         document.getElementById('discussion').style.display = 'none';
@@ -575,7 +705,11 @@ function revoter(){
  boutonRevoter.classList.add('bouton-desactive');
 }
 
-//-----------------------------------------------------------------------------------------------Fonction Mise à jour le contenu des cartes jouées
+/**
+ * Fonction qui met à jour le contenu des cartes jouées par les joueurs dans l'interface.
+ * Elle récupère les éléments HTML correspondant aux cartes jouées et met à jour leur contenu
+ * avec les valeurs des cartes jouées par chaque joueur.
+ */
 function mettreAJourCartesJouees() {
     var carteJoueeElements = document.querySelectorAll('.carte-jouee-element');
 
@@ -591,12 +725,23 @@ function mettreAJourCartesJouees() {
 
 
 
+/**
+ * Fonction qui enregistre l'état actuel du jeu.
+ * Cette fonction peut être utilisée, par exemple, pour sauvegarder la partie avant une pause café du planning poker.
+ */
 function pausecafe(){
     enregistrer();
     
 }
 
-// Fonction pour enregistrer la partie
+
+/**
+ * Fonction qui enregistre l'état actuel de la partie.
+ * Elle envoie une requête AJAX pour sauvegarder les données de la partie du joueur sur le serveur.
+ * @function
+ * @throws {Error} Si la requête AJAX échoue.
+ * @returns {void}
+ */
 function enregistrer() {
     partieData.tachevalide =  obtenirBacklog('backlogListvalide');
     partieData.tacherestante = obtenirBacklog('backlogList');
@@ -640,7 +785,17 @@ function obtenirBacklog(idListe) {
     });
 
     return backlog;
-}function telechargerbacklog(){
+}
+//module.exports = obtenirBacklog;
+
+/**
+ * Fonction qui obtient les backlogs des tâches restantes ou validées à partir d'une liste HTML.
+ * @function
+ * @param {string} idListe - L'ID de l'élément HTML de la liste des tâches (backlog).
+ * @throws {Error} Si la liste avec l'ID spécifié n'est pas trouvée.
+ * @returns {Object.<string, string>} Un objet représentant le backlog avec les tâches comme clés et les estimations comme valeurs.
+ */
+function telechargerbacklog(){
     enregistrer()
     var donneesBacklog = {
         backlogListvalide: partieData.tachevalide,
@@ -648,32 +803,29 @@ function obtenirBacklog(idListe) {
         
     };
     var blob = new Blob([JSON.stringify(donneesBacklog)], { type: 'application/json' });
-
-    // Créez un URL pour le Blob
     var url = window.URL.createObjectURL(blob);
-
-    // Créez un lien et définissez l'URL du lien sur l'URL du Blob
     var a = document.createElement('a');
     a.href = url;
     a.download = 'backlog.json'; // Nom du fichier téléchargé
     document.body.appendChild(a);
-
-    // Cliquez sur le lien pour déclencher le téléchargement
     a.click();
-
-    // Retirez le lien de l'élément body
     document.body.removeChild(a);
 
 
 }
 
+
+/**
+ * Fonction qui enregistre la partie, crée un fichier JSON, et déclenche le téléchargement.
+ * @function
+ * @throws {Error} Si la création de l'objet Blob échoue.
+ */
 function telechargerJson() {
     alert("Votre partie sera enregistrée et téléchargée en format JSON");
 
     // Enregistrez la partie
     enregistrer();
 
-    // Créez un objet Blob avec les données JSON
     var donneesAEnregistrer = {
         nomJoueur: partieData.nomJoueur,
         backlog: partieData.backlog,
@@ -683,17 +835,11 @@ function telechargerJson() {
         partie_id: partieData.id  
     };
     var blob = new Blob([JSON.stringify(donneesAEnregistrer)], { type: 'application/json' });
-
-    // Créez un URL pour le Blob
     var url = window.URL.createObjectURL(blob);
-
-    // Créez un lien et définissez l'URL du lien sur l'URL du Blob
     var a = document.createElement('a');
     a.href = url;
     a.download = 'partie.json'; // Nom du fichier téléchargé
     document.body.appendChild(a);
-
-    // Cliquez sur le lien pour déclencher le téléchargement
     a.click();
 
     // Retirez le lien de l'élément body
@@ -701,7 +847,7 @@ function telechargerJson() {
 
   
 
-    // Rediriger vers une page ou faire un nouveau popup
+ 
 }
 
 
@@ -725,43 +871,12 @@ function nouvellepartie() {
 }
 
 
-function telechargerPDF() {
-    // Effectuer la requête Ajax
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/generer-pdf', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                // La requête a réussi, déclencher le téléchargement du PDF
-                var blob = new Blob([xhr.response], { type: 'application/pdf' });
-                var link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = 'tachevalide.pdf';
-                link.click();
-                console.log('PDF généré avec succès');
-            } else {
-                // La requête a échoué
-                console.error('Échec de la génération du PDF');
-            }
-        }
-    };
-    
-    // Indiquer que la réponse doit être traitée en tant que binaire
-    xhr.responseType = 'arraybuffer';
-    
-    // Envoyer la requête
-    xhr.send();
-}
 
 
 
-//AU CHARGEMENT DE LA PAGE LANCE CHRONOMETTRE
+//-------------------------------------------------Gestion des Chronometre
 document.addEventListener('DOMContentLoaded', function () {
     chronometre();
-  
-    
 });
 
 var compteReboursInterval;
@@ -810,21 +925,13 @@ function chronometre() {
 
 // Gestionnaire d'événements à chaque div de carte
 for (let i = 0; i <= 12; i++) {
-    // Supposons que vos div ont les identifiants de 'carte0' à 'carte12'
     var carteDiv = document.getElementById('carte' + i);
-    // Gestionnaire d'événements à chaque div de carte
     carteDiv.addEventListener('click', function() {
-        // Arrêter le chronomètre en utilisant l'identifiant de l'intervalle
         clearInterval(compteReboursInterval);
         if (indexJoueurChrono==ordreJoueurs.length){
-           // alert("Tous le monde a voté !");
-         // document.getElementById('chronometre').innerText = 'chronomètre';
         }
         else{
-            // Redémarrer le chronomètre après un délai 2 secondes
-            //setTimeout(chronometre, 2000);
             chronometre();
-            //alert("Passez le téléphone aux joueur suivant.");
             indexJoueurChrono++;
 
 
@@ -868,17 +975,13 @@ function chronometre2() {
         if (tempsRestant2 <= 0) {
             clearInterval(compteReboursInterval2);
             document.getElementById('chronometrevote').innerText = 'Temps écoulé';
-            // Ici du code à exécuter lorsque le temps est écoulé
 
         } else {
             tempsRestant2--;
         }
     }
 
-    // Effacer l'ancien intervalle s'il existe
     clearInterval(compteReboursInterval2);
-
-    // Définir le nouvel intervalle
     compteReboursInterval2 = setInterval(mettreAJourCompteRebours2, 1000);
 
     // Retourner l'identifiant de l'intervalle
@@ -904,106 +1007,4 @@ function chronometre2() {
 
 
 
-/* ________________________________________________________DESIGN PATTERN STRATEGY______________________________________ */
-function estimerTache(regleValue, partieData) {
-    var estimationStrategy;
-  
-    if (regleValue === 'strict') {
-      estimationStrategy = new StrictEstimationStrategy();
-    } else if (regleValue === 'majorite') {
-      estimationStrategy = new MajorityEstimationStrategy();
-    } else {
-      // Stratégie par défaut ou gestion d'erreur si nécessaire
-      estimationStrategy = new StrictEstimationStrategy();
-    }
-  
-    // Utilisation de la stratégie pour effectuer l'estimation
-    estimationStrategy.estimate(partieData);
-  }
-  
-// Classe de stratégie d'estimation de base
-class EstimationStrategy {
-    estimate(partieData) {
-      // Implémentation par défaut, peut être remplacée par des sous-classes
-    }
-  }
-  
-// Classe de stratégie d'estimation pour la règle 'strict'
-class StrictEstimationStrategy extends EstimationStrategy {
-    estimate(partieData) {
-    console.log('on est dans le strict ');
-
-        
-// Vérifier si tous les joueurs ont voté la même carte
-var votesUniques = new Set(Object.values(partieData.nomJoueur));
-var tousLesVotesSontIdentiques = votesUniques.size === 1;
-
-// Sélectionner les boutons
-var boutonNextTache = document.querySelector('#boutonNextTache');
-var boutonRevoter = document.querySelector('#boutonRevoter');
-// Si tous les votes sont identiques et la valeur est ? ou l'icône café, attribuer estimation
-if (tousLesVotesSontIdentiques) {
-    var valeurVote = Array.from(votesUniques)[0]; // Obtenir la valeur unique
-    document.getElementById('cartesDiv').style.display = 'none';
-    document.getElementById('estimation').style.display = 'block';
-    document.getElementById('discussion').style.display = 'none';
-    document.getElementById('cafe').style.display = 'none';
-    document.getElementById('interrogation').style.display = 'none';
-    document.getElementById('fin').style.display = 'none';
-    document.getElementById('estimationmaj').style.display = 'none';
-    document.getElementById('discussionmaj').style.display = 'none';
-
-  
-    // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
-    console.log('Estimation attribuée:', estimation);
-    estimation = valeurVote;
-    
-    // Faire quelque chose avec l'estimation (peut-être l'afficher ou la stocker)
-    console.log('Estimation attribuée:', estimation);
-    boutonNextTache.disabled = false;
-    boutonRevoter.disabled = true;
-    boutonNextTache.classList.remove('bouton-desactive');
-    boutonRevoter.classList.add('bouton-desactive');
-      
-  } 
-  else{
-        document.getElementById('cartesDiv').style.display = 'none';
-        document.getElementById('discussion').style.display = 'block';
-        document.getElementById('estimation').style.display = 'none';
-        document.getElementById('cafe').style.display = 'none';
-        document.getElementById('interrogation').style.display = 'none';
-        document.getElementById('estimationmaj').style.display = 'none';
-        document.getElementById('discussionmaj').style.display = 'none';
-        boutonNextTache.disabled = true;
-        boutonRevoter.disabled = false;
-        boutonNextTache.classList.add('bouton-desactive');
-        boutonRevoter.classList.remove('bouton-desactive');
-        chronometre2()
-  }
-
-} }
-  
-  // Classe de stratégie d'estimation pour la règle 'majorite'
-  class MajorityEstimationStrategy extends EstimationStrategy {
-    estimate(partieData) {
-      if (compteurVotes>1){
-      maxMajorite(partieData);}
-      else{
-        document.getElementById('cartesDiv').style.display = 'none';
-        document.getElementById('discussion').style.display = 'block';
-        document.getElementById('estimation').style.display = 'none';
-        document.getElementById('cafe').style.display = 'none';
-        document.getElementById('interrogation').style.display = 'none';
-        document.getElementById('estimationmaj').style.display = 'none';
-        document.getElementById('discussionmaj').style.display = 'none';
-        boutonNextTache.disabled = true;
-        boutonRevoter.disabled = false;
-        boutonNextTache.classList.add('bouton-desactive');
-        boutonRevoter.classList.remove('bouton-desactive');
-        chronometre2()}
-      
-      console.log('on est dans le mode majorite ')
-      
-    }
-  }
-  
+ 

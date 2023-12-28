@@ -1,19 +1,5 @@
-:root {
-    --color-degrade: linear-gradient(to right, var(--color-first), var(--color-five));
-    --color-first: #5680E9;
-    --color-second: #84CEEB;
-    --color-third: #5AB9EA;
-    --color-foor: #dab0d7b0;
-    --color-hover: #906bd3;
-    --color-five: #b8a6da;
-    --color-white: #fff;
-    --color-success: #2ecc71;
-    --color-error: #e74c3c;
-    --police-h1: 'Roboto', sans-serif;
-    --police-h2: 'Montserrat', sans-serif;
-    --police-p: 'Arial', sans-serif;
-    --color-background: url('../asset/background.jpg');
-}
+@import 'root.css';
+
 .pContainer {
     box-sizing: border-box;
     box-shadow: 0px 3px 3px #444444;

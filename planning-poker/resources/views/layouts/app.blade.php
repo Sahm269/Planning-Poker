@@ -32,11 +32,18 @@
         <nav class="navbar navbar-light bg-light static-top">
             <div class="navcontainer">
                 <a class="" href="{{ route('accueil') }}"><img id="logo" src="{{ asset('asset/logo.png') }}"/></a>
-                <a href="#">Aide <i class="fa fa-question-circle"></i></a>
+                <a href="#" id="openPopup">Aide <i class="fa fa-question-circle"></i></a>
                 <a class="ml-auto" href="{{ route('profile') }}">Profile <i class="fa fa-user"></i></a>
             </div>
         </nav>
     </div>
+                 <div id="videoPopup" class="popupvideo">
+                    <span class="close" id="closePopup">&times;</span>
+                    <video  id = "video" controls>
+                        <source src="{{asset('asset/tutoaide.mp4')}}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
 
 
         @yield('content')
@@ -49,6 +56,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="{{asset('js/affichagemenu.js')}}"></script>
     <script src="{{asset('js/copiepoker.js')}}"></script>
+    <script>
+        document.getElementById('openPopup').addEventListener('click', function() {
+            document.getElementById('videoPopup').style.display = 'block';
+        });
+
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.getElementById('videoPopup').style.display = 'none';
+        });
+
+    </script>
 
    
 </body>
