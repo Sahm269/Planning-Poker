@@ -36,7 +36,7 @@
             
         </div>
         <div class="form-control">   <!-- Liste déroulante pour le nombre de joueurs avec maximum 10 -->
-            <label for="nombreJoueur">Nombre de joueurs(max 10)</label>
+            <label for="nombreJoueur">Nombre de joueurs(max 10 sans compter l'hote)</label>
             <input name="nombreJoueur" type="number" id="nombreJoueur" min="1"  max = "10" required>
             
         </div> 
@@ -49,9 +49,7 @@
             <input type="radio" name="regle" value="majorite" id="regle2" onclick="afficherDescription('regle2')">
             <label for="regle2">Majorité Relative</label>
 
-            <!--input type="radio" name="regle" id="regle3" onclick="afficherDescription('regle3')">
-            <label for="regle3">Majorité absolue</label-->
-            <small>Message d'erreur </small>
+
         </div>
 
         <div id="overlay"></div>
@@ -71,10 +69,10 @@
     <!-- Partie 2 -->
     <div class="partie2">
         <!-- ... Your existing Partie 2 HTML ... -->
+        <h3>Noms des joueurs , l'hote ne fait pas parti des joueurs à saisir </h3>
         <div class="form-control" id="nomJoueur">
             <!-- champs pour nom des joueurs gerer dynamiquement -->
             <p>Noms des joueurs</p>
-            <small>Message d'erreur </small>
         </div>
         <div class="bouton-container">
             <button type="button" class="bouton-retour" onclick="showPart('partie1')">Retour</button>
@@ -84,9 +82,7 @@
 
     <!-- Partie 3 -->
     <div class="partie3">
-        <!-- ... Your existing Partie 3 HTML ... -->
         <p><b>(!!!!!Attention une ligne correspond à une tache )</b> </p>
-        <!-- Ajoutez une zone de texte pour la liste de tâches -->
        <div class="form-control">
             <label for="backlog">Backlog des tâches :</label>
             <textarea name="backlog" id="backlog" rows="4" placeholder="Saisissez une tâche par ligne"></textarea>

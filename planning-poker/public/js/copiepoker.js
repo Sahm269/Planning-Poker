@@ -536,6 +536,7 @@ function nexttache(){
         document.getElementById('interrogation').style.display ='none';
         document.getElementById('estimationmaj').style.display = 'none';
         document.getElementById('discussionmaj').style.display = 'none';
+        enregistrer();
        
        
         
